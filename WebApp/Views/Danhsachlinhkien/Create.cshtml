@@ -1,0 +1,99 @@
+﻿@model ViewModels.Danhsachlinhkien.DanhsachlinhkienCreateRequest
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>DanhsachlinhkienCreateRequest</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Model" class="control-label"></label>
+                <input asp-for="Model" class="form-control" />
+                <span asp-validation-for="Model" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tenjig" class="control-label"></label>
+                <input asp-for="Tenjig" class="form-control" />
+                <span asp-validation-for="Tenjig" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Majig" class="control-label"></label>
+                <input asp-for="Majig" class="form-control" />
+                <span asp-validation-for="Majig" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tenlinhkien" class="control-label"></label>
+                <input asp-for="Tenlinhkien" class="form-control" />
+                <span asp-validation-for="Tenlinhkien" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Malinhkien" class="control-label"></label>
+                <input asp-for="Malinhkien" class="form-control" />
+                <span asp-validation-for="Malinhkien" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Maker" class="control-label"></label>
+                <input asp-for="Maker" class="form-control" />
+                <span asp-validation-for="Maker" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Donvi" class="control-label"></label>
+                <input asp-for="Donvi" class="form-control" />
+                <span asp-validation-for="Donvi" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Dongia" class="control-label"></label>
+                <input asp-for="Dongia" class="form-control" />
+                <span asp-validation-for="Dongia" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Tonkho" class="control-label"></label>
+                <input asp-for="Tonkho" class="form-control" />
+                <span asp-validation-for="Tonkho" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Ghichu" class="control-label"></label>
+                <div id="ckeditor" asp-for="Ghichu"></div>
+                <span asp-validation-for="Ghichu" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hinhanh" class="control-label"></label>
+                <input asp-for="Hinhanh" class="form-control" />
+                <span asp-validation-for="Hinhanh" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
+
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#ckeditor'), {
+                 toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+            })
+            .then(editor => {
+                window.editor = editor;
+            })
+            .catch(err => {
+                console.error(err.stack);
+            });
+    </script>
+}

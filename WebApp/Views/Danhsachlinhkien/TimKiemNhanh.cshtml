@@ -1,0 +1,191 @@
+﻿@using ViewModels.Common;
+@model PagedResult<ViewModels.Danhsachlinhkien.DanhsachlinhkienVm>
+<style>
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td.child, table.dataTable.dtr-inline.collapsed > tbody > tr > th.child, table.dataTable.dtr-inline.collapsed > tbody > tr > td.dataTables_empty {
+        font-size: small;
+        text-align: left;
+    }
+
+    .btn-group-center {
+        text-align: center;
+    }
+
+    table.dataTable thead th {
+        border-top: none;
+    }
+</style>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Active"] = "pageTimkiemnhanh";
+
+}
+@section Scripts{
+    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <script src="~/adminlte-master/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/adminlte-master/plugins/jszip/jszip.min.js"></script>
+    <script src="~/adminlte-master/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/adminlte-master/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tblSparepartslist").DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+            })
+        })
+    </script>
+}
+    <div class="row">
+        <div class="col-md-12">
+            <form id="formSearch" asp-action="timkiemnhanh" method="get">
+                <div class="input-group">
+                    <select style="text-align:center" name="model" class="form-control form-control-lg col-md-3" onchange="this.form.submit()" asp-items="@ViewBag.Models ">
+                        <option>All Models</option>
+                    </select>
+                    @{
+                    string kw = !string.IsNullOrEmpty(ViewBag.Keyword) ? ViewBag.Keyword : "Nhập tên, mã linh kiện để tìm kiếm...";
+                }
+                <input name="keyword" type="text" class="form-control form-control-lg" placeholder="@kw">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-lg btn-default">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-12" style="margin-top:10px">
+        <div class="card card-primary">
+            <div class="card-body">
+                <table id="tblSparepartslist" class="table table-reponsive table-hover " style="text-align:center;vertical-align:middle">
+                    <thead style="font-size:small;">
+                        <tr>
+                            <th class="all" style="white-space: nowrap;">Tên linh kiện</th>
+                            <th class="all" style="white-space: nowrap;">Mã linh kiện</th>
+                            <th style="white-space: nowrap;">Tên jig</th>
+
+                            <th class="all" style="white-space: nowrap;">Tồn kho</th>
+                            <th class="all" style="white-space: nowrap;"></th>
+                            <th style="white-space: nowrap;"></th>
+                            <th class="none" style="white-space: nowrap;">Model</th>
+                            <th class="none" style="white-space: nowrap;">Mã jig</th>
+                            <th class="none" style="white-space: nowrap;">Maker</th>
+                            <th class="none" style="white-space: nowrap;">Đơn vị</th>
+                            <th class="none" style="white-space: nowrap;">Đơn giá</th>
+                            <th class="none" style="white-space: nowrap;">Ghi chú</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Tenlinhkien)
+                                </td>
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Malinhkien)
+                                </td>
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Tenjig)
+                                </td>
+                                <td class="col-md-1" style="font-size:medium; vertical-align:middle;text-align:center">
+                                    @{
+                                        if (item.Tonkho > 0)
+                                        {
+                                            <span style="width: 30px;opacity:0.9" class="right badge badge-success">@item.Tonkho</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="width: 30px;opacity:0.9" class="right badge badge-danger">@item.Tonkho</span>
+                                        }
+                                    }
+                                </td>
+                                <td class="col-md-2" style="vertical-align:middle;text-align:center">
+                                    @{
+                                        if (item.Image != null)
+                                        {
+                                            <img class="shadow showImage" style="width:100%;min-width:50px;max-width:150px; max-height:200px;" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
+                                        }
+                                        else
+                                        {
+                                            <button class="btn btn-sm btn-secondary" disabled>None</button>
+                                        }
+                                    }
+                                </td>
+                                <td class="col-md-2" style="font-size:small; vertical-align:middle;text-align:center">
+                                    <div class="btn-group btn-block ">
+                                        <a class="btn btn-app bg-default ">
+                                            <i style="color:seagreen" class="fas fa-upload"></i> Lấy sử dụng
+                                        </a>
+                                        <a class="btn btn-app bg-default ">
+                                            <i style="color:orange" class="fas fa-cart-plus"></i> Đặt hàng
+                                        </a>
+                                    </div>
+                                </td>
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Model)
+                                </td>
+                            
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Majig)
+                                </td>
+
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Maker)
+                                </td>
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Donvi)
+                                </td>
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Dongia)
+                                </td>
+
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Ghichu)
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                @await Component.InvokeAsync("Pager", Model)
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(".btnLaylinhkien").on("click", function (e) {
+        Swal.fire(
+            "Lỗi máy chủ",
+            "Không tải được dữ liệu",
+            "error"
+        );
+    });
+
+    $(".showImage").on("click", function (e) {
+        var imgSrc = $(this).attr("src");
+        var tenlinhkien = $(this).data("tenlinhkien");
+        Swal.fire({
+            imageUrl: imgSrc,
+            imageWidth: 400, // Adjust this to your preferred width
+            imageHeight: 400, // Adjust this to your preferred height
+            title: tenlinhkien,
+            showConfirmButton: false // Remove the "OK" button
+        });
+    });
+</script>

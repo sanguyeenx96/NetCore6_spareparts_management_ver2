@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\AdminLTE-master\.github\codeql\codeql-config.yml" />
+    <None Include="wwwroot\AdminLTE-master\.github\CONTRIBUTING.md" />
+    <None Include="wwwroot\AdminLTE-master\.github\dependabot.yml" />
+    <None Include="wwwroot\AdminLTE-master\.github\ISSUE_TEMPLATE\bug-report-for-adminlte-v3.1-x.md" />
+    <None Include="wwwroot\AdminLTE-master\.github\ISSUE_TEMPLATE\feature-request-for-adminlte-v4-x.md" />
+    <None Include="wwwroot\AdminLTE-master\.github\workflows\ci.yml" />
+    <None Include="wwwroot\AdminLTE-master\.github\workflows\codeql.yml" />
+    <None Include="wwwroot\AdminLTE-master\.github\workflows\docs.yml" />
+    <None Include="wwwroot\AdminLTE-master\.github\workflows\lint.yml" />
+    <None Include="wwwroot\Scripts\currentTimeTicks.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ViewModels\ViewModels.csproj" />
+  </ItemGroup>
+
+</Project>

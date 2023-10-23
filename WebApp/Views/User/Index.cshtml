@@ -1,0 +1,75 @@
+﻿@using ViewModels.Common;
+@model PagedResult<ViewModels.System.User.UserVm>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>User</h1>
+
+@if (TempData["result"] != null)
+{
+    <p>Login success</p>
+}
+
+<div>
+    <a asp-action="Create">Tạo tài khoản mới</a>
+    <form asp-action="index" method="get">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" class="form-control" name="keyword" placeholder="@ViewBag.Keyword" />
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-success btn-block" type="submit">Search</button>
+                <button class="btn btn-secondary btn-block" onclick="window.location.href='/User/Index/'">Reset</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Id
+            </th>
+            <th>
+                Họ tên
+            </th>
+            <th>
+                Tên đăng nhập
+            </th>
+            <th>
+                Mật khẩu
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hoten)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Password)
+                </td>
+                <td>
+                    @Html.ActionLink("Detail", "Detail", new { id=item.Id })
+                    @Html.ActionLink("Update", "Update", new { id=item.Id})
+                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
+                    @Html.ActionLink("Gán Model", "ModelAssign", new { id=item.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@await Component.InvokeAsync("Pager", Model)

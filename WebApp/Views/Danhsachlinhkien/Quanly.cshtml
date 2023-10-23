@@ -1,0 +1,109 @@
+﻿<style>
+    table.dataTable.dtr-inline.collapsed > tbody > tr > td.child, table.dataTable.dtr-inline.collapsed > tbody > tr > th.child, table.dataTable.dtr-inline.collapsed > tbody > tr > td.dataTables_empty {
+        font-size: small;
+        text-align: left;
+    }
+
+    .btn-group-center {
+        text-align: center;
+    }
+</style>
+@{
+    ViewData["Active"] = "pageQuanlylinhkien";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section Scripts{
+    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <script src="~/adminlte-master/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/adminlte-master/plugins/jszip/jszip.min.js"></script>
+    <script src="~/adminlte-master/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/adminlte-master/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+}
+
+    <div class="row">
+        <div class="col-md-12">
+            <form id="formGet">
+                <div class="input-group">
+                    <select style="text-align:center" id="modelselect" class="form-control form-control-lg col-md-3" asp-items="@ViewBag.Models ">
+                        <option>All Models</option>
+                    </select>
+                    <button type="submit" class="btn btn-lg btn-flat btn-default">
+                        <i style="color:dodgerblue" class="fa fa-download fa-fw"></i> Tải dữ liệu
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div id="overlay" class="col-lg-12">
+            <div class="d-flex justify-content-center" style="margin-top:100px">
+                <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
+                </div>
+            </div>
+        </div>
+        <div id="partialViewContainer" class="col-lg-12" style="margin-top:10px"></div>
+    </div>
+
+
+    <script>
+        $(document).ready(function () {
+            $('#overlay').hide();
+            $('#partialViewContainer').hide();
+
+            $('#formGet').submit(function (e) {
+                e.preventDefault();
+                var model = $("#modelselect").val();
+                $('#overlay').show();
+                $('#partialViewContainer').hide();
+                $.ajax({
+                    type: "GET",
+                    url: "/Danhsachlinhkien/GetDanhsachlinhkien",
+                    data: { model: model },
+                    success: function (data) {
+                        $('#overlay').hide();
+                        $('#partialViewContainer').html(data);
+                        $('#partialViewContainer').show();
+                        $("#tblSpareparts").DataTable({
+                            "paging": true,
+                            "lengthChange": true,
+                            "searching": true,
+                            "ordering": true,
+                            "info": true,
+                            "autoWidth": false,
+                            "responsive": true,
+                            "buttons": [
+                                {
+                                    extend: 'copy',
+                                    text: '<i class="fas fa-copy"></i> Copy',
+                                    className: 'bg-gradient-secondary'
+                                },
+                                {
+                                    extend: 'excel',
+                                    text: '<i class="fas fa-file-excel"></i> Xuất Excel',
+                                    className: 'bg-gradient-secondary'
+                                },
+                                {
+                                    extend: 'print',
+                                    text: '<i class="fas fa-print"></i> In',
+                                    className: 'bg-gradient-secondary'
+                                }
+                            ]
+                        }).buttons().container().appendTo('#tblSpareparts_wrapper  .col-md-6:eq(0)');
+                    }
+                });
+            });
+        });
+    </script>
+
+
+
+
+
