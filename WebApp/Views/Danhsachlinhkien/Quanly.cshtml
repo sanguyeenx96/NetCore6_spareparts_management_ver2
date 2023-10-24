@@ -1,4 +1,5 @@
-﻿<style>
+﻿@using ViewModels.Model
+<style>
     table.dataTable.dtr-inline.collapsed > tbody > tr > td.child, table.dataTable.dtr-inline.collapsed > tbody > tr > th.child, table.dataTable.dtr-inline.collapsed > tbody > tr > td.dataTables_empty {
         font-size: small;
         text-align: left;
@@ -11,6 +12,8 @@
 @{
     ViewData["Active"] = "pageQuanlylinhkien";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var listModel = ViewBag.listmodel as List<ModelVm>;
+    var firstModelOfList = listModel.First().Tenmodel;
 }
 @section Scripts{
     <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
@@ -29,79 +32,86 @@
     <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 }
-
     <div class="row">
         <div class="col-md-12">
-            <form id="formGet">
-                <div class="input-group">
-                    <select style="text-align:center" id="modelselect" class="form-control form-control-lg col-md-3" asp-items="@ViewBag.Models ">
-                        <option>All Models</option>
-                    </select>
-                    <button type="submit" class="btn btn-lg btn-flat btn-default">
-                        <i style="color:dodgerblue" class="fa fa-download fa-fw"></i> Tải dữ liệu
-                    </button>
+            <div class="card card-default card-tabs">
+                <div class="card-header p-0 border-bottom-0">
+                    <ul class="nav nav-tabs nav-tabs-lg" role="tablist">
+                    @foreach (var item in listModel)
+                    {
+                        <li class="nav-item">
+                            @{
+                                if (item == listModel.First())
+                                {
+                                    <a style="font-size:large" class="nav-link active" id="@item.Tenmodel" href="#" data-toggle="pill" role="tab">@item.Tenmodel</a>
+                                }
+                                else
+                                {
+                                    <a style="font-size:large" class="nav-link" id="@item.Tenmodel" href="#" data-toggle="pill" role="tab">@item.Tenmodel</a>
+
+                                }
+                            }
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <a style="font-size:large; " class="nav-link" id="All" href="#" data-toggle="pill" role="tab" data-first-model="@firstModelOfList">
+                            <i class="fa fa-database fa-fw"></i>
+                            All Model
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-body" id="thebody">
+                <div class="tab-content">
+                    <div id="datatab" class="tab-pane fade active show" role="tabpanel">
+                        <div id="partialViewContainer"></div>
+                    </div>
                 </div>
-            </form>
+            </div>
         </div>
         <div id="overlay" class="col-lg-12">
-            <div class="d-flex justify-content-center" style="margin-top:100px">
+            <div class="d-flex justify-content-center align-items-center" style="height: 65vh;">
                 <div class="spinner-border text-primary" style="width: 5rem; height: 5rem;" role="status">
                 </div>
             </div>
         </div>
-        <div id="partialViewContainer" class="col-lg-12" style="margin-top:10px"></div>
     </div>
+</div>
 
 
-    <script>
-        $(document).ready(function () {
-            $('#overlay').hide();
-            $('#partialViewContainer').hide();
+<script>
+    $(document).ready(function () {
+        $('#thebody').hide();
+        $('#overlay').show();
+        var firstModelOfList = $("#All").data("first-model"); // Lấy giá trị firstModelOfList từ data attribute
+        $("#tenPage").text("Spareparts List Model " + firstModelOfList);
+        $.get("/Danhsachlinhkien/GetDanhsachlinhkien?model=" + firstModelOfList, function (result) {
+            $("#partialViewContainer").html(result);
+        });
 
-            $('#formGet').submit(function (e) {
-                e.preventDefault();
-                var model = $("#modelselect").val();
-                $('#overlay').show();
-                $('#partialViewContainer').hide();
-                $.ajax({
-                    type: "GET",
-                    url: "/Danhsachlinhkien/GetDanhsachlinhkien",
-                    data: { model: model },
-                    success: function (data) {
-                        $('#overlay').hide();
-                        $('#partialViewContainer').html(data);
-                        $('#partialViewContainer').show();
-                        $("#tblSpareparts").DataTable({
-                            "paging": true,
-                            "lengthChange": true,
-                            "searching": true,
-                            "ordering": true,
-                            "info": true,
-                            "autoWidth": false,
-                            "responsive": true,
-                            "buttons": [
-                                {
-                                    extend: 'copy',
-                                    text: '<i class="fas fa-copy"></i> Copy',
-                                    className: 'bg-gradient-secondary'
-                                },
-                                {
-                                    extend: 'excel',
-                                    text: '<i class="fas fa-file-excel"></i> Xuất Excel',
-                                    className: 'bg-gradient-secondary'
-                                },
-                                {
-                                    extend: 'print',
-                                    text: '<i class="fas fa-print"></i> In',
-                                    className: 'bg-gradient-secondary'
-                                }
-                            ]
-                        }).buttons().container().appendTo('#tblSpareparts_wrapper  .col-md-6:eq(0)');
-                    }
-                });
+        $(".nav-link").click(function () {
+            tenmodel = $(this).attr("id");
+            $("#tenPage").text("Spareparts List Model " + tenmodel);
+            $('#thebody').hide();
+            $('#overlay').show();
+            $.ajax({
+                url: "/Danhsachlinhkien/GetDanhsachlinhkien",
+                type: "GET",
+                data: { model: tenmodel },
+                success: function (response) {
+                    $("#partialViewContainer").html(response);
+                },
+                error: function (e) {
+                    console.log(e);
+                }
             });
         });
-    </script>
+    });
+</script>
+
+
+
+
 
 
 

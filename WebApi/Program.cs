@@ -1,5 +1,6 @@
 using Application.Common;
 using Application.Danhsachlinhkien;
+using Application.Dathang;
 using Application.Model;
 using Application.System.User;
 using Data.EF;
@@ -16,6 +17,7 @@ builder.Services.AddTransient<IStorageService, FileStorageService>();
 builder.Services.AddTransient<IDanhsachlinhkienService, DanhsachlinhkienService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IModelService, ModelService>();
+builder.Services.AddTransient<IDathangService, DathangService>();
 
 
 builder.Services.AddControllers();

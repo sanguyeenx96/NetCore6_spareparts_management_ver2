@@ -96,26 +96,33 @@ namespace WebApi.Controllers
             return Ok(image);
         }
 
-
         [HttpPost("importexcel")]
-        public async Task<IActionResult> ImportExcel(IFormFile file, string model)
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> ImportExcel([FromForm] IFormFile file, [FromForm] string model)
         {
-            if (file == null || file.Length <= 0)
+            try
             {
-                return BadRequest("File is empty.");
+                if (file == null || file.Length == 0)
+                {
+                    return BadRequest("Tệp Excel không được gửi.");
+                }
+                using (var fileStream = file.OpenReadStream())
+                {
+                    var danhsachlinhkiens = await _danhsachlinhkienService.ReadExcelFile(fileStream);
+                    var result = await _danhsachlinhkienService.ImportExcelFile(danhsachlinhkiens, model);
+                    if (result.IsSuccessed)
+                    {
+                        return Ok(result);
+                    }
+                    else
+                    {
+                        return BadRequest(result.Message);
+                    }
+                }      
             }
-            using (var fileStream = file.OpenReadStream())
+            catch (Exception ex)
             {
-                var danhsachlinhkiens = await _danhsachlinhkienService.ReadExcelFile(fileStream);
-                var result = await _danhsachlinhkienService.ImportExcelFile(danhsachlinhkiens, model);
-                if (result.IsSuccessed)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return BadRequest(result.Message);
-                }
+                return BadRequest("Lỗi xử lý tệp Excel: " + ex.Message);
             }
         }
 
