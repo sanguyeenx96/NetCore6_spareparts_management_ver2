@@ -20,6 +20,7 @@ using ViewModels.Common;
 using ViewModels.Danhsachlinhkien;
 using ViewModels.Hinhanh;
 using ViewModels.System.User;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Application.Danhsachlinhkien
@@ -346,11 +347,13 @@ namespace Application.Danhsachlinhkien
             return false;
         }
 
-        public async Task<ApiResult<bool>> ImportExcelFile(List<DanhsachlinhkienImportExcelRequest> request, string model)
+        public async Task<ApiResult<ImportExcelResult>> ImportExcelFile(List<DanhsachlinhkienImportExcelRequest> request, string model)
         {
             try
             {
                 var startTime = DateTime.Now;
+                int lineupdate = 0;
+                int linetrung = 0;
 
                 string connectionString = _configuration.GetConnectionString(SystemConstants.MainConnectionString);
                 // Create a DataTable to hold your data
@@ -371,8 +374,13 @@ namespace Application.Danhsachlinhkien
                     bool isMalinhkienExists = ChecktrungMalinhkien(model, linhkien.Malinhkien);
                     if (!isMalinhkienExists)
                     {
+                        lineupdate++;
                         dataTable.Rows.Add(model, linhkien.Tenjig, linhkien.Majig, linhkien.Tenlinhkien, linhkien.Malinhkien, linhkien.Maker,
                        linhkien.Donvi, linhkien.Dongia, linhkien.Tonkho, linhkien.Ghichu);
+                    }
+                    else
+                    {
+                        linetrung++;
                     }
                 }
                 using (var bulkCopy = new SqlBulkCopy(connectionString))
@@ -397,7 +405,12 @@ namespace Application.Danhsachlinhkien
                     // Thực hiện sao chép dữ liệu vào SQL
                     await bulkCopy.WriteToServerAsync(dataTable);
                 }
-                return new ApiSuccessResult<bool>();
+                var ketqua = new ImportExcelResult()
+                {
+                    sodongtrung = linetrung,
+                    sodongupdate = lineupdate
+                };
+                return new ApiSuccessResult<ImportExcelResult>(ketqua);
             }
             catch (Exception ex)
             {

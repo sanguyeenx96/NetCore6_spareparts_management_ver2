@@ -11,6 +11,8 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddTransient<IDanhsachlinhkienApiClient, DanhsachlinhkienApiClient>();
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
 builder.Services.AddTransient<IModelApiClient, ModelApiClient>();
+builder.Services.AddTransient<IDathangApiClient, DathangApiClient>();
+
 
 var app = builder.Build();
 

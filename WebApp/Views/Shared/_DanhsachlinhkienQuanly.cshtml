@@ -1,99 +1,145 @@
 ﻿@model IEnumerable<ViewModels.Danhsachlinhkien.DanhsachlinhkienVm>
 
-<div class="card card-primary">
-    <div class="card-body">
-        <table id="tblSpareparts" class="table table-reponsive table-hover " style="text-align:center;vertical-align:middle">
-            <thead style="font-size:small;">
-                <tr>
-                    <th class="all" style="white-space: nowrap;">Tên linh kiện</th>
-                    <th class="all" style="white-space: nowrap;">Mã linh kiện</th>
-                    <th  style="white-space: nowrap;">Tên jig</th>
-                    <th  style="white-space: nowrap;">Mã jig</th>
-                    <th class="all" style="white-space: nowrap;">Tồn kho</th>
-                    <th class="all" style="white-space: nowrap;">Hình ảnh</th>
-                    <th class="none" style="white-space: nowrap;">Model</th>
-                    <th class="none" style="white-space: nowrap;">Maker</th>
-                    <th class="none" style="white-space: nowrap;">Đơn vị</th>
-                    <th class="none" style="white-space: nowrap;">Đơn giá</th>
-                    <th class="none" style="white-space: nowrap;">Ghi chú</th>
-                    <th class="none" style="white-space: nowrap;"></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
-                    <tr>
-                        <td style="font-size:small; vertical-align:middle;text-align:center">
-                            @Html.DisplayFor(modelItem => item.Tenlinhkien)
-                        </td>
-                        <td style="font-size:small; vertical-align:middle;text-align:center">
-                            @Html.DisplayFor(modelItem => item.Malinhkien)
-                        </td>
-                        <td style="font-size:small; vertical-align:middle;text-align:center">
-                            @Html.DisplayFor(modelItem => item.Tenjig)
-                        </td>
-                        <td style="font-size:small; vertical-align:middle;text-align:center">
-                            @Html.DisplayFor(modelItem => item.Majig)
-                        </td>
-                        <td class="col-md-1" style="font-size:medium; vertical-align:middle;text-align:center">
-                            @{
-                                if (item.Tonkho > 0)
-                                {
-                                        <span style="width: 30px;" class="right badge badge-success">@item.Tonkho</span>
-                                }
-                                else
-                                {
-                                        <span style="width: 30px;" class="right badge badge-danger">@item.Tonkho</span>
-                                }
-                            }
-                        </td>
-                        <td class="col-md-2" style="vertical-align:middle;text-align:center">
-                            @{
-                                if (item.Image != null)
-                                {
-                                        <img class="shadow showImage" style="width:100%;min-width:50px;min-height:75px;max-width:150px; max-height:200px;" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
-                                }
-                                else
-                                {
-                                        <button class="btn btn-sm btn-secondary" disabled>None</button>
-                                }
-                            }
-                        </td>
-                        <td style="font-size:small; vertical-align:middle;text-align:center">
-                            @Html.DisplayFor(modelItem => item.Model)
-                        </td>
-                        <td style="font-size:small; vertical-align:middle;text-align:center">
-                            @Html.DisplayFor(modelItem => item.Maker)
-                        </td>
-                        <td style="font-size:small; vertical-align:middle;text-align:center">
-                            @Html.DisplayFor(modelItem => item.Donvi)
-                        </td>
-                        <td style="font-size:small; vertical-align:middle;text-align:center">
-                            @Html.DisplayFor(modelItem => item.Dongia)
-                        </td>
-                        <td style="font-size:small; vertical-align:middle;text-align:center">
-                            @Html.DisplayFor(modelItem => item.Ghichu)
-                        </td>
-                        <td style="font-size:small; vertical-align:middle;text-align:center">
-                            <div class="btn-group btn-block ">
-                                <a class="btn btn-app bg-default " style="white-space: nowrap;">
-                                    <i style="color:orange" class="fas fa-cart-plus"></i> Đặt hàng
-                                </a>
-                                <a class="btn btn-app bg-gradient-secondary " style="white-space: nowrap;">
-                                    <i class="fas fa-camera"></i> Đổi hình ảnh
-                                </a>
-                                <a class="btn btn-app bg-gradient-secondary " style="white-space: nowrap;">
-                                    <i class="fa fa-edit"></i> Sửa thông tin
-                                </a>
-                                <a class="btn btn-app bg-gradient-secondary " style="white-space: nowrap;">
-                                    <i class="fas fa-trash"></i> Xoá linh kiện
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+<table id="tblSpareparts" class="table table-reponsive table-hover " style="text-align:center;vertical-align:middle">
+    <thead style="font-size:small;">
+        <tr>
+            <th class="all" style="white-space: nowrap;">Tên linh kiện</th>
+            <th class="all" style="white-space: nowrap;">Mã linh kiện</th>
+            <th style="white-space: nowrap;">Tên jig</th>
+            <th style="white-space: nowrap;">Mã jig</th>
+            <th class="all" style="white-space: nowrap;">Tồn kho</th>
+            <th class="all" style="white-space: nowrap;">Hình ảnh</th>
+            <th class="none" style="white-space: nowrap;">Model</th>
+            <th class="none" style="white-space: nowrap;">Maker</th>
+            <th class="none" style="white-space: nowrap;">Đơn vị</th>
+            <th class="none" style="white-space: nowrap;">Đơn giá</th>
+            <th class="none" style="white-space: nowrap;">Ghi chú</th>
+            <th class="none" style="white-space: nowrap;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Tenlinhkien)
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Malinhkien)
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Tenjig)
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Majig)
+                </td>
+                <td class="col-md-1" style="font-size:medium; vertical-align:middle;text-align:center">
+                    @{
+                        if (item.Tonkho > 0)
+                        {
+                            <span style="width: 30px;" class="right badge badge-success">@item.Tonkho</span>
+                        }
+                        else
+                        {
+                            <span style="width: 30px;" class="right badge badge-danger">@item.Tonkho</span>
+                        }
+                    }
+                </td>
+                <td class="col-md-2" style="vertical-align:middle;text-align:center">
+                    @{
+                        if (item.Image != null)
+                        {
+                            <img class="shadow showImage" style="width:100%;min-width:50px;min-height:75px;max-width:150px; max-height:200px;" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm btn-secondary" disabled>None</button>
+                        }
+                    }
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Maker)
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Donvi)
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Dongia)
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Ghichu)
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    <div class="btn-group btn-block ">
+                        <a class="btn btn-app bg-default " style="white-space: nowrap;">
+                            <i style="color:orange" class="fas fa-cart-plus"></i> Đặt hàng
+                        </a>
+                        <a class="btn btn-app bg-default " style="white-space: nowrap;">
+                            <i class="fas fa-camera"></i> Đổi hình ảnh
+                        </a>
+                        <a class="btn btn-app bg-default " style="white-space: nowrap;">
+                            <i class="fa fa-edit"></i> Sửa thông tin
+                        </a>
+                        <a class="btn btn-app bg-default " style="white-space: nowrap;">
+                            <i class="fas fa-trash"></i> Xoá linh kiện
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
-    </div>
-</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#tblSpareparts").DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "buttons": [
+                {
+                    extend: 'copy',
+                    text: '<i class="fas fa-copy"></i> Copy',
+                    className: 'btn-default'
+                },
+                {
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Xuất Excel',
+                    className: 'btn-default'
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> In',
+                    className: 'btn-default'
+                }
+            ],
+            "drawCallback": function () {
+                $('#overlay').hide();
+                $('#thebody').show();
+            }
+        }).buttons().container().appendTo('#tblSpareparts_wrapper  .col-md-6:eq(0)');
+
+        $(".showImage").on("click", function (e) {
+            var imgSrc = $(this).attr("src");
+            var tenlinhkien = $(this).data("tenlinhkien");
+            Swal.fire({
+                imageUrl: imgSrc,
+                imageWidth: 400, // Adjust this to your preferred width
+                imageHeight: 400, // Adjust this to your preferred height
+                title: tenlinhkien,
+                showConfirmButton: false // Remove the "OK" button
+            });
+        });
+    });
+</script>
+
+

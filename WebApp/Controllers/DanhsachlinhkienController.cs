@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using ViewModels.Danhsachlinhkien;
 using WebApp.Services;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
-
 namespace WebApp.Controllers
 {
     public class DanhsachlinhkienController : BaseController
@@ -50,6 +49,8 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Quanly()
         {
             ViewBag.currentPage = "Spareparts List";
+            ViewBag.listmodel = await _modelApiClient.GetAll();
+
             var models = await _modelApiClient.GetAll();
             ViewBag.models = models.Select(x => new SelectListItem()
             {
@@ -61,7 +62,7 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> GetDanhsachlinhkien(string? model)
         {
-            if (model == "All Models")
+            if (model == "All")
             {
                 model = null;
             }
@@ -101,6 +102,8 @@ namespace WebApp.Controllers
             ModelState.AddModelError("", result.Message);
             return View(request);
         }
+
+       
         public async Task<IActionResult> ImportExcel()
         {
             ViewBag.currentPage = "Nhập dữ liệu linh kiện từ file Excel";
@@ -113,11 +116,19 @@ namespace WebApp.Controllers
             return View();
         }
 
-
-
-
-
-
+        [HttpPost]
+        [Consumes("multipart/form-data")]
+        public async Task<IActionResult> ImportExcel([FromForm] IFormFile file, string model)
+        {
+            using (var fileStream = file.OpenReadStream())
+            {
+                var result = await _danhsachlinhkienApiClient.ImportExcel(fileStream, model);
+                if (result.IsSuccessed)
+                {
+                    return Json(new { success = true, data = result.ResultObj });
+                }
+                return Json(new { success = false });
+            }
+        }
     }
 }
-  

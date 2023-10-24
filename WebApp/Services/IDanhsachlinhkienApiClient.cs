@@ -12,11 +12,11 @@ namespace WebApp.Services
         Task<ApiResult<List<DanhsachlinhkienVm>>> GetAll(GetDanhsachlinhkienRequest request);
 
         Task<ApiResult<PagedResult<DanhsachlinhkienVm>>> GetAllPaging(GetDanhsachlinhkienPagingRequest request);
+
         Task<ApiResult<DanhsachlinhkienVm>> GetById(int id);
 
         Task<ApiResult<bool>> Create(DanhsachlinhkienCreateRequest request);
 
-
-        Task<ApiResult<bool>> ImportExcel(List<DanhsachlinhkienImportExcelRequest> request, string model);
+        Task<ApiResult<ImportExcelResult>> ImportExcel(Stream file, string model);
     }
 }

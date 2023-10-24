@@ -4,63 +4,121 @@
 @section Scripts{
     <script src="~/adminlte-master/plugins/bs-custom-file-input/bs-custom-file-input.min.js"></script>
 }
+
     <div class="row">
-        <div class="col-md-12">
-            <div class="card card-primary">
+        <div class="col-md-8">
+            <div class="card card-default ">                
                 <div class="card-body">
-                    <div class="form-group row">
-                        <div class="col-sm-2 text-center d-flex align-items-center">
-                            Chọn File
+                    <form id="excelUploadForm" method="post" action="/Danhsachlinhkien/ImportExcel" enctype="multipart/form-data">
+                        <div class="form-group row">
+                            <div class="col-sm-3 text-center d-flex align-items-center">
+                                Chọn File
+                            </div>
+                            <div class="col-sm-9">
+                                <input type="file" name="file" id="excelFile" class="imageFile btn btn-default btn-block" accept=".xlsx" required />
+                            </div>
                         </div>
-                        <div class="col-sm-10">
-                            <input type="file" name="UploadedFile" class=" imageFile btn btn-outline-secondary btn-block" accept=".xlsx" />
+                        <div class="form-group row">
+                            <div class="col-sm-3 text-center d-flex align-items-center">
+                                Chọn Model
+                            </div>
+                            <div class="col-sm-9">
+                                <select style="text-align:center" name="model" id="modelselect" class="form-control" asp-items="@ViewBag.Models">
+                                </select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
-                        <div class="col-sm-2 text-center d-flex align-items-center">
-                            Chọn Model
+                        <div style="text-align:end">
+                            <button type="submit" id="btnSubmit" class="btn btn-default btn-block">
+                                <i style="color:green" class="fa fa-check fa-fw"></i>
+                                Xác nhận
+                            </button>
                         </div>
-                        <div class="col-sm-10">
-                            <select style="text-align:center" id="modelselect" class="form-control " asp-items="@ViewBag.Models ">
-                            </select>
-                        </div>
-                    </div>
-                    <div style="text-align:end">
-                        <button id="btnSubmit" class="btn btn-default" style="width:300px">
-                            <i style="color:green" class="fa fa-check fa-fw"></i>
-                            Xác nhận
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-default collapsed-card">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="fa fa-question-circle fa-fw"></i>
+                        Hỗ trợ
+                    </h3>
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                            <i class="fas fa-plus"></i>
                         </button>
+                    </div>
+                </div>
+                <div class="card-body" style="display: none;">
+                    <div class="form-group row">
+                        <div class="col-sm-6 text-center d-flex align-items-center">
+                            File Excel mẫu
+                        </div>
+                        <div class="col-sm-6">
+                            <button id="btnTaiFileExcelMau" class="btn btn-default btn-block">
+                                <i style="color:green" class="fa fa-download fa-fw"></i>
+                                Tải về
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+
+
     <script>
-        $("#btnSubmit").click(function () {
-            /* inputOptions can be an object or Promise */
-            const inputOptions = new Promise((resolve) => {
-                setTimeout(() => {
-                    resolve({
-                        '#ff0000': 'Red',
-                        '#00ff00': 'Green',
-                        '#0000ff': 'Blue'
-                    })
-                }, 1000)
-            })
-
-            const { value: color } =  Swal.fire({
-                title: 'Select color',
-                input: 'radio',
-                inputOptions: inputOptions,
-                inputValidator: (value) => {
-                    if (!value) {
-                        return 'You need to choose something!'
+        $(document).ready(function () {
+            $('#excelUploadForm').submit(function (e) {
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: '/Danhsachlinhkien/ImportExcel',
+                    type: 'POST',
+                    data: formData,
+                    processData: false, // Không xử lý dữ liệu gửi đi
+                    contentType: false, // Không đặt kiểu dữ liệu
+                    success: function (result) {
+                        if (result.success) {
+                            Swal.fire({
+                                title: 'Nhập dữ liệu thành công!',
+                                html: `<div class="col-12">
+                                                <span class="badge bg-success animate__animated animate__fadeIn"> Thêm mới : ${result.data.sodongupdate} </span>
+                                                <span class="badge bg-danger animate__animated animate__fadeIn"> Trùng mã : ${result.data.sodongtrung}</span>
+                                                </div>`,
+                                icon: 'success',
+                                showConfirmButton: false
+                            }).then(function () {
+                                window.location.reload();
+                            });
+                        }
+                        else {
+                            Swal.fire(
+                                "Lỗi máy chủ",
+                                "Thao tác đã được huỷ bỏ!",
+                                "error"
+                            );
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        Swal.fire(
+                            "Lỗi máy chủ",
+                            "Thao tác đã được huỷ bỏ!",
+                            "error"
+                        );
                     }
-                }
-            })
+                });
+            });
 
-            if (color) {
-                Swal.fire({ html: `You selected: ${color}` })
-            }
-        })
+            $("#btnTaiFileExcelMau").click(function(){
+                Swal.fire(
+                    "Chưa có file",
+                    "Coming soon...",
+                    "info"
+                );
+            })
+        });
     </script>
+

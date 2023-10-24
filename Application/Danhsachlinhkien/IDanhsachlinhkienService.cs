@@ -20,9 +20,7 @@ namespace Application.Danhsachlinhkien
         Task<int> RemoveImage(int imageId);
         Task<int> UpdateImage(int imageId, HinhanhUpdateRequest request);
         Task<HinhanhVm> GetImageById(int imageId);
-
         Task<List<DanhsachlinhkienImportExcelRequest>> ReadExcelFile(Stream fileStream);
-        Task<ApiResult<bool>> ImportExcelFile(List<DanhsachlinhkienImportExcelRequest> request,string model);
-
+        Task<ApiResult<ImportExcelResult>> ImportExcelFile(List<DanhsachlinhkienImportExcelRequest> request,string model);
     }
 }
