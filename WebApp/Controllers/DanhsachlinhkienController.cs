@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using ViewModels.Count;
 using ViewModels.Danhsachlinhkien;
+using ViewModels.Dathang;
 using WebApp.Services;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 namespace WebApp.Controllers
@@ -11,16 +13,19 @@ namespace WebApp.Controllers
     {
         private readonly IDanhsachlinhkienApiClient _danhsachlinhkienApiClient;
         private readonly IModelApiClient _modelApiClient;
+        private readonly IDathangApiClient _dathangApiClient;
 
-        public DanhsachlinhkienController(IDanhsachlinhkienApiClient danhsachlinhkienApiClient, IModelApiClient modelApiClient)
+        public DanhsachlinhkienController(IDanhsachlinhkienApiClient danhsachlinhkienApiClient, IModelApiClient modelApiClient, IDathangApiClient dathangApiClient)
         {
             _danhsachlinhkienApiClient = danhsachlinhkienApiClient;
             _modelApiClient = modelApiClient;
+            _dathangApiClient = dathangApiClient;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Timkiemnhanh(string keyword, string? model, int pageIndex = 1, int pageSize = 5)
         {
-            ViewBag.currentPage = "Tìm kiếm";
+            ViewBag.currentPage = "Tìm kiếm linh kiện";
             if (model == "All Models")
             {
                 model = null;
@@ -34,7 +39,6 @@ namespace WebApp.Controllers
             };
             var data = await _danhsachlinhkienApiClient.GetAllPaging(request);
             ViewBag.Keyword = !string.IsNullOrEmpty(keyword) ? keyword : null;
-
             var models = await _modelApiClient.GetAll();
             ViewBag.models = models.Select(x => new SelectListItem()
             {
@@ -46,11 +50,11 @@ namespace WebApp.Controllers
             return View(data.ResultObj);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Quanly()
         {
-            ViewBag.currentPage = "Spareparts List";
+            ViewBag.currentPage = "Quản lý linh kiện";
             ViewBag.listmodel = await _modelApiClient.GetAll();
-
             var models = await _modelApiClient.GetAll();
             ViewBag.models = models.Select(x => new SelectListItem()
             {
@@ -60,13 +64,14 @@ namespace WebApp.Controllers
             return View();
         }
 
+        [HttpGet]
         public async Task<IActionResult> GetDanhsachlinhkien(string? model)
         {
             if (model == "All")
             {
                 model = null;
-            }
-            ViewBag.currentPage = "Spareparts List";
+            }          
+            ViewBag.currentPage = "Quản lý linh kiện";
             var request = new GetDanhsachlinhkienRequest()
             {
                 Model = model
@@ -75,13 +80,48 @@ namespace WebApp.Controllers
             return PartialView("_DanhsachlinhkienQuanly", result.ResultObj);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetCountsLinhkien(string model)
+        {
+            if (model == "All")
+            {
+                model = null;
+            }
+            var result = new CountVm()
+            {
+                dulieu1 = await GetCountDanhsachlinhkien(model, ""),
+                dulieu2 = await GetCountDanhsachlinhkien(model, "0"),
+                dulieu3 = await GetCountDathang(model, "Yêu cầu đặt hàng"),
+                dulieu4 = await GetCountDathang(model, "Đang đặt hàng")
+            };
+            return PartialView("_InfoboxLinhkien", result);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetCountsDathang(string model)
+        {
+            if (model == "All")
+            {
+                model = null;
+            }
+            var result = new CountVm()
+            {
+                dulieu1 = await GetCountDathang(model, "Yêu cầu đặt hàng"),
+                dulieu2 = await GetCountDathang(model, "Đang đặt hàng"),
+                dulieu3 = await GetCountDathang(model, "Hàng về thiếu"),
+            };
+            return PartialView("_InfoboxDathang", result);
+        }
+
+        [HttpGet]
         public async Task<IActionResult> Detail(int id)
         {
             var data = await _danhsachlinhkienApiClient.GetById(id);
             return View(data.ResultObj);
         }
 
-        public async Task<IActionResult> Create()
+        [HttpGet]
+        public IActionResult Create()
         {
             return View();
         }
@@ -103,7 +143,7 @@ namespace WebApp.Controllers
             return View(request);
         }
 
-       
+        [HttpGet]
         public async Task<IActionResult> ImportExcel()
         {
             ViewBag.currentPage = "Nhập dữ liệu linh kiện từ file Excel";
@@ -129,6 +169,34 @@ namespace WebApp.Controllers
                 }
                 return Json(new { success = false });
             }
+        }
+
+        [HttpGet]
+        public async Task<int> GetCountDanhsachlinhkien(string? model, string? keyword)
+        {
+            var request = new GetDanhsachlinhkienRequest()
+            {
+                Model = model,
+                Keyword = keyword
+            };
+            var result = await _danhsachlinhkienApiClient.Count(request);
+            return result;
+        }
+
+        [HttpGet]
+        public async Task<int> GetCountDathang(string? model, string? trangthai)
+        {
+            if (model == "All")
+            {
+                model = null;
+            }
+            var request = new GetDathangRequest()
+            {
+                Model = model,
+                Trangthai = trangthai
+            };
+            var result = await _dathangApiClient.Count(request);
+            return result;
         }
     }
 }

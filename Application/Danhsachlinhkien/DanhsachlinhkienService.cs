@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using OfficeOpenXml;
 using System;
@@ -417,6 +418,22 @@ namespace Application.Danhsachlinhkien
                 throw new Exception("Error while processing insert to SQL: " + ex.Message);
             }
 
+        }
+
+        public async Task<int> CountLinhkien(GetDanhsachlinhkienRequest request)
+        {
+            var query = _context.Danhsachlinhkiens.AsQueryable();
+            if (!string.IsNullOrEmpty(request.Model))
+            {
+                query = query.Where(x => x.Model.Contains(request.Model));
+            }
+            if (!string.IsNullOrEmpty(request.Keyword))
+            {
+                int tonkho = Convert.ToInt32(request.Keyword);
+                query = query.Where(x => x.Tonkho == tonkho);
+            }
+            int totalRows = await query.CountAsync(); 
+            return totalRows;
         }
     }
 }

@@ -22,5 +22,8 @@ namespace Application.Danhsachlinhkien
         Task<HinhanhVm> GetImageById(int imageId);
         Task<List<DanhsachlinhkienImportExcelRequest>> ReadExcelFile(Stream fileStream);
         Task<ApiResult<ImportExcelResult>> ImportExcelFile(List<DanhsachlinhkienImportExcelRequest> request,string model);
+
+        Task<int> CountLinhkien(GetDanhsachlinhkienRequest request);
+
     }
 }

@@ -1,4 +1,5 @@
-﻿@using ViewModels.Model
+﻿@using ViewModels.Count
+@using ViewModels.Model
 <style>
     table.dataTable.dtr-inline.collapsed > tbody > tr > td.child, table.dataTable.dtr-inline.collapsed > tbody > tr > th.child, table.dataTable.dtr-inline.collapsed > tbody > tr > td.dataTables_empty {
         font-size: small;
@@ -15,28 +16,13 @@
     var listModel = ViewBag.listmodel as List<ModelVm>;
     var firstModelOfList = listModel.First().Tenmodel;
 }
-@section Scripts{
-    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-    <script src="~/adminlte-master/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="~/adminlte-master/plugins/jszip/jszip.min.js"></script>
-    <script src="~/adminlte-master/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="~/adminlte-master/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-default card-tabs">
-                <div class="card-header p-0 border-bottom-0">
-                    <ul class="nav nav-tabs nav-tabs-lg" role="tablist">
+<div id="infoboxs"></div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-default card-tabs">
+            <div class="card-header p-0 border-bottom-0">
+                <ul class="nav nav-tabs nav-tabs-lg" role="tablist">
                     @foreach (var item in listModel)
                     {
                         <li class="nav-item">
@@ -56,7 +42,7 @@
                     <li class="nav-item">
                         <a style="font-size:large; " class="nav-link" id="All" href="#" data-toggle="pill" role="tab" data-first-model="@firstModelOfList">
                             <i class="fa fa-database fa-fw"></i>
-                            All Model
+                            All Models
                         </a>
                     </li>
                 </ul>
@@ -81,19 +67,25 @@
 
 <script>
     $(document).ready(function () {
+        var firstModelOfList = $("#All").data("first-model"); // Lấy giá trị firstModelOfList từ data attribute
+
         $('#thebody').hide();
         $('#overlay').show();
-        var firstModelOfList = $("#All").data("first-model"); // Lấy giá trị firstModelOfList từ data attribute
-        $("#tenPage").text("Spareparts List Model " + firstModelOfList);
+        $("#tenPage").text("Quản lý linh kiện Model " + firstModelOfList);
+        $.get("/Danhsachlinhkien/GetCountsLinhkien?model=" + firstModelOfList, function (result) {
+            $("#infoboxs").html(result);
+        });
         $.get("/Danhsachlinhkien/GetDanhsachlinhkien?model=" + firstModelOfList, function (result) {
             $("#partialViewContainer").html(result);
         });
-
         $(".nav-link").click(function () {
             tenmodel = $(this).attr("id");
-            $("#tenPage").text("Spareparts List Model " + tenmodel);
+            $("#tenPage").text("Quản lý linh kiện Model " + tenmodel);
             $('#thebody').hide();
             $('#overlay').show();
+            $.get("/Danhsachlinhkien/GetCountsLinhkien?model=" + tenmodel, function (result) {
+                $("#infoboxs").html(result);
+            });
             $.ajax({
                 url: "/Danhsachlinhkien/GetDanhsachlinhkien",
                 type: "GET",

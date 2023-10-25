@@ -1,16 +1,19 @@
 ﻿@model IEnumerable<ViewModels.Dathang.DathangVm>
+@{
+    var trangthai = ViewBag.trangthai;
+}
 <style>
     table.dataTable.dtr-inline.collapsed > tbody > tr > td.child, table.dataTable.dtr-inline.collapsed > tbody > tr > th.child, table.dataTable.dtr-inline.collapsed > tbody > tr > td.dataTables_empty {
         font-size: small;
         text-align: left;
     }
+
     .btn-group-center {
         text-align: center;
     }
- 
 </style>
 
-<table id="table" class="table table-reponsive table-hover " style="text-align:center;vertical-align:middle">
+<table id="table" class="table table-reponsive table-hover " style="text-align:center;vertical-align:middle" data-trangthai="@trangthai">
     <thead style="font-size:small;">
         <tr>
             <th class="all" style="white-space: nowrap;">Tên linh kiện</th>
@@ -18,157 +21,246 @@
             <th class="all" style="white-space: nowrap;">Ngày yêu cầu</th>
             <th class="all" style="white-space: nowrap;"></th>
             <th class="all" style="white-space: nowrap;"></th>
-            <th class="none" style="white-space: nowrap;">
-                Tên Jig
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Mã Jig
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Maker
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Đơn vị
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Ghi chú
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Đơn giá
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Thành tiền
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Ngày đặt hàng
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Ngày dự kiến hàng về
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Ngày hàng về
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Ngày dự kiến hàng về đợt 2
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Ngày hàng về đợt 2
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Số lượng tồn kho khi đặt hàng
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Số lượng đặt hàng
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Trạng thái
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Người đặt hàng
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Model
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Số lượng hàng về đợt 1
-            </th>
-            <th class="none" style="white-space: nowrap;">
-                Số lượng hàng về đợt 2
-            </th>
+            <th class="none" style="white-space: nowrap;">Tên Jig</th>
+            <th class="none" style="white-space: nowrap;">Mã Jig</th>
+            <th class="none" style="white-space: nowrap;">Model</th>
+            <th class="none" style="white-space: nowrap;">Maker</th>
+            <th class="none" style="white-space: nowrap;">Đơn vị</th>
+            <th class="none" style="white-space: nowrap;">Ghi chú</th>
+            <th class="none" style="white-space: nowrap;">Đơn giá</th>
+            <th class="none" style="white-space: nowrap;">Thành tiền</th>
+            <th class="none" style="white-space: nowrap;">Số lượng đặt hàng</th>
+            <th class="none" style="white-space: nowrap;">Số lượng tồn kho khi đặt hàng</th>
+            <th class="none" style="white-space: nowrap;">Người đặt hàng</th>
+            <th class="none" style="white-space: nowrap;">Ngày đặt hàng</th>
+            <th class="none" style="white-space: nowrap;">Ngày dự kiến hàng về</th>
+            <th class="none" style="white-space: nowrap;">Ngày hàng về đợt 1</th>
+            <th class="none" style="white-space: nowrap;">Số lượng hàng về đợt 1</th>
+            <th class="none" style="white-space: nowrap;">Ngày dự kiến hàng về đợt 2</th>
+            <th class="none" style="white-space: nowrap;">Ngày hàng về đợt 2</th>
+            <th class="none" style="white-space: nowrap;">Số lượng hàng về đợt 2</th>
+            <th class="none" style="white-space: nowrap;">Trạng thái</th>
+
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                <td style="font-size:small; vertical-align:middle;text-align:center">
+                <td class="col-md-4" style="font-size:small; vertical-align:middle;text-align:center">
                     @Html.DisplayFor(modelItem => item.Tenlinhkien)
                 </td>
-                <td style="font-size:small; vertical-align:middle;text-align:center">
+                <td class="col-md-2" style="font-size:small; vertical-align:middle;text-align:center">
                     @Html.DisplayFor(modelItem => item.Malinhkien)
                 </td>
-                <td style="font-size:small; vertical-align:middle;text-align:center">
-                    @Html.DisplayFor(modelItem => item.Ngayyeucau)
+                <td class="col-md-2" style="font-size:small; vertical-align:middle;text-align:center">
+                    <span class="badge badge-dark">@item.Ngayyeucau</span>
                 </td>
-                <td class="col-md-2" style="vertical-align:middle;text-align:center">
+                <td class="col-md-2" style="font-size:small;vertical-align:middle;text-align:center">
                     @{
                         if (item.Image != null)
                         {
-                            <img class="shadow showImage" style="width:100%;min-width:50px;max-width:150px; max-height:200px;" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
+                            <img class="shadow showImage" style="width:100%;min-width:50px;min-height:75px;max-width:150px; max-height:200px;border-radius: 5px" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
                         }
                         else
                         {
-                            <button class="btn btn-sm btn-secondary" disabled>None</button>
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                         }
                     }
                 </td>
                 <td class="col-md-2" style="font-size:small; vertical-align:middle;text-align:center">
-                    <div class="btn-group btn-block ">
-                        <a class="btn btn-app bg-default ">
-                            <i style="color:seagreen" class="fas fa-upload"></i> Lấy sử dụng
-                        </a>
-                        <a class="btn btn-app bg-default ">
-                            <i style="color:orange" class="fas fa-cart-plus"></i> Đặt hàng
+                    <div class="btn-group btn-block btn-sm ">
+                        <a id="btnXacnhan" class="btn btn-app bg-success">
+                            <i class="fas fa-check"></i> Xác nhận
+                        </a>                       
+                        <a class="btn btn-app bg-danger ">
+                            <i class="fas fa-trash"></i> Xoá
                         </a>
                     </div>
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Tenjig)
+                    @{
+                        if (!string.IsNullOrEmpty(item.Tenjig))
+                        {
+                            @Html.DisplayFor(modelItem => item.Tenjig)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Majig)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Maker)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Donvi)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ghichu)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Dongia)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Thanhtien)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ngaydathang)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ngaydukienhangve)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ngayhangve)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ngaydukienhangvedot2)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Ngayhangvedot2)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Soluongtonkho)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Soluong)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Trangthai)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Nguoidathang)
+                    @{
+                        if (!string.IsNullOrEmpty(item.Majig))
+                        {
+                            @Html.DisplayFor(modelItem => item.Majig)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Model)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Soluongvedot1)
+                    @{
+                        if (!string.IsNullOrEmpty(item.Maker))
+                        {
+                            @Html.DisplayFor(modelItem => item.Maker)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Soluongvedot2)
+                    @{
+                        if (!string.IsNullOrEmpty(item.Donvi))
+                        {
+                            @Html.DisplayFor(modelItem => item.Donvi)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @{
+                        if (!string.IsNullOrEmpty(item.Ghichu))
+                        {
+                            @Html.DisplayFor(modelItem => item.Ghichu)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @{
+                        if (item.Dongia != null)
+                        {
+                            @Html.DisplayFor(modelItem => item.Dongia)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @{
+                        if (item.Thanhtien != null)
+                        {
+                            @Html.DisplayFor(modelItem => item.Thanhtien)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Soluong)
+                </td>
+                <td>
+                    @{
+                        if (item.Soluongtonkho != null)
+                        {
+                            @Html.DisplayFor(modelItem => item.Soluongtonkho)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nguoidathang)
+                </td>
+                <td style="vertical-align:middle;text-align:center">
+                    <span class="badge badge-info">@item.Ngaydathang</span>
                 </td>              
+                <td style="vertical-align:middle;text-align:center">
+                    @{
+                        if (item.Ngaydukienhangve != null)
+                        {
+                            <span class="badge badge-warning">@item.Ngaydukienhangve</span>
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>
+                <td style="vertical-align:middle;text-align:center">
+                    @{
+                        if (item.Ngayhangve != null)
+                        {
+                            <span class="badge badge-primary">@item.Ngayhangve</span>
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @{
+                        if (item.Soluongvedot1 != null)
+                        {
+                            @item.Soluongvedot1
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>
+                <td style="vertical-align:middle;text-align:center">
+                    @{
+                        if (item.Ngaydukienhangvedot2 != null)
+                        {
+                            <span class="badge badge-warning">@item.Ngaydukienhangvedot2</span>
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>
+                <td style="vertical-align:middle;text-align:center">
+                    @{
+                        if (item.Ngayhangvedot2 != null)
+                        {
+                            <span class="badge badge-primary">@item.Ngayhangvedot2</span>
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>               
+                <td>
+                    @{
+                        if (item.Soluongvedot2 != null)
+                        {
+                            @item.Soluongvedot2
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Trangthai)
+                </td>
             </tr>
         }
     </tbody>
@@ -176,7 +268,50 @@
 
 <script>
     $(document).ready(function () {
-        var table = $("#table").DataTable({           
+        //Get Trangthai of Page:
+        var trangthai = $("#table").data("trangthai");
+
+        // Define columnDefs conditionally based on trangthai
+        var columnDefs = [];
+        if (trangthai === "Yêu cầu đặt hàng") {
+            columnDefs = [
+                {
+                    "targets": [23, 22, 21, 20, 19, 18, 17, 16],  // Define the columns to be hidden (columns are 0-based)
+                    "visible": false,  // Initially, hide these columns
+                    "searchable": false  // Make them unsearchable
+                }
+            ];
+        }
+        if (trangthai === "Đang đặt hàng") {
+            columnDefs = [
+                {
+                    "targets": [23, 22, 21, 20, 19, 18],  // Define the columns to be hidden (columns are 0-based)
+                    "visible": false,  // Initially, hide these columns
+                    "searchable": false  // Make them unsearchable
+                }
+            ];
+        }
+        if (trangthai === "Hàng về thiếu") {
+            columnDefs = [
+                {
+                    "targets": [23, 22, 21],  // Define the columns to be hidden (columns are 0-based)
+                    "visible": false,  // Initially, hide these columns
+                    "searchable": false  // Make them unsearchable
+                }
+            ];
+        }
+        if (trangthai === "Hàng đã về") {
+            columnDefs = [
+                {
+                    "targets": [23],  // Define the columns to be hidden (columns are 0-based)
+                    "visible": false,  // Initially, hide these columns
+                    "searchable": false  // Make them unsearchable
+                }
+            ];
+        }
+
+        //Init datatable:
+        var table = $("#table").DataTable({
             "paging": true,
             "lengthChange": true,
             "searching": true,
@@ -201,10 +336,23 @@
                     className: 'btn-default'
                 }
             ],
+            "columnDefs": columnDefs, // Apply the columnDefs
             "drawCallback": function () {
                 $('#overlay1').hide();
                 $('#thebody1').show();
             }
         }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)')
+        //Show modal Image when click:
+        $(".showImage").on("click", function (e) {
+            var imgSrc = $(this).attr("src");
+            var tenlinhkien = $(this).data("tenlinhkien");
+            Swal.fire({
+                imageUrl: imgSrc,
+                imageWidth: 400,
+                imageHeight: 400,
+                title: tenlinhkien,
+                showConfirmButton: false // Remove the "OK" button
+            });
+        });
     });
 </script>

@@ -16,6 +16,7 @@ namespace WebApp.Controllers
         }
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 5)
         {
+            ViewBag.currentPage = "Quản lý tài khoản";
             var sessions = HttpContext.Session.GetString("Token");
             var request = new GetUserPagingRequest()
             {
