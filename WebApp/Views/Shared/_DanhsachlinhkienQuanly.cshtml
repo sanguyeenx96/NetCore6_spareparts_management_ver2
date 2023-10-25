@@ -25,35 +25,62 @@
                     @Html.DisplayFor(modelItem => item.Tenlinhkien)
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
-                    @Html.DisplayFor(modelItem => item.Malinhkien)
+                    @{
+                        if (!string.IsNullOrEmpty(item.Malinhkien))
+                        {
+                            @Html.DisplayFor(modelItem => item.Malinhkien)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
-                    @Html.DisplayFor(modelItem => item.Tenjig)
+                    @{
+                        if (!string.IsNullOrEmpty(item.Tenjig))
+                        {
+                            @Html.DisplayFor(modelItem => item.Tenjig)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
-                    @Html.DisplayFor(modelItem => item.Majig)
+                    @{
+                        if (!string.IsNullOrEmpty(item.Majig))
+                        {
+                            @Html.DisplayFor(modelItem => item.Majig)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
                 </td>
                 <td class="col-md-1" style="font-size:medium; vertical-align:middle;text-align:center">
                     @{
                         if (item.Tonkho > 0)
                         {
-                            <span style="width: 30px;" class="right badge badge-success">@item.Tonkho</span>
+                            <span style="width: 30px;opacity:0.9" class="right badge badge-success">@item.Tonkho</span>
                         }
                         else
                         {
-                            <span style="width: 30px;" class="right badge badge-danger">@item.Tonkho</span>
+                            <span style="width: 30px;opacity:0.9" class="right badge badge-danger">@item.Tonkho</span>
                         }
                     }
                 </td>
-                <td class="col-md-2" style="vertical-align:middle;text-align:center">
+                <td class="col-md-2" style="font-size:small;vertical-align:middle;text-align:center">
                     @{
                         if (item.Image != null)
                         {
-                            <img class="shadow showImage" style="width:100%;min-width:50px;min-height:75px;max-width:150px; max-height:200px;" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
+                            <img class="shadow showImage" style="width:100%;min-width:50px;min-height:75px;max-width:150px; max-height:200px;border-radius: 5px" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
                         }
                         else
                         {
-                            <button class="btn btn-sm btn-secondary" disabled>None</button>
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                         }
                     }
                 </td>
@@ -61,30 +88,66 @@
                     @Html.DisplayFor(modelItem => item.Model)
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
-                    @Html.DisplayFor(modelItem => item.Maker)
+                    @{
+                        if (!string.IsNullOrEmpty(item.Maker))
+                        {
+                            @Html.DisplayFor(modelItem => item.Maker)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
-                    @Html.DisplayFor(modelItem => item.Donvi)
+                    @{
+                        if (!string.IsNullOrEmpty(item.Donvi))
+                        {
+                            @Html.DisplayFor(modelItem => item.Donvi)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
-                    @Html.DisplayFor(modelItem => item.Dongia)
+                    @{
+                        if (item.Dongia!= null)
+                        {
+                            @Html.DisplayFor(modelItem => item.Ghichu)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
-                    @Html.DisplayFor(modelItem => item.Ghichu)
+                    @{
+                        if (!string.IsNullOrEmpty(item.Ghichu))
+                        {
+                            @Html.DisplayFor(modelItem => item.Ghichu)
+                        }
+                        else
+                        {
+                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                        }
+                    }
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
                     <div class="btn-group btn-block ">
-                        <a class="btn btn-app bg-default " style="white-space: nowrap;">
-                            <i style="color:orange" class="fas fa-cart-plus"></i> Đặt hàng
+                        <a class="btn btn-app bg-warning " style="white-space: nowrap">
+                            <i class="fas fa-cart-plus"></i> Đặt hàng
                         </a>
-                        <a class="btn btn-app bg-default " style="white-space: nowrap;">
+                        <a class="btn btn-app bg-secondary " style="white-space: nowrap">
                             <i class="fas fa-camera"></i> Đổi hình ảnh
                         </a>
-                        <a class="btn btn-app bg-default " style="white-space: nowrap;">
+                        <a class="btn btn-app bg-secondary " style="white-space: nowrap">
                             <i class="fa fa-edit"></i> Sửa thông tin
                         </a>
-                        <a class="btn btn-app bg-default " style="white-space: nowrap;">
-                            <i class="fas fa-trash"></i> Xoá linh kiện
+                        <a class="btn btn-app bg-secondary " style="white-space: nowrap">
+                            <i  class="fas fa-trash"></i> Xoá linh kiện
                         </a>
                     </div>
                 </td>

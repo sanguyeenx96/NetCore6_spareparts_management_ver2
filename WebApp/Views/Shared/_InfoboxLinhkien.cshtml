@@ -1,0 +1,53 @@
+﻿@using ViewModels.Count
+@model CountVm
+
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-light " >
+            <div class="inner">
+                <span class="info-box-text">Có tổng số: </span>
+                <span class="info-box-number">
+                    @(Model?.dulieu1 ?? 0)
+                    <small>linh kiện</small>
+                </span>
+            </div>
+            <a style="font-size:small" asp-action="Quanly" asp-controller="danhsachlinhkien" class="small-box-footer">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-light">
+            <div class="inner">
+                <span class="info-box-text">Hết tồn kho: </span>
+                <span class="info-box-number">
+                    @(Model?.dulieu2 ?? 0)
+                    <small>linh kiện</small>
+                </span>
+            </div>
+            <a style="font-size:small" asp-action="Quanly" asp-controller="danhsachlinhkien" class="small-box-footer">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-light">
+            <div class="inner">
+                <span class="info-box-text">Yêu cầu đặt hàng: </span>
+                <span class="info-box-number">
+                    @(Model?.dulieu3 ?? 0)
+                    <small>linh kiện</small>
+                </span>
+            </div>
+            <a style="font-size:small" asp-action="index" asp-controller="dathang" class="small-box-footer">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-light">
+            <div class="inner">
+                <span class="info-box-text">Đang chờ hàng về: </span>
+                <span class="info-box-number">
+                    @(Model?.dulieu4 ?? 0)
+                    <small>linh kiện</small>
+                </span>
+            </div>
+            <a style="font-size:small" asp-action="index" asp-controller="dathang" class="small-box-footer">Xem chi tiết <i class="fas fa-arrow-circle-right"></i></a>
+        </div>
+    </div>
+</div>

@@ -18,5 +18,8 @@ namespace WebApp.Services
         Task<ApiResult<bool>> Create(DanhsachlinhkienCreateRequest request);
 
         Task<ApiResult<ImportExcelResult>> ImportExcel(Stream file, string model);
+
+        Task<int> Count(GetDanhsachlinhkienRequest request);
+
     }
 }

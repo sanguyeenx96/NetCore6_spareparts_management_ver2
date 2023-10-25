@@ -19,13 +19,24 @@ namespace WebApp.Services
             _configuration = configuration;
         }
 
+        public async Task<int> Count(GetDanhsachlinhkienRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAdress"]);
+            var response = await client.GetAsync($"/api/danhsachlinhkien/count?keyword={request.Keyword}" +
+            $"&Model={request.Model}");
+            var result = await response.Content.ReadAsStringAsync();
+            int count = Convert.ToInt32(result);
+            return count;
+        }
+
         public async Task<ApiResult<bool>> Create(DanhsachlinhkienCreateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAdress"]);
 
             var requestContent = new MultipartFormDataContent();
-            if(request.Hinhanh != null)
+            if (request.Hinhanh != null)
             {
                 byte[] data;
                 using (var br = new BinaryReader(request.Hinhanh.OpenReadStream()))
@@ -94,7 +105,7 @@ namespace WebApp.Services
             client.BaseAddress = new Uri(_configuration["BaseAdress"]);
 
             var response = await client.GetAsync($"/api/danhsachlinhkien/{id}");
-            
+
             var body = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {

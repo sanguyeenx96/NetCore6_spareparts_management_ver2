@@ -1,0 +1,39 @@
+﻿@using ViewModels.Count
+@model CountVm
+
+<div class="row">
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-default">
+            <div class="inner">
+                <span class="info-box-text">Yêu cầu đặt hàng: </span>
+                <span class="info-box-number">
+                    @(Model?.dulieu1 ?? 0)
+                    <small>linh kiện</small>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-default">
+            <div class="inner">
+                <span class="info-box-text">Đang chờ hàng về: </span>
+                <span class="info-box-number">
+                    @(Model?.dulieu2 ?? 0)
+                    <small>linh kiện</small>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-6">
+        <div class="small-box bg-default">
+            <div class="inner">
+                <span class="info-box-text">Hàng về thiếu: </span>
+                <span class="info-box-number">
+                    @(Model?.dulieu3 ?? 0)
+                    <small>linh kiện</small>
+                </span>
+            </div>
+        </div>
+    </div>
+   
+</div>

@@ -22,5 +22,12 @@ namespace WebApi.Controllers
             var result = await _dathangService.GetAll(request);
             return Ok(result);
         }
+
+        [HttpGet("count")]
+        public async Task<IActionResult> Count([FromQuery] GetDathangRequest request)
+        {
+            var result = await _dathangService.CountDatHang(request);
+            return Ok(result);
+        }
     }
 }

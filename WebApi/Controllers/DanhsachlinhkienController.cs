@@ -126,5 +126,12 @@ namespace WebApi.Controllers
             }
         }
 
+        [HttpGet("count")]
+        public async Task<IActionResult> Count([FromQuery] GetDanhsachlinhkienRequest request)
+        {
+            var result = await _danhsachlinhkienService.CountLinhkien(request);
+            return Ok(result);
+        }
+
     }
 }

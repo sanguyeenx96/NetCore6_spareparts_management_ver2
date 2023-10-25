@@ -18,6 +18,22 @@ namespace Application.Dathang
         {
             _context = context;
         }
+
+        public async Task<int> CountDatHang(GetDathangRequest request)
+        {
+            var query = _context.Dathangs.AsQueryable();
+            if (!string.IsNullOrEmpty(request.Model))
+            {
+                query = query.Where(x => x.Model.Contains(request.Model));
+            }
+            if (!string.IsNullOrEmpty(request.Trangthai))
+            {
+                query = query.Where(x => x.Trangthai == request.Trangthai);
+            }
+            int totalRows = await query.CountAsync();
+            return totalRows;
+        }
+
         public async Task<ApiResult<List<DathangVm>>> GetAll(GetDathangRequest request)
         {
             var query = _context.Dathangs.AsQueryable();

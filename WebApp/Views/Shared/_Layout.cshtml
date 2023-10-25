@@ -22,9 +22,25 @@
     <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
     <link href="~/lib/animate.css/animate.min.css" rel="stylesheet" />
 
+    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+    <script src="~/adminlte-master/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/adminlte-master/plugins/jszip/jszip.min.js"></script>
+    <script src="~/adminlte-master/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="~/adminlte-master/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
     <script src="~/scripts/currenttimeticks.js"></script>
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini layout-fixed  layout-navbar-fixed">
     <div class="wrapper">
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <ul class="navbar-nav">
@@ -37,30 +53,13 @@
             </ul>
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-                        <i class="fas fa-search"></i>
-                    </a>
-                    <div class="navbar-search-block">
-                        <form class="form-inline">
-                            <div class="input-group input-group-sm">
-                                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                                <div class="input-group-append">
-                                    <button class="btn btn-navbar" type="submit">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+                    <form asp-controller="User" asp-action="Logout" method="post">
+                            <button type="submit" class="btn btn-default btn-block" title="Đăng xuất tài khoản"><i class="fas fa-power-off fa-fw"> </i> Đăng xuất</button>
+                    </form>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="fullscreen" href="#" role="button">
-                        <i class="fas fa-expand-arrows-alt"></i>
-                    </a>
-                </li>
+                
+                
+
             </ul>
         </nav>
         <aside class="main-sidebar main-sidebar-custom sidebar-light-lightblue elevation-1">
@@ -83,7 +82,7 @@
                             <a id="pageTimkiemnhanh" asp-controller="Danhsachlinhkien" asp-action="Timkiemnhanh" class="nav-link">
                                 <i class="nav-icon fas fa-home fa-fw"></i>
                                 <p>
-                                    Home
+                                    Trang chủ
                                 </p>
                             </a>
                         </li>
@@ -91,9 +90,7 @@
                             <a id="pageQuanlylinhkien" asp-controller="Danhsachlinhkien" asp-action="Quanly" class="nav-link ">
                                 <i class="nav-icon fas fa-th fa-fw"></i>
                                 <p>
-                                    Spareparts List
-                                    @*                                    <span class="right badge badge-danger">New</span>
-                                    *@
+                                    Quản lý linh kiện
                                 </p>
                             </a>
                         </li>          
@@ -101,23 +98,32 @@
                             <a id="pageDathang" asp-controller="Dathang" asp-action="Index" class="nav-link">
                                 <i class="nav-icon fas fa-cart-plus fa-fw"></i>
                                 <p>
-                                    Orders List
+                                    Quản lý đặt hàng
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-controller="Home" asp-action="Index" class="nav-link">
-                                <i class="fa fa-users nav-icon"></i>
-                                <p>
-                                    Users List
-                                </p>
-                            </a>
-                        </li>
+                       
                         <li class="nav-item">
                             <a asp-controller="Home" asp-action="Index" class="nav-link">
                                 <i class="nav-icon fas fa-calendar fa-fw"></i>
                                 <p>
-                                    History
+                                    Lịch sử 
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="pageTaikhoan" asp-controller="user" asp-action="Index" class="nav-link">
+                                <i class="fa fa-users nav-icon"></i>
+                                <p>
+                                    Quản lý tài khoản
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-controller="User" asp-action="Create" class="nav-link">
+                                <i class="nav-icon fas fa-user-plus fa-fw"></i>
+                                <p>
+                                    Thêm tài khoản mới
                                 </p>
                             </a>
                         </li>
@@ -125,7 +131,7 @@
                             <a asp-controller="Home" asp-action="Index" class="nav-link">
                                 <i class="nav-icon fas fa-plus-circle fa-fw"></i>
                                 <p>
-                                    New Sparepart 
+                                    Thêm linh kiện mới 
                                 </p>
                             </a>
                         </li>
@@ -133,7 +139,7 @@
                             <a id="pageImportExcel" asp-controller="Danhsachlinhkien" asp-action="ImportExcel" class="nav-link">
                                 <i class="nav-icon fas fa-file-excel fa-fw"></i>
                                 <p>
-                                    Import From Excel
+                                    Nhập dữ liệu từ Excel
                                 </p>
                             </a>
                         </li>
@@ -141,7 +147,7 @@
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-cog fa-fw"></i>
                                 <p>
-                                    Setting
+                                    Cài đặt
                                     <i class="fas fa-angle-left right"></i>
                                 </p>
                             </a>
@@ -156,12 +162,7 @@
                         </li>
                     </ul>
                 </nav>
-            </div>
-            <form asp-controller="User" asp-action="Logout" method="post">
-                <div class="sidebar-custom ">
-                    <button type="submit" class="btn btn-outline-secondary btn-block" title="Đăng xuất tài khoản"><i class="fas fa-power-off fa-fw"> </i> Sign Out</button>
-                </div>
-            </form>
+            </div>          
         </aside>
         <div class="content-wrapper">
             <div class="content-header">
@@ -174,7 +175,7 @@
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Home</a></li>
+                                <li class="breadcrumb-item"><a asp-action="index" asp-controller="home">Trang chủ</a></li>
                                 @if (ViewBag.currentPage != null)
                                 {
                                     <li class="breadcrumb-item active">@ViewBag.currentPage</li>

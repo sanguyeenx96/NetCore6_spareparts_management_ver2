@@ -6,70 +6,97 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>User</h1>
-
-@if (TempData["result"] != null)
-{
-    <p>Login success</p>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#tblSparepartslist").DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+            })
+        })
+    </script>
 }
 
-<div>
-    <a asp-action="Create">Tạo tài khoản mới</a>
-    <form asp-action="index" method="get">
-        <div class="row">
-            <div class="col-md-4">
-                <input type="text" class="form-control" name="keyword" placeholder="@ViewBag.Keyword" />
+    <div class="row">
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-lg btn-outline-success btn-block">
+                <i class="fa fa-user-plus fa-fw"></i>
+                Tạo tài khoản 
+            </button>
+        </div>
+        <div class="col-md-9">
+            <form asp-action="index" method="get">
+                <div class="input-group">
+                    @{
+                    string kw = !string.IsNullOrEmpty(ViewBag.Keyword) ? ViewBag.Keyword : "Nhập tên người dùng, tên tài khoản để tìm kiếm nhanh...";
+                }
+                <input name="keyword" type="text" class="form-control form-control-lg" placeholder="@kw">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-lg btn-default">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
             </div>
-            <div class="col-md-4">
-                <button class="btn btn-success btn-block" type="submit">Search</button>
-                <button class="btn btn-secondary btn-block" onclick="window.location.href='/User/Index/'">Reset</button>
+        </form>
+    </div>
+
+    <div class="col-md-12" style="margin-top:10px">
+        <div class="card card-default">
+            <div class="card-body">
+                <table id="tblUser" class="table table-reponsive table-hover " style="text-align:center;vertical-align:middle">
+                    <thead style="font-size:small;">
+                        <tr>
+                            <th>
+                                Họ tên
+                            </th>
+                            <th>
+                                Tên đăng nhập
+                            </th>
+                            <th>
+                                Mật khẩu
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Hoten)
+                                </td>
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Username)
+                                </td>
+                                <td style="font-size:small; vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Password)
+                                </td>
+                                <td class="col-3" style="font-size:small; vertical-align:middle;text-align:center">
+                                    <div class="btn-group btn-block ">
+                                        <a class="btn btn-app bg-secondary " style="white-space: nowrap">
+                                            <i class="fa fa-edit"></i> Sửa thông tin
+                                        </a>
+                                        <a class="btn btn-app bg-secondary " style="white-space: nowrap">
+                                            <i class="fas fa-trash"></i> Xoá tài khoản
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                @await Component.InvokeAsync("Pager", Model)
             </div>
         </div>
-    </form>
+    </div>
+
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Id
-            </th>
-            <th>
-                Họ tên
-            </th>
-            <th>
-                Tên đăng nhập
-            </th>
-            <th>
-                Mật khẩu
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Items)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Hoten)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Username)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Password)
-                </td>
-                <td>
-                    @Html.ActionLink("Detail", "Detail", new { id=item.Id })
-                    @Html.ActionLink("Update", "Update", new { id=item.Id})
-                    @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-                    @Html.ActionLink("Gán Model", "ModelAssign", new { id=item.Id })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-@await Component.InvokeAsync("Pager", Model)
+

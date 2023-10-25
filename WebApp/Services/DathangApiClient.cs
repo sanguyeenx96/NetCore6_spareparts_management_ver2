@@ -16,6 +16,18 @@ namespace WebApp.Services
             _configuration = configuration;
         }
 
+        public async Task<int> Count(GetDathangRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAdress"]);
+
+            var response = await client.GetAsync($"/api/dathang/count?model={request.Model}" +
+            $"&trangthai={request.Trangthai}");
+            var result = await response.Content.ReadAsStringAsync();
+            int count = Convert.ToInt32(result);
+            return count;
+        }
+
         public async Task<ApiResult<List<DathangVm>>> GetAll(GetDathangRequest request)
         {
             var client = _httpClientFactory.CreateClient();

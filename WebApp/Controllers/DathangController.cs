@@ -18,13 +18,13 @@ namespace WebApp.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            ViewBag.currentPage = "Orders List";
+            ViewBag.currentPage = "Quản lý đặt hàng";
             ViewBag.models = await _modelApiClient.GetAll();
             return View();
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDanhsachDathang(string? model, string? trangthai)
+        public async Task<IActionResult> GetDanhsachDathang(string? model, string trangthai)
         {
             if (model == "All")
             {
@@ -36,6 +36,7 @@ namespace WebApp.Controllers
                 Trangthai = trangthai,
             };
             var result = await _dathangApiClient.GetAll(request);
+            ViewBag.trangthai = trangthai;
             return PartialView("_Danhsachdathang", result.ResultObj);
         }
     }

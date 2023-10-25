@@ -12,5 +12,7 @@ namespace Application.Dathang
     public interface IDathangService
     {
         Task<ApiResult<List<DathangVm>>> GetAll(GetDathangRequest request);
+        Task<int> CountDatHang(GetDathangRequest request);
+
     }
 }

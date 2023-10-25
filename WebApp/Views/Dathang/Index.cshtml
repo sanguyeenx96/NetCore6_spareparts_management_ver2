@@ -6,29 +6,14 @@
     var listModel = ViewBag.models as List<ModelVm>;
     var firstModelOfList = listModel.First().Tenmodel;
 }
-@section Scripts{
-    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="~/adminlte-master/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-    <script src="~/adminlte-master/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="~/adminlte-master/plugins/jszip/jszip.min.js"></script>
-    <script src="~/adminlte-master/plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="~/adminlte-master/plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="~/adminlte-master/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
-}
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card card-default card-tabs">
-                <div class="card-header p-0 border-bottom-0">
-                    <ul class="nav nav-tabs nav-tabs-lg" role="tablist">
+<div id="infoboxs"></div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-default card-tabs">
+            <div class="card-header p-0 border-bottom-0">
+                <ul class="nav nav-tabs nav-tabs-lg" role="tablist">
                     @foreach (var item in listModel)
                     {
                         <li class="nav-item">
@@ -48,7 +33,7 @@
                     <li class="nav-item">
                         <a style="font-size:large; " class="nav-link model" id="All" href="#" data-toggle="pill" role="tab" data-first-model="@firstModelOfList">
                             <i class="fa fa-database fa-fw"></i>
-                            All Model
+                            All Models
                         </a>
                     </li>
                 </ul>
@@ -58,22 +43,26 @@
                     <div id="datatab" class="tab-pane fade active show" role="tabpanel">
                         <div class="row">
                             <div class="col-3">
-                                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="nav-link trangthai active" id="" data-toggle="pill" href="#" role="tab" data-trangthai="Yêu cầu đặt hàng">
+                                <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                                    <a class="nav-link trangthai active" id="yeucaudathang" data-toggle="pill" href="#" role="tab" data-trangthai="Yêu cầu đặt hàng">
                                         <i class="fa fa-folder-open fa-fw"></i>
                                         Yêu cầu đặt hàng
+                                        <span id="soYeucaudathang" class="badge badge-warning "></span>
                                     </a>
                                     <a class="nav-link trangthai" id="" data-toggle="pill" href="#" role="tab" data-trangthai="Đang đặt hàng">
                                         <i class="fa fa-folder-open fa-fw"></i>
                                         Đang đặt hàng
+                                        <span id="soDangdathang" class="badge badge-info "></span>
                                     </a>
                                     <a class="nav-link trangthai" id="" data-toggle="pill" href="#" role="tab" data-trangthai="Hàng về thiếu">
                                         <i class="fa fa-folder-open fa-fw"></i>
                                         Hàng về thiếu
+                                        <span id="soHangvethieu" class="badge badge-warning "></span>
                                     </a>
                                     <a class="nav-link trangthai" id="" data-toggle="pill" href="#" role="tab" data-trangthai="Hàng đã về">
                                         <i class="fa fa-folder-open fa-fw"></i>
                                         Lịch sử hàng đã về
+                                        <span id="soHangdave" class="badge badge-warning "></span>
                                     </a>
                                 </div>
                             </div>
@@ -81,7 +70,7 @@
                                 <div class="tab-content" id="thebody2">
                                     <div class="tab-pane fade show active" role="tabpanel">
                                         <div id="partialViewDanhsachdathang"></div>
-                                    </div>                                    
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -102,36 +91,71 @@
     $(document).ready(function () {
         $('#thebody1').hide();
         $('#overlay1').show();
+        //First load when enter page
         var firstModelOfList = $("#All").data("first-model"); // Lấy giá trị firstModelOfList từ data attribute
-        var modelSelect = firstModelOfList;
-
-        $("#tenPage").text("Orders List Model " + firstModelOfList);
-        $.get("/Dathang/GetDanhsachDathang?model=" + firstModelOfList, function (result) {
-            $("#partialViewDanhsachdathang").html(result);
+        $.get("/Danhsachlinhkien/GetCountsDathang?model=" + firstModelOfList, function (result) {
+            $("#infoboxs").html(result);
         });
-
+        $.get("/Danhsachlinhkien/GetCountDathang?trangthai=Yêu cầu đặt hàng&model=" + firstModelOfList, function (result) {
+            $("#soYeucaudathang").text(result);
+        });
+        $.get("/Danhsachlinhkien/GetCountDathang?trangthai=Đang đặt hàng&model=" + firstModelOfList, function (result) {
+            $("#soDangdathang").text(result);
+        });
+        $.get("/Danhsachlinhkien/GetCountDathang?trangthai=Hàng về thiếu&model=" + firstModelOfList, function (result) {
+            $("#soHangvethieu").text(result);
+        });
+        var modelSelect = firstModelOfList;
+        $("#tenPage").text("Quản lý đặt hàng Model " + firstModelOfList);
+        $.ajax({
+            url: "/Dathang/GetDanhsachDathang",
+            type: "GET",
+            data: { model: firstModelOfList, trangthai: "Yêu cầu đặt hàng" },
+            success: function (response) {
+                $("#partialViewDanhsachdathang").html(response);
+            },
+            error: function (e) {
+                console.log(e);
+            }
+        });
+        //Load when click Model
         $(".nav-link.model").click(function () {
             tenmodel = $(this).attr("id");
+            $.get("/Danhsachlinhkien/GetCountsDathang?model=" + tenmodel, function (result) {
+                $("#infoboxs").html(result);
+            });
             modelSelect = tenmodel;
-            $("#tenPage").text("Orders List Model " + tenmodel);
+            $("#tenPage").text("Quản lý đặt hàng Model " + tenmodel);
             $('#thebody1').hide();
             $('#overlay1').show();
+            $.get("/Danhsachlinhkien/GetCountDathang?trangthai=Yêu cầu đặt hàng&model=" + tenmodel, function (result) {
+                $("#soYeucaudathang").text(result);
+            });
+            $.get("/Danhsachlinhkien/GetCountDathang?trangthai=Đang đặt hàng&model=" + tenmodel, function (result) {
+                $("#soDangdathang").text(result);
+            });
+            $.get("/Danhsachlinhkien/GetCountDathang?trangthai=Hàng về thiếu&model=" + tenmodel, function (result) {
+                $("#soHangvethieu").text(result);
+            });
+
             $.ajax({
                 url: "/Dathang/GetDanhsachDathang",
                 type: "GET",
                 data: { model: tenmodel, trangthai: "Yêu cầu đặt hàng" },
                 success: function (response) {
                     $("#partialViewDanhsachdathang").html(response);
+                    $("#yeucaudathang").click();
+
                 },
                 error: function (e) {
                     console.log(e);
                 }
             });
         });
+        //Load when click Status ò Model
         $(".nav-link.trangthai").click(function () {
             tenmodel = modelSelect;
             trangthai = $(this).data("trangthai");
-
             $('#thebody').hide();
             $('#overlay').show();
             $.ajax({
@@ -151,25 +175,3 @@
 
 
 
-
-
-
-
-
-
-@*
-
-<div class="tab-pane fade" id="custom-tabs-five-overlay" role="tabpanel" aria-labelledby="custom-tabs-five-overlay-tab">
-    <div class="overlay-wrapper">
-        <div class="overlay"><i class="fas fa-3x fa-sync-alt fa-spin"></i><div class="text-bold pt-2">Loading...</div></div>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin malesuada lacus ullamcorper dui molestie, sit amet congue quam finibus. Etiam ultricies nunc non magna feugiat commodo. Etiam odio magna, mollis auctor felis vitae, ullamcorper ornare ligula. Proin pellentesque tincidunt nisi, vitae ullamcorper felis aliquam id. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin id orci eu lectus blandit suscipit. Phasellus porta, ante et varius ornare, sem enim sollicitudin eros, at commodo leo est vitae lacus. Etiam ut porta sem. Proin porttitor porta nisl, id tempor risus rhoncus quis. In in quam a nibh cursus pulvinar non consequat neque. Mauris lacus elit, condimentum ac condimentum at, semper vitae lectus. Cras lacinia erat eget sapien porta consectetur.
-    </div>
-</div>
-<div class="tab-pane fade" id="custom-tabs-five-overlay-dark" role="tabpanel" aria-labelledby="custom-tabs-five-overlay-dark-tab">
-    <div class="overlay-wrapper">
-        <div class="overlay dark"><i class="fas fa-3x fa-sync-alt fa-spin"></i><div class="text-bold pt-2">Loading...</div></div>
-        Pellentesque vestibulum commodo nibh nec blandit. Maecenas neque magna, iaculis tempus turpis ac, ornare sodales tellus. Mauris eget blandit dolor. Quisque tincidunt venenatis vulputate. Morbi euismod molestie tristique. Vestibulum consectetur dolor a vestibulum pharetra. Donec interdum placerat urna nec pharetra. Etiam eget dapibus orci, eget aliquet urna. Nunc at consequat diam. Nunc et felis ut nisl commodo dignissim. In hac habitasse platea dictumst. Praesent imperdiet accumsan ex sit amet facilisis.
-    </div>
-</div>
-
-*@
