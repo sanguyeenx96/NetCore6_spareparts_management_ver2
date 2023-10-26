@@ -133,5 +133,13 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
+        [HttpPut("laylinhkien/{id}")]
+        public async Task<IActionResult> LayLinhKien(int id,[FromBody] LaylinhkienRequest request)
+        {
+            var result = await _danhsachlinhkienService.LayLinhKien(id,request);
+            return Ok(result);
+        }
+
+
     }
 }

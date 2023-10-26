@@ -341,7 +341,7 @@ namespace Application.Danhsachlinhkien
         private bool ChecktrungMalinhkien(string model, string malinhkien)
         {
             var result = _context.Danhsachlinhkiens.Where(x => (x.Model == model && x.Malinhkien.Contains(malinhkien))).Count();
-            if(result > 0)
+            if (result > 0)
             {
                 return true;
             }
@@ -432,8 +432,35 @@ namespace Application.Danhsachlinhkien
                 int tonkho = Convert.ToInt32(request.Keyword);
                 query = query.Where(x => x.Tonkho == tonkho);
             }
-            int totalRows = await query.CountAsync(); 
+            int totalRows = await query.CountAsync();
             return totalRows;
+        }
+
+        public async Task<ApiResult<bool>> LayLinhKien(int id, LaylinhkienRequest request)
+        {
+            var linhkien = await _context.Danhsachlinhkiens.FindAsync(id);
+            if (linhkien == null)
+            {
+                return new ApiErrorResult<bool>("Linh kiện không tồn tại");
+            }
+            try
+            {
+                if (request.soluong > linhkien.Tonkho || request.soluong < 1)
+                {
+                    return new ApiErrorResult<bool>("Số lượng không phù hợp");
+                }
+                else
+                {
+                    linhkien.Tonkho -= request.soluong;
+                    _context.Danhsachlinhkiens.Update(linhkien);
+                    await _context.SaveChangesAsync();
+                    return new ApiSuccessResult<bool>();
+                }
+            }
+            catch
+            {
+                return new ApiErrorResult<bool>("Cập nhật không thành công");
+            }
         }
     }
 }

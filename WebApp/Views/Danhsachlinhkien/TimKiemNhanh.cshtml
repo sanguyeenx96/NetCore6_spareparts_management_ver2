@@ -20,22 +20,6 @@
     ViewData["Active"] = "pageTimkiemnhanh";
 
 }
-@section Scripts{
-    <script>
-        $(document).ready(function () {
-            $("#tblSparepartslist").DataTable({
-                "paging": false,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-                "responsive": true,
-            })
-        })
-    </script>
-}
-
 <div id="infoboxs"></div>
 
 <div class="row">
@@ -66,7 +50,6 @@
                             <th class="all" style="white-space: nowrap;">Tên linh kiện</th>
                             <th class="all" style="white-space: nowrap;">Mã linh kiện</th>
                             <th style="white-space: nowrap;">Tên jig</th>
-
                             <th class="all" style="white-space: nowrap;">Tồn kho</th>
                             <th class="all" style="white-space: nowrap;"></th>
                             <th style="white-space: nowrap;"></th>
@@ -123,10 +106,19 @@
                                             <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
-                                </td>
+                                </td>                                
                                 <td class="col-md-2" style="font-size:small; vertical-align:middle;text-align:center">
                                     <div class="btn-group btn-block ">
-                                        <a class="btn btn-app bg-primary">
+                                        <a class="btn btn-app bg-primary btnLayLinhKien"
+                                       data-id="@item.Id"
+                                       data-tenlinhkien="@item.Tenlinhkien"
+                                       data-malinhkien="@item.Malinhkien"
+                                       data-tenjig="@item.Tenjig"
+                                       data-majig="@item.Majig"
+                                       data-model="@item.Model"
+                                       data-tonkho="@item.Tonkho"
+                                       data-ghichu="@item.Ghichu"
+                                       data-hinhanh="@item.Image">
                                             <i class="fas fa-upload"></i> Lấy sử dụng
                                         </a>
                                         <a class="btn btn-app bg-warning ">
@@ -185,7 +177,6 @@
                                         }
                                     }
                                 </td>
-
                                 <td style="font-size:small; vertical-align:middle;text-align:center">
                                     @{
                                         if (!string.IsNullOrEmpty(item.Ghichu))
@@ -209,30 +200,35 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {        
-        $.get("/Danhsachlinhkien/GetCountsLinhkien", function (result) {
-            $("#infoboxs").html(result);
-        });
-//Click btnLaylinhkien
-        $(".btnLaylinhkien").on("click", function (e) {
-            Swal.fire(
-                "Lỗi máy chủ",
-                "Không tải được dữ liệu",
-                "error"
-            );
-        });
-//Show image
-        $(".showImage").on("click", function (e) {
-            var imgSrc = $(this).attr("src");
-            var tenlinhkien = $(this).data("tenlinhkien");
-            Swal.fire({
-                imageUrl: imgSrc,
-                imageWidth: 400, // Adjust this to your preferred width
-                imageHeight: 400, // Adjust this to your preferred height
-                title: tenlinhkien,
-                showConfirmButton: false // Remove the "OK" button
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#tblSparepartslist").DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+            })
+            $.get("/Danhsachlinhkien/GetCountsLinhkien", function (result) {
+                $("#infoboxs").html(result);
             });
-        });
-    });   
-</script>
+            $(".showImage").on("click", function (e) {
+                var imgSrc = $(this).attr("src");
+                var tenlinhkien = $(this).data("tenlinhkien");
+                Swal.fire({
+                    imageUrl: imgSrc,
+                    imageWidth: 400, // Adjust this to your preferred width
+                    imageHeight: 400, // Adjust this to your preferred height
+                    title: tenlinhkien,
+                    showConfirmButton: false // Remove the "OK" button
+                });
+            });
+        })
+    </script>
+}
+
+    <script src="~/scripts/danhsachlinhkien/laylinhkien.js"></script>

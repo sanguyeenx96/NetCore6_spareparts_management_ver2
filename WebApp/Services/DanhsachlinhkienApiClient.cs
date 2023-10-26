@@ -140,5 +140,21 @@ namespace WebApp.Services
             return JsonConvert.DeserializeObject<ApiErrorResult<ImportExcelResult>>(result);
         }
 
+        public async Task<ApiResult<bool>> Laylinhkien(int id, LaylinhkienRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAdress"]);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"/api/danhsachlinhkien/laylinhkien/{id}", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
     }
 }

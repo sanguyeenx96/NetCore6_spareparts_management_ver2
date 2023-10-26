@@ -21,5 +21,8 @@ namespace WebApp.Services
 
         Task<int> Count(GetDanhsachlinhkienRequest request);
 
+        Task<ApiResult<bool>> Laylinhkien(int id, LaylinhkienRequest request);
+
+
     }
 }
