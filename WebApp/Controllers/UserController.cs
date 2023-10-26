@@ -29,53 +29,64 @@ namespace WebApp.Controllers
             return View(data.ResultObj);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Create()
-        {
-            return View();
-        }
-
         [HttpPost]
         public async Task<IActionResult> Create(RegisterRequest request)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                            .Select(e => e.ErrorMessage)
+                            .ToList();
+                return Json(new { success = false, errors = errors });
             }
             var result = await _userApiClient.RegisterUser(request);
             if (result.IsSuccessed)
             {
-                return RedirectToAction("index");
+                return Json(new { success = true });
             }
-            return View(request);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Update(int id)
-        {
-            var user = await _userApiClient.GetUserById(id);
-            var updateRequest = new UserUpdateRequest()
+            else
             {
-                Name = user.ResultObj.Hoten,
-                Password = user.ResultObj.Password
-            };
-            return View(updateRequest);
+                return Json(new { success = false, errors = new List<string> { result.Message } });
+            }
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(UserUpdateRequest request)
+        public async Task<IActionResult> Update(int id, UserUpdateRequest request)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                            .Select(e => e.ErrorMessage)
+                            .ToList();
+                return Json(new { success = false, errors = errors });
             }
-            var result = await _userApiClient.UpdateUser(request.Id , request);
+            var result = await _userApiClient.UpdateUser(id, request);
             if (result.IsSuccessed)
             {
-                return RedirectToAction("index");
+                return Json(new { success = true });
             }
-            ModelState.AddModelError("", result.Message);
-            return View(request);
+            else
+            {
+                return Json(new { success = false, errors = new List<string> { result.Message } });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditRole(int id, UserEditRoleRequest request)
+        {
+            if (!ModelState.IsValid)
+            {             
+                return Json(new { success = false});
+            }
+            var result = await _userApiClient.EditRoleUser(id, request);
+            if (result.IsSuccessed)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false});
+            }
         }
 
         [HttpGet]
@@ -85,31 +96,22 @@ namespace WebApp.Controllers
             return View(result.ResultObj);
         }
 
-
-        [HttpGet]
-        public async Task<IActionResult> Delete(int id)
-        {
-            return View(new UserDeleteRequest()
-            {
-                Id = id
-            });
-        }
-
         [HttpPost]
         public async Task<IActionResult> Delete(UserDeleteRequest request)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return Json(new { success = false });
             }
             var result = await _userApiClient.Delete(request.Id);
             if (result.IsSuccessed)
             {
-                return RedirectToAction("index");
+                return Json(new { success = true });
             }
-
-            ModelState.AddModelError("", "Xóa không thành công");
-            return View();
+            else
+            {
+                return Json(new { success = false });
+            }
         }
 
         [HttpPost]
@@ -117,7 +119,7 @@ namespace WebApp.Controllers
         {
             //await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("Token");
-            return RedirectToAction("index","Login");
+            return RedirectToAction("index", "Login");
         }
 
     }

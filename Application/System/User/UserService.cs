@@ -41,7 +41,8 @@ namespace Application.System.User
                 Id = result.AdId.ToString(),
                 Hoten = result.Hoten,
                 Username = result.AdName,
-                Password = result.AdPass
+                Password = result.AdPass,
+                Role = result.Role
             };
             return new ApiSuccessResult<UserVm>(userLogin);
         }
@@ -63,6 +64,22 @@ namespace Application.System.User
 
         }
 
+        public async Task<ApiResult<bool>> EditRole(int id,UserEditRoleRequest request)
+        {
+            try
+            {
+                var user = await _context.TblAdmins.FindAsync(id);
+                user.Role = request.Role;
+                _context.TblAdmins.Update(user);
+                await _context.SaveChangesAsync();
+                return new ApiSuccessResult<bool>();
+            }
+            catch
+            {
+                return new ApiErrorResult<bool>("Cập nhật không thành công");
+            }
+        }
+
         public async Task<ApiResult<UserVm>> GetById(int id)
         {
             var result = await _context.TblAdmins.FindAsync(id);
@@ -75,7 +92,8 @@ namespace Application.System.User
                 Id = result.AdId.ToString(),
                 Hoten = result.Hoten,
                 Username = result.AdName,
-                Password = result.AdPass
+                Password = result.AdPass,
+                Role = result.Role
             };
             return new ApiSuccessResult<UserVm>(user);
         }
@@ -97,7 +115,8 @@ namespace Application.System.User
                     Id = x.AdId.ToString(),
                     Hoten = x.Hoten,
                     Username = x.AdName,
-                    Password = x.AdPass
+                    Password = x.AdPass,
+                    Role = x.Role
                 })
                 .ToListAsync();
 
@@ -123,9 +142,9 @@ namespace Application.System.User
                 }
                 user = new TblAdmin()
                 {
-                    AdName = request.Name,
-                    AdPass = request.UserName,
-                    Hoten = request.Password
+                    AdName = request.UserName,
+                    AdPass = request.Password,
+                    Hoten = request.Name
                 };
                 await _context.TblAdmins.AddAsync(user);
                 await _context.SaveChangesAsync();
@@ -144,6 +163,7 @@ namespace Application.System.User
                 var user = await _context.TblAdmins.FindAsync(id);
                 user.Hoten = request.Name;
                 user.AdPass = request.Password;
+                user.AdName = request.UserName;
 
                 _context.TblAdmins.Update(user);
                 await _context.SaveChangesAsync();

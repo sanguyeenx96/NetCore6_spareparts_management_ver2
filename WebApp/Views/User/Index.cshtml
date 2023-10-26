@@ -2,37 +2,21 @@
 @model PagedResult<ViewModels.System.User.UserVm>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Active"] = "pageTaikhoan";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@section Scripts{
-    <script>
-        $(document).ready(function () {
-            $("#tblSparepartslist").DataTable({
-                "paging": false,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-                "responsive": true,
-            })
-        })
-    </script>
-}
-
-    <div class="row">
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-lg btn-outline-success btn-block">
-                <i class="fa fa-user-plus fa-fw"></i>
-                Tạo tài khoản 
-            </button>
-        </div>
-        <div class="col-md-9">
-            <form asp-action="index" method="get">
-                <div class="input-group">
-                    @{
+<div class="row">
+    <div class="col-md-3">
+        <button id="btnCreateUser" class="btn btn-lg bg-lightblue btn-block">
+            <i class="fa fa-user-plus fa-fw"></i>
+            Thêm tài khoản
+        </button>
+    </div>
+    <div class="col-md-9">
+        <form asp-action="index" method="get">
+            <div class="input-group">
+                @{
                     string kw = !string.IsNullOrEmpty(ViewBag.Keyword) ? ViewBag.Keyword : "Nhập tên người dùng, tên tài khoản để tìm kiếm nhanh...";
                 }
                 <input name="keyword" type="text" class="form-control form-control-lg" placeholder="@kw">
@@ -44,13 +28,13 @@
             </div>
         </form>
     </div>
-
     <div class="col-md-12" style="margin-top:10px">
         <div class="card card-default">
             <div class="card-body">
                 <table id="tblUser" class="table table-reponsive table-hover " style="text-align:center;vertical-align:middle">
                     <thead style="font-size:small;">
                         <tr>
+                            <th></th>
                             <th>
                                 Họ tên
                             </th>
@@ -67,6 +51,18 @@
                         @foreach (var item in Model.Items)
                         {
                             <tr>
+                                <td>
+                                    @{                                        
+                                        if (@item.Role == true)
+                                        {
+                                            <span style="font-size:smaller" class="badge bg-warning">Admin</span>
+                                        }
+                                        else
+                                        {
+                                            <span style="font-size:smaller" class="badge bg-primary">User</span>
+                                        }
+                                    }
+                                </td>
                                 <td style="font-size:small; vertical-align:middle;text-align:center">
                                     @Html.DisplayFor(modelItem => item.Hoten)
                                 </td>
@@ -76,14 +72,23 @@
                                 <td style="font-size:small; vertical-align:middle;text-align:center">
                                     @Html.DisplayFor(modelItem => item.Password)
                                 </td>
-                                <td class="col-3" style="font-size:small; vertical-align:middle;text-align:center">
-                                    <div class="btn-group btn-block ">
-                                        <a class="btn btn-app bg-secondary " style="white-space: nowrap">
-                                            <i class="fa fa-edit"></i> Sửa thông tin
-                                        </a>
-                                        <a class="btn btn-app bg-secondary " style="white-space: nowrap">
-                                            <i class="fas fa-trash"></i> Xoá tài khoản
-                                        </a>
+                                <td class="col-3" style="white-space: nowrap; vertical-align:middle;text-align:center">
+                                    <div class="btn-group btn-block">
+                                        <btn class="btn btn-success btn-sm btnEditRole"
+                                         data-id="@item.Id">
+                                            <i class="fa fa-key fa-fw"></i> Phân quyền
+                                        </btn>
+                                        <btn class="btn btn-warning btn-sm btnEditUser"
+                                         data-id="@item.Id"
+                                         data-hoten="@item.Hoten"
+                                         data-pwd="@item.Password"
+                                         data-usn="@item.Username">
+                                            <i class="fa fa-edit fa-fw"></i> Sửa
+                                        </btn>
+                                        <btn class="btn btn-danger btn-sm btnDeleteUser"
+                                         data-id="@item.Id">
+                                            <i class="fa fa-trash fa-fw"></i> Xoá
+                                        </btn>
                                     </div>
                                 </td>
                             </tr>
@@ -96,7 +101,25 @@
             </div>
         </div>
     </div>
-
 </div>
 
+<script src="~/scripts/user/createuser.js"></script>
+<script src="~/scripts/user/edituser.js"></script>
+<script src="~/scripts/user/editroleuser.js"></script>
+<script src="~/scripts/user/deleteuser.js"></script>
 
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#tblSparepartslist").DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+            })
+        })
+    </script>
+}

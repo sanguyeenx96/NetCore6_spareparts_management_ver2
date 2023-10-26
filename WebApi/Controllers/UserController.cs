@@ -47,9 +47,7 @@ namespace WebApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
             var result = await _userService.Register(request);
-
             if (!result.IsSuccessed)
             {
                 return BadRequest(result);
@@ -66,6 +64,21 @@ namespace WebApi.Controllers
                 return BadRequest(ModelState);
             }
             var result = await _userService.Update(id, request);
+            if (!result.IsSuccessed)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
+
+        [HttpPut("editrole/{id}")]
+        public async Task<IActionResult> EditRole(int id,[FromBody] UserEditRoleRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = await _userService.EditRole(id,request);
             if (!result.IsSuccessed)
             {
                 return BadRequest(result);

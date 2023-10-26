@@ -5,11 +5,6 @@ namespace Data.Models
 {
     public partial class Danhsachlinhkien
     {
-        public Danhsachlinhkien()
-        {
-            Hinhanhs = new HashSet<Hinhanh>();
-        }
-
         public int Id { get; set; }
         public string? Model { get; set; }
         public string? Tenjig { get; set; }
@@ -22,7 +17,5 @@ namespace Data.Models
         public int? Tonkho { get; set; }
         public string? Ghichu { get; set; }
         public string? Image { get; set; }
-
-        public virtual ICollection<Hinhanh> Hinhanhs { get; set; }
     }
 }
