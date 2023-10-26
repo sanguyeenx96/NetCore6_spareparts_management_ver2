@@ -19,5 +19,7 @@ namespace ViewModels.System.User
 
         [Display(Name = "Mật khẩu")]
         public string Password { get; set; }
+
+        public bool? Role { get; set; }
     }
 }

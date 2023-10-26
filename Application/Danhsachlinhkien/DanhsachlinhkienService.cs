@@ -62,18 +62,18 @@ namespace Application.Danhsachlinhkien
                     Tonkho = request.Tonkho,
                     Ghichu = request.Ghichu,
                 };
-                if (request.Hinhanh != null)
-                {
-                    linhkienmoi.Hinhanhs = new List<Hinhanh>()
-                    {
-                        new Hinhanh()
-                        {
-                            DateCreated = DateTime.Now,
-                            FileSize = request.Hinhanh.Length,
-                            ImagePath = await this.SaveFile(request.Hinhanh),
-                        }
-                    };
-                }
+                //if (request.Hinhanh != null)
+                //{
+                //    linhkienmoi.Hinhanhs = new List<Hinhanh>()
+                //    {
+                //        new Hinhanh()
+                //        {
+                //            DateCreated = DateTime.Now,
+                //            FileSize = request.Hinhanh.Length,
+                //            ImagePath = await this.SaveFile(request.Hinhanh),
+                //        }
+                //    };
+                //}
                 await _context.Danhsachlinhkiens.AddAsync(linhkienmoi);
                 await _context.SaveChangesAsync();
                 return new ApiSuccessResult<bool>();
@@ -165,67 +165,67 @@ namespace Application.Danhsachlinhkien
             return new ApiSuccessResult<DanhsachlinhkienVm>(linhkien);
         }
 
-        public async Task<int> AddImage(int LinhkienId, HinhanhCreateRequest request)
-        {
-            var hinhanh = new Hinhanh()
-            {
-                DateCreated = DateTime.Now,
-                LinhkienId = LinhkienId,
-            };
-            if (request.ImageFile != null)
-            {
-                hinhanh.ImagePath = await this.SaveFile(request.ImageFile);
-                hinhanh.FileSize = request.ImageFile.Length;
-            }
-            _context.Hinhanhs.Add(hinhanh);
-            await _context.SaveChangesAsync();
-            return hinhanh.Id;
-        }
+        //public async Task<int> AddImage(int LinhkienId, HinhanhCreateRequest request)
+        //{
+        //    var hinhanh = new Hinhanh()
+        //    {
+        //        DateCreated = DateTime.Now,
+        //        LinhkienId = LinhkienId,
+        //    };
+        //    if (request.ImageFile != null)
+        //    {
+        //        hinhanh.ImagePath = await this.SaveFile(request.ImageFile);
+        //        hinhanh.FileSize = request.ImageFile.Length;
+        //    }
+        //    _context.Hinhanhs.Add(hinhanh);
+        //    await _context.SaveChangesAsync();
+        //    return hinhanh.Id;
+        //}
 
-        public async Task<int> RemoveImage(int imageId)
-        {
-            var image = await _context.Hinhanhs.FindAsync(imageId);
-            if (image == null)
-            {
-                throw new SparepartsException($"Cannot find an image with id {imageId}");
-            }
-            _context.Hinhanhs.Remove(image);
-            return await _context.SaveChangesAsync();
-        }
+        //public async Task<int> RemoveImage(int imageId)
+        //{
+        //    var image = await _context.Hinhanhs.FindAsync(imageId);
+        //    if (image == null)
+        //    {
+        //        throw new SparepartsException($"Cannot find an image with id {imageId}");
+        //    }
+        //    _context.Hinhanhs.Remove(image);
+        //    return await _context.SaveChangesAsync();
+        //}
 
-        public async Task<int> UpdateImage(int imageId, HinhanhUpdateRequest request)
-        {
-            var image = await _context.Hinhanhs.FindAsync(imageId);
-            if (image == null)
-            {
-                throw new SparepartsException($"Cannot find an image with id {imageId}");
-            }
-            if (request.ImageFile != null)
-            {
-                image.ImagePath = await this.SaveFile(request.ImageFile);
-                image.FileSize = request.ImageFile.Length;
-            }
-            _context.Hinhanhs.Update(image);
-            return await _context.SaveChangesAsync();
-        }
+        //public async Task<int> UpdateImage(int imageId, HinhanhUpdateRequest request)
+        //{
+        //    var image = await _context.Hinhanhs.FindAsync(imageId);
+        //    if (image == null)
+        //    {
+        //        throw new SparepartsException($"Cannot find an image with id {imageId}");
+        //    }
+        //    if (request.ImageFile != null)
+        //    {
+        //        image.ImagePath = await this.SaveFile(request.ImageFile);
+        //        image.FileSize = request.ImageFile.Length;
+        //    }
+        //    _context.Hinhanhs.Update(image);
+        //    return await _context.SaveChangesAsync();
+        //}
 
-        public async Task<HinhanhVm> GetImageById(int imageId)
-        {
-            var image = await _context.Hinhanhs.FindAsync(imageId);
-            if (image == null)
-            {
-                throw new SparepartsException($"Cannot find an image with id {imageId}");
-            }
-            var viewModel = new HinhanhVm()
-            {
-                DateCreated = image.DateCreated,
-                FileSize = image.FileSize,
-                Id = image.Id,
-                ImagePath = image.ImagePath,
-                LinhkienId = image.LinhkienId
-            };
-            return viewModel;
-        }
+        //public async Task<HinhanhVm> GetImageById(int imageId)
+        //{
+        //    var image = await _context.Hinhanhs.FindAsync(imageId);
+        //    if (image == null)
+        //    {
+        //        throw new SparepartsException($"Cannot find an image with id {imageId}");
+        //    }
+        //    var viewModel = new HinhanhVm()
+        //    {
+        //        DateCreated = image.DateCreated,
+        //        FileSize = image.FileSize,
+        //        Id = image.Id,
+        //        ImagePath = image.ImagePath,
+        //        LinhkienId = image.LinhkienId
+        //    };
+        //    return viewModel;
+        //}
 
         public async Task<ApiResult<List<DanhsachlinhkienVm>>> GetAll(GetDanhsachlinhkienRequest request)
         {

@@ -19,7 +19,6 @@ namespace Data.EF
 
         public virtual DbSet<Danhsachlinhkien> Danhsachlinhkiens { get; set; } = null!;
         public virtual DbSet<Dathang> Dathangs { get; set; } = null!;
-        public virtual DbSet<Hinhanh> Hinhanhs { get; set; } = null!;
         public virtual DbSet<LichsuLaylinhkien> LichsuLaylinhkiens { get; set; } = null!;
         public virtual DbSet<Model> Models { get; set; } = null!;
         public virtual DbSet<TblAdmin> TblAdmins { get; set; } = null!;
@@ -137,21 +136,6 @@ namespace Data.EF
                 entity.Property(e => e.Trangthai).HasColumnName("trangthai");
             });
 
-            modelBuilder.Entity<Hinhanh>(entity =>
-            {
-                entity.ToTable("Hinhanh");
-
-                entity.Property(e => e.DateCreated).HasColumnType("datetime");
-
-                entity.Property(e => e.ImagePath).IsUnicode(false);
-
-                entity.HasOne(d => d.Linhkien)
-                    .WithMany(p => p.Hinhanhs)
-                    .HasForeignKey(d => d.LinhkienId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Hinhanh_danhsachlinhkien");
-            });
-
             modelBuilder.Entity<LichsuLaylinhkien>(entity =>
             {
                 entity.ToTable("lichsu_laylinhkien");
@@ -218,6 +202,8 @@ namespace Data.EF
                 entity.Property(e => e.Hoten)
                     .HasMaxLength(255)
                     .HasColumnName("hoten");
+
+                entity.Property(e => e.Role).HasColumnName("role");
             });
 
             OnModelCreatingPartial(modelBuilder);

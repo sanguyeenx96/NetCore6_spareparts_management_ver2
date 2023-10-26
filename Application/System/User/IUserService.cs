@@ -21,5 +21,7 @@ namespace Application.System.User
         Task<ApiResult<UserVm>> GetById(int id);
 
         Task<ApiResult<bool>> Delete(int id);
+        Task<ApiResult<bool>> EditRole(int id, UserEditRoleRequest request);
+
     }
 }

@@ -23,13 +23,15 @@ namespace WebApp.Controllers
 
         public async Task<IActionResult> Index(string model, string? keyword)
         {
-            var request = new GetDanhsachlinhkienRequest()
-            {
-                Keyword = !string.IsNullOrEmpty(keyword) ? keyword.Trim().ToLower() : "",
-                Model = model
-            };
-            var result = await _danhsachlinhkienApiClient.GetAll(request);
-            return View(result.ResultObj);
+            //var request = new GetDanhsachlinhkienRequest()
+            //{
+            //    Keyword = !string.IsNullOrEmpty(keyword) ? keyword.Trim().ToLower() : "",
+            //    Model = model
+            //};
+            //var result = await _danhsachlinhkienApiClient.GetAll(request);
+            //return View(result.ResultObj);
+            return View();
+
         }
 
         public IActionResult Privacy()

@@ -17,7 +17,7 @@ namespace ViewModels.System.User
             RuleFor(x => x.UserName).NotEmpty().WithMessage("User name is required");
 
             RuleFor(x => x.Password).NotEmpty().WithMessage("Password is required")
-                .MinimumLength(6).WithMessage("Password is at least 5 characters");
+                .MinimumLength(6).WithMessage("Mật khẩu phải chứa ít nhất 6 ký tự");
 
             RuleFor(x => x).Custom((request, context) =>
             {

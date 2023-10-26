@@ -9,5 +9,6 @@ namespace Data.Models
         public string? AdName { get; set; }
         public string? AdPass { get; set; }
         public string? Hoten { get; set; }
+        public bool? Role { get; set; }
     }
 }

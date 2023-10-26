@@ -16,10 +16,10 @@ namespace Application.Danhsachlinhkien
         Task<ApiResult<PagedResult<DanhsachlinhkienVm>>> GetAllPaging(GetDanhsachlinhkienPagingRequest request);
         Task<ApiResult<DanhsachlinhkienVm>> GetById(int id);
         Task<ApiResult<bool>> Create(DanhsachlinhkienCreateRequest request);
-        Task<int> AddImage(int LinhkienId, HinhanhCreateRequest request);
-        Task<int> RemoveImage(int imageId);
-        Task<int> UpdateImage(int imageId, HinhanhUpdateRequest request);
-        Task<HinhanhVm> GetImageById(int imageId);
+        //Task<int> AddImage(int LinhkienId, HinhanhCreateRequest request);
+        //Task<int> RemoveImage(int imageId);
+        //Task<int> UpdateImage(int imageId, HinhanhUpdateRequest request);
+        //Task<HinhanhVm> GetImageById(int imageId);
         Task<List<DanhsachlinhkienImportExcelRequest>> ReadExcelFile(Stream fileStream);
         Task<ApiResult<ImportExcelResult>> ImportExcelFile(List<DanhsachlinhkienImportExcelRequest> request,string model);
 

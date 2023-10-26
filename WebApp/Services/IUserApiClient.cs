@@ -12,6 +12,7 @@ namespace WebApp.Services
         Task<ApiResult<bool>> RegisterUser(RegisterRequest register);
 
         Task<ApiResult<bool>> UpdateUser(int id,UserUpdateRequest request);
+        Task<ApiResult<bool>> EditRoleUser(int id, UserEditRoleRequest request);
 
         Task<ApiResult<UserVm>> GetUserById(int id);
 
