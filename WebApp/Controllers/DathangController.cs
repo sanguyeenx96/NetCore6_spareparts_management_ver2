@@ -39,5 +39,24 @@ namespace WebApp.Controllers
             ViewBag.trangthai = trangthai;
             return PartialView("_Danhsachdathang", result.ResultObj);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateYeuCauDatHang(int linhkienid, string nguoithaotac, int soluong)
+        {
+            var request = new DathangCreateRequest()
+            {
+              Nguoithaotac = nguoithaotac,
+              Soluong = soluong                
+            };
+            var result = await _dathangApiClient.CreateYeuCauDatHang(linhkienid, request);
+            if (result.IsSuccessed)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
+        }
     }
 }

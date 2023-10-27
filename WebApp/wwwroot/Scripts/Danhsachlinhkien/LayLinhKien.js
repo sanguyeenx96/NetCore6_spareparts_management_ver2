@@ -17,14 +17,29 @@ $(".btnLayLinhKien").on("click", function () {
     var tonkho = $(this).data("tonkho");
     var ghichu = $(this).data("ghichu");
     var hinhanh = $(this).data("hinhanh");
+    var hoten = $(this).data("hoten");
+
     if (tonkho == 0) {
         Swal.fire("Linh kiện đang hết tồn kho!", "", "error");
     } else {
         var tableHtml = '<div class="col-12"> <div class="row">';
+
+        tableHtml +=
+            '<div class="col-12 d-flex justify-content-center align-items-center"  >';
+        tableHtml += "<h4>XÁC NHẬN LẤY LINH KIỆN SỬ DỤNG</h4>";
+        tableHtml += "</div>";
+        tableHtml +=
+            '<div class="col-12 d-flex justify-content-center align-items-center"  style="margin-bottom: 30px">';
+        tableHtml +=
+            '<a style="font-size:smaller">Người thao tác: <span style="font-size:medium" class="badge badge-warning">' +
+            hoten +
+            "</span></a>";
+        tableHtml += "</div>";
+
         tableHtml +=
             '<div class="col-6 d-flex justify-content-center align-items-center">';
         if (hinhanh) {
-            tableHtml += '<img src="' + hinhanh + '" class="img-fluid">';
+            tableHtml += '<img src="' + hinhanh + '" class="img-fluid shadow">';
         } else {
             tableHtml +=
                 '<span class="badge badge-secondary">Chưa có dữ liệu hình ảnh</span>';
@@ -48,11 +63,11 @@ $(".btnLayLinhKien").on("click", function () {
         tableHtml += "</div>";
         tableHtml += '<div class="col-12" style="margin-top:10px">';
         tableHtml +=
-            '<input class="form-control" type="number" id="soLuong" placeholder="Nhập số lượng lấy ra..." style="margin-top: 10px;">';
+            '<input class="form-control  form-control-lg" type="number" id="soLuong" placeholder="Nhập số lượng lấy ra..." style="margin-top: 10px;">';
         tableHtml +=
-            '<button class="btn btn-primary btn-block" id="xacNhan" style="margin-top: 10px;">Xác nhận</button></div> </div>';
+            '<button class="btn btn-success btn-block" id="xacNhan" style="margin-top: 10px;"><i class="fa fa-check fa-fw"> </i> Xác nhận</button></div> </div>';
         Swal.fire({
-            icon: "question",
+            icon:'info',
             title: name,
             html: tableHtml, // Sử dụng biến HTML chứa bảng
             position: "top-start",
@@ -77,7 +92,7 @@ $(".btnLayLinhKien").on("click", function () {
         });
 
         // Bắt đầu thêm xử lý cho nút xác nhận
-        $("#xacNhan").on("click", function () {          
+        $("#xacNhan").on("click", function () {
             // Lấy giá trị từ input số lượng
             var soLuong = $("#soLuong").val();
             if (soLuong.length < 1) {

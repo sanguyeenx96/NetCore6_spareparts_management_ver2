@@ -109,9 +109,11 @@ namespace Application.Danhsachlinhkien
             //3. Paging
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+            var dataList = await query.Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
-                .Select(x => new DanhsachlinhkienVm()
+                .ToListAsync();
+
+            var data = dataList.Select(x => new DanhsachlinhkienVm
                 {
                     Id = x.Id,
                     Model = x.Model,
@@ -124,9 +126,10 @@ namespace Application.Danhsachlinhkien
                     Dongia = x.Dongia,
                     Tonkho = x.Tonkho,
                     Ghichu = x.Ghichu,
-                    Image = x.Image
-                })
-                .ToListAsync();
+                    Image = x.Image,
+                    YCDH = _context.Dathangs
+                .Count(dh => (dh.Malinhkien == x.Malinhkien && dh.Trangthai == "Yêu cầu đặt hàng" && dh.Model == x.Model))
+                }).ToList();
 
             //4. Select and projection
             var pagedResult = new PagedResult<DanhsachlinhkienVm>()

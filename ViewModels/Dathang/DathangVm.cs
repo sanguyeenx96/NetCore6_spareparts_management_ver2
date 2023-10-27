@@ -8,6 +8,7 @@ namespace ViewModels.Dathang
 {
     public class DathangVm
     {
+        public int Id { get; set; }
         public string? Ngayyeucau { get; set; }
         public string? Ngaydathang { get; set; }
         public string? Ngaydukienhangve { get; set; }

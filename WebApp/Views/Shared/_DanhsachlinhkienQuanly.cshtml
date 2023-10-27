@@ -190,17 +190,17 @@
                 $('#thebody').show();
             }
         }).buttons().container().appendTo('#tblSpareparts_wrapper  .col-md-6:eq(0)');
-
-        $(".showImage").on("click", function (e) {
-            var imgSrc = $(this).attr("src");
-            var tenlinhkien = $(this).data("tenlinhkien");
-            Swal.fire({
-                imageUrl: imgSrc,
-                imageWidth: 400, // Adjust this to your preferred width
-                imageHeight: 400, // Adjust this to your preferred height
-                title: tenlinhkien,
-                showConfirmButton: false // Remove the "OK" button
-            });
+    });
+    $(".showImage").click(function (e) {
+        e.preventDefault(); // Prevent the default behavior of the click event
+        var imgSrc = $(this).attr("src");
+        var tenlinhkien = $(this).data("tenlinhkien");
+        Swal.fire({
+            imageUrl: imgSrc,
+            imageWidth: 400, // Adjust this to your preferred width
+            imageHeight: 400, // Adjust this to your preferred height
+            title: tenlinhkien,
+            showConfirmButton: false // Remove the "OK" button
         });
     });
 </script>

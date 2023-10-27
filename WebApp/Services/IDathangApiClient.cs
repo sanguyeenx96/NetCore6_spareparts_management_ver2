@@ -9,6 +9,7 @@ namespace WebApp.Services
     {
         Task<ApiResult<List<DathangVm>>> GetAll(GetDathangRequest request);
         Task<int> Count(GetDathangRequest request);
+        Task<ApiResult<bool>> CreateYeuCauDatHang(int linhkienid,DathangCreateRequest request);
 
     }
 }

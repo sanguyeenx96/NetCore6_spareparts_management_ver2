@@ -13,6 +13,6 @@ namespace Application.Dathang
     {
         Task<ApiResult<List<DathangVm>>> GetAll(GetDathangRequest request);
         Task<int> CountDatHang(GetDathangRequest request);
-
+        Task<ApiResult<bool>> CreateYeuCauDatHang(int linhkienid,DathangCreateRequest request);
     }
 }
