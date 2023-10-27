@@ -1,4 +1,9 @@
-﻿@model IEnumerable<ViewModels.Dathang.DathangVm>
+﻿﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var hoten = HttpContextAccessor.HttpContext.Session.GetString("Token");
+}
+@model IEnumerable<ViewModels.Dathang.DathangVm>
 @{
     var trangthai = ViewBag.trangthai;
 }
@@ -11,6 +16,11 @@
     .btn-group-center {
         text-align: center;
     }
+
+    .swal2-overflow {
+        overflow-x: visible;
+        overflow-y: visible;
+    }
 </style>
 
 <table id="table" class="table table-reponsive table-striped " style="text-align:center;vertical-align:middle" data-trangthai="@trangthai">
@@ -19,7 +29,7 @@
             <th class="all" style="white-space: nowrap;">Tên linh kiện</th>
             <th class="all" style="white-space: nowrap;">Mã linh kiện</th>
             <th class="all" style="white-space: nowrap;">Ngày yêu cầu</th>
-            <th style="white-space: nowrap;"></th>
+            <th class="all" style="white-space: nowrap;"></th>
             <th class="all" style="white-space: nowrap;"></th>
             <th class="none" style="white-space: nowrap;">Tên Jig</th>
             <th class="none" style="white-space: nowrap;">Mã Jig</th>
@@ -31,7 +41,7 @@
             <th class="none" style="white-space: nowrap;">Thành tiền</th>
             <th class="none" style="white-space: nowrap;">Số lượng đặt hàng</th>
             <th class="none" style="white-space: nowrap;">Số lượng tồn kho khi đặt hàng</th>
-            <th class="none" style="white-space: nowrap;">Người đặt hàng</th>
+            <th class="none" style="white-space: nowrap;">Người yêu cầu đặt hàng</th>
             <th class="none" style="white-space: nowrap;">Ngày đặt hàng</th>
             <th class="none" style="white-space: nowrap;">Ngày dự kiến hàng về</th>
             <th class="none" style="white-space: nowrap;">Ngày hàng về đợt 1</th>
@@ -40,7 +50,6 @@
             <th class="none" style="white-space: nowrap;">Ngày hàng về đợt 2</th>
             <th class="none" style="white-space: nowrap;">Số lượng hàng về đợt 2</th>
             <th class="none" style="white-space: nowrap;">Trạng thái</th>
-
         </tr>
     </thead>
     <tbody>
@@ -64,15 +73,41 @@
                         }
                         else
                         {
-                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                            <span style="opacity:0.9" class="badge badge-secondary">None</span>
                         }
                     }
                 </td>
                 <td class="col-md-2" style="font-size:small; vertical-align:middle;text-align:center">
                     <div class="btn-group btn-block btn-sm ">
-                        <a id="btnXacnhan" class="btn btn-app bg-success">
+                        <a class="btn btn-app bg-success btnXacNhanDatHang"
+                       data-trangthai="@trangthai"
+                       data-id="@item.Id"
+                       data-tenlinhkien="@item.Tenlinhkien"
+                       data-malinhkien="@item.Malinhkien"
+                       data-ngayyeucau="@item.Ngayyeucau"
+                       data-tenjig="@item.Tenjig"
+                       data-majig="@item.Majig"
+                       data-model="@item.Model"
+                       data-maker="@item.Maker"
+                       data-donvi="@item.Donvi"
+                       data-ghichu="@item.Ghichu"
+                       data-dongia="@item.Dongia"
+                       data-thanhtien="@item.Thanhtien"
+                       data-soluongdathang="@item.Soluong"
+                       data-soluongtonkhokhidathang="@item.Soluongtonkho"
+                       data-nguoiyeucaudathang="@item.Nguoidathang"
+                       data-ngaydathang="@item.Ngaydathang"
+                       data-ngaydukienhangve="@item.Tenjig"
+                       data-ngayhangvedot1="@item.Ngayhangve"
+                       data-soluonghangvedot1="@item.Soluongvedot1"
+                       data-ngaydukienhangvedot2="@item.Ngaydukienhangvedot2"
+                       data-ngayhangvedot2="@item.Ngayhangvedot2"
+                       data-soluonghangvedot2="@item.Soluongvedot2"
+                       data-hinhanh="@item.Image"
+                       data-trangthai="@item.Trangthai"
+                       data-hoten="@hoten">
                             <i class="fas fa-check"></i> Xác nhận
-                        </a>                       
+                        </a>
                         <a class="btn btn-app bg-secondary ">
                             <i class="fas fa-trash"></i> Xoá
                         </a>
@@ -181,11 +216,11 @@
                     }
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nguoidathang)
+                    <span class="badge badge-warning">@item.Nguoidathang</span>
                 </td>
                 <td style="vertical-align:middle;text-align:center">
                     <span class="badge badge-info">@item.Ngaydathang</span>
-                </td>              
+                </td>
                 <td style="vertical-align:middle;text-align:center">
                     @{
                         if (item.Ngaydukienhangve != null)
@@ -245,7 +280,7 @@
                             <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                         }
                     }
-                </td>               
+                </td>
                 <td>
                     @{
                         if (item.Soluongvedot2 != null)
@@ -270,7 +305,6 @@
     $(document).ready(function () {
         //Get Trangthai of Page:
         var trangthai = $("#table").data("trangthai");
-
         // Define columnDefs conditionally based on trangthai
         var columnDefs = [];
         if (trangthai === "Yêu cầu đặt hàng") {
@@ -309,7 +343,6 @@
                 }
             ];
         }
-
         //Init datatable:
         var table = $("#table").DataTable({
             "paging": true,
@@ -342,17 +375,20 @@
                 $('#thebody1').show();
             }
         }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)')
-        //Show modal Image when click:
-        $(".showImage").on("click", function (e) {
-            var imgSrc = $(this).attr("src");
-            var tenlinhkien = $(this).data("tenlinhkien");
-            Swal.fire({
-                imageUrl: imgSrc,
-                imageWidth: 400,
-                imageHeight: 400,
-                title: tenlinhkien,
-                showConfirmButton: false // Remove the "OK" button
-            });
+    });
+    $(".showImage").click(function (e) {
+        e.preventDefault(); // Prevent the default behavior of the click event
+        var imgSrc = $(this).attr("src");
+        var tenlinhkien = $(this).data("tenlinhkien");
+        Swal.fire({
+            imageUrl: imgSrc,
+            imageWidth: 400,
+            imageHeight: 400,
+            title: tenlinhkien,
+            showConfirmButton: false // Remove the "OK" button
         });
     });
+
+ 
 </script>
+<script src="~/scripts/dathang/xacnhan.js"></script>

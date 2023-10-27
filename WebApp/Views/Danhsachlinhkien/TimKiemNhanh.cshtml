@@ -1,6 +1,11 @@
 ﻿@using ViewModels.Common;
 @using ViewModels.Count
 @model PagedResult<ViewModels.Danhsachlinhkien.DanhsachlinhkienVm>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var hoten = HttpContextAccessor.HttpContext.Session.GetString("Token");
+}
 <style>
     table.dataTable.dtr-inline.collapsed > tbody > tr > td.child, table.dataTable.dtr-inline.collapsed > tbody > tr > th.child, table.dataTable.dtr-inline.collapsed > tbody > tr > td.dataTables_empty {
         font-size: small;
@@ -20,22 +25,6 @@
     ViewData["Active"] = "pageTimkiemnhanh";
 
 }
-@section Scripts{
-    <script>
-        $(document).ready(function () {
-            $("#tblSparepartslist").DataTable({
-                "paging": false,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": false,
-                "info": false,
-                "autoWidth": false,
-                "responsive": true,
-            })
-        })
-    </script>
-}
-
 <div id="infoboxs"></div>
 
 <div class="row">
@@ -66,7 +55,6 @@
                             <th class="all" style="white-space: nowrap;">Tên linh kiện</th>
                             <th class="all" style="white-space: nowrap;">Mã linh kiện</th>
                             <th style="white-space: nowrap;">Tên jig</th>
-
                             <th class="all" style="white-space: nowrap;">Tồn kho</th>
                             <th class="all" style="white-space: nowrap;"></th>
                             <th style="white-space: nowrap;"></th>
@@ -92,11 +80,11 @@
                                     @{
                                         if (!string.IsNullOrEmpty(item.Tenjig))
                                         {
-                                            @Html.DisplayFor(modelItem => item.Tenjig)
+                                                        @Html.DisplayFor(modelItem => item.Tenjig)
                                         }
                                         else
                                         {
-                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -104,11 +92,11 @@
                                     @{
                                         if (item.Tonkho > 0)
                                         {
-                                            <span style="width: 30px;opacity:0.9" class="right badge badge-success">@item.Tonkho</span>
+                                                        <span style="width: 30px;opacity:0.9" class="right badge badge-success">@item.Tonkho</span>
                                         }
                                         else
                                         {
-                                            <span style="width: 30px;opacity:0.9" class="right badge badge-danger">@item.Tonkho</span>
+                                                        <span style="width: 30px;opacity:0.9" class="right badge badge-danger">@item.Tonkho</span>
                                         }
                                     }
                                 </td>
@@ -116,21 +104,45 @@
                                     @{
                                         if (item.Image != null)
                                         {
-                                            <img class="shadow showImage" style="width:100%;min-width:50px;min-height:75px;max-width:150px; max-height:200px;border-radius: 5px" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
+                                                        <img class="shadow showImage" style="width:100%;min-width:50px;min-height:75px;max-width:150px; max-height:200px;border-radius: 5px" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
                                         }
                                         else
                                         {
-                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
                                 <td class="col-md-2" style="font-size:small; vertical-align:middle;text-align:center">
                                     <div class="btn-group btn-block ">
-                                        <a class="btn btn-app bg-primary">
+                                        <a class="btn btn-app bg-primary btnLayLinhKien"
+                                       data-id="@item.Id"
+                                       data-tenlinhkien="@item.Tenlinhkien"
+                                       data-malinhkien="@item.Malinhkien"
+                                       data-tenjig="@item.Tenjig"
+                                       data-majig="@item.Majig"
+                                       data-model="@item.Model"
+                                       data-tonkho="@item.Tonkho"
+                                       data-ghichu="@item.Ghichu"
+                                       data-hinhanh="@item.Image"
+                                       data-hoten="@hoten">
                                             <i class="fas fa-upload"></i> Lấy sử dụng
                                         </a>
-                                        <a class="btn btn-app bg-warning ">
+                                        <a class="btn btn-app bg-warning btnYeuCauDatHang"
+                                       data-id="@item.Id"
+                                       data-tenlinhkien="@item.Tenlinhkien"
+                                       data-malinhkien="@item.Malinhkien"
+                                       data-tenjig="@item.Tenjig"
+                                       data-majig="@item.Majig"
+                                       data-model="@item.Model"
+                                       data-tonkho="@item.Tonkho"
+                                       data-ghichu="@item.Ghichu"
+                                       data-hinhanh="@item.Image"
+                                       data-hoten="@hoten"
+                                       data-ycdh=@item.YCDH>
                                             <i class="fas fa-cart-plus"></i> Đặt hàng
+                                            @if(item.YCDH > 0){
+                                                <span class="badge badge-danger badge-pill" style="position: absolute; top: -10px; right: -10px;">@item.YCDH yêu cầu </span>
+                                            }
                                         </a>
                                     </div>
                                 </td>
@@ -141,11 +153,11 @@
                                     @{
                                         if (!string.IsNullOrEmpty(item.Majig))
                                         {
-                                            @Html.DisplayFor(modelItem => item.Majig)
+                                                        @Html.DisplayFor(modelItem => item.Majig)
                                         }
                                         else
                                         {
-                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -153,11 +165,11 @@
                                     @{
                                         if (!string.IsNullOrEmpty(item.Maker))
                                         {
-                                            @Html.DisplayFor(modelItem => item.Maker)
+                                                        @Html.DisplayFor(modelItem => item.Maker)
                                         }
                                         else
                                         {
-                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -165,11 +177,11 @@
                                     @{
                                         if (!string.IsNullOrEmpty(item.Donvi))
                                         {
-                                            @Html.DisplayFor(modelItem => item.Donvi)
+                                                        @Html.DisplayFor(modelItem => item.Donvi)
                                         }
                                         else
                                         {
-                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -177,24 +189,23 @@
                                     @{
                                         if (item.Dongia != null)
                                         {
-                                            @Html.DisplayFor(modelItem => item.Dongia)
+                                                        @Html.DisplayFor(modelItem => item.Dongia)
                                         }
                                         else
                                         {
-                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
-
                                 <td style="font-size:small; vertical-align:middle;text-align:center">
                                     @{
                                         if (!string.IsNullOrEmpty(item.Ghichu))
                                         {
-                                            @Html.DisplayFor(modelItem => item.Ghichu)
+                                                        @Html.DisplayFor(modelItem => item.Ghichu)
                                         }
                                         else
                                         {
-                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -209,20 +220,23 @@
         </div>
     </div>
 </div>
-<script>
-    $(document).ready(function () {        
-        $.get("/Danhsachlinhkien/GetCountsLinhkien", function (result) {
-            $("#infoboxs").html(result);
-        });
-//Click btnLaylinhkien
-        $(".btnLaylinhkien").on("click", function (e) {
-            Swal.fire(
-                "Lỗi máy chủ",
-                "Không tải được dữ liệu",
-                "error"
-            );
-        });
-//Show image
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#tblSparepartslist").DataTable({
+                "paging": false,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": false,
+                "info": false,
+                "autoWidth": false,
+                "responsive": true,
+            })
+            $.get("/Danhsachlinhkien/GetCountsLinhkien", function (result) {
+                $("#infoboxs").html(result);
+            });           
+        })
         $(".showImage").on("click", function (e) {
             var imgSrc = $(this).attr("src");
             var tenlinhkien = $(this).data("tenlinhkien");
@@ -234,5 +248,7 @@
                 showConfirmButton: false // Remove the "OK" button
             });
         });
-    });   
-</script>
+    </script>
+}
+    <script src="~/scripts/danhsachlinhkien/laylinhkien.js"></script>
+    <script src="~/scripts/danhsachlinhkien/yeucaudathang.js"></script>

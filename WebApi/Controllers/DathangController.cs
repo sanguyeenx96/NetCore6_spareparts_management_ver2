@@ -29,5 +29,12 @@ namespace WebApi.Controllers
             var result = await _dathangService.CountDatHang(request);
             return Ok(result);
         }
+
+        [HttpPost("yeucaudathang/{linhkienid}")]
+        public async Task<IActionResult> CreateYeuCauDatHang(int linhkienid, [FromBody] DathangCreateRequest request)
+        {
+            var result = await _dathangService.CreateYeuCauDatHang(linhkienid, request);
+            return Ok(result);
+        }
     }
 }

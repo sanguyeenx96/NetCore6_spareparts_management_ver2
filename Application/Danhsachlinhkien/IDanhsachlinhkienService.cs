@@ -25,5 +25,8 @@ namespace Application.Danhsachlinhkien
 
         Task<int> CountLinhkien(GetDanhsachlinhkienRequest request);
 
+        Task<ApiResult<bool>> LayLinhKien(int id, LaylinhkienRequest request);
+
+
     }
 }

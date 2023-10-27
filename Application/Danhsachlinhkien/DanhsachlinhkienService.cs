@@ -109,9 +109,11 @@ namespace Application.Danhsachlinhkien
             //3. Paging
             int totalRow = await query.CountAsync();
 
-            var data = await query.Skip((request.PageIndex - 1) * request.PageSize)
+            var dataList = await query.Skip((request.PageIndex - 1) * request.PageSize)
                 .Take(request.PageSize)
-                .Select(x => new DanhsachlinhkienVm()
+                .ToListAsync();
+
+            var data = dataList.Select(x => new DanhsachlinhkienVm
                 {
                     Id = x.Id,
                     Model = x.Model,
@@ -124,9 +126,10 @@ namespace Application.Danhsachlinhkien
                     Dongia = x.Dongia,
                     Tonkho = x.Tonkho,
                     Ghichu = x.Ghichu,
-                    Image = x.Image
-                })
-                .ToListAsync();
+                    Image = x.Image,
+                    YCDH = _context.Dathangs
+                .Count(dh => (dh.Malinhkien == x.Malinhkien && dh.Trangthai == "Yêu cầu đặt hàng" && dh.Model == x.Model))
+                }).ToList();
 
             //4. Select and projection
             var pagedResult = new PagedResult<DanhsachlinhkienVm>()
@@ -341,7 +344,7 @@ namespace Application.Danhsachlinhkien
         private bool ChecktrungMalinhkien(string model, string malinhkien)
         {
             var result = _context.Danhsachlinhkiens.Where(x => (x.Model == model && x.Malinhkien.Contains(malinhkien))).Count();
-            if(result > 0)
+            if (result > 0)
             {
                 return true;
             }
@@ -432,8 +435,35 @@ namespace Application.Danhsachlinhkien
                 int tonkho = Convert.ToInt32(request.Keyword);
                 query = query.Where(x => x.Tonkho == tonkho);
             }
-            int totalRows = await query.CountAsync(); 
+            int totalRows = await query.CountAsync();
             return totalRows;
+        }
+
+        public async Task<ApiResult<bool>> LayLinhKien(int id, LaylinhkienRequest request)
+        {
+            var linhkien = await _context.Danhsachlinhkiens.FindAsync(id);
+            if (linhkien == null)
+            {
+                return new ApiErrorResult<bool>("Linh kiện không tồn tại");
+            }
+            try
+            {
+                if (request.soluong > linhkien.Tonkho || request.soluong < 1)
+                {
+                    return new ApiErrorResult<bool>("Số lượng không phù hợp");
+                }
+                else
+                {
+                    linhkien.Tonkho -= request.soluong;
+                    _context.Danhsachlinhkiens.Update(linhkien);
+                    await _context.SaveChangesAsync();
+                    return new ApiSuccessResult<bool>();
+                }
+            }
+            catch
+            {
+                return new ApiErrorResult<bool>("Cập nhật không thành công");
+            }
         }
     }
 }

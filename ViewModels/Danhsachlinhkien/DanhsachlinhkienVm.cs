@@ -20,5 +20,6 @@ namespace ViewModels.Danhsachlinhkien
         public int? Tonkho { get; set; }
         public string Ghichu { get; set; }
         public string? Image { get; set; }
+        public int? YCDH { get; set; }
     }
 }

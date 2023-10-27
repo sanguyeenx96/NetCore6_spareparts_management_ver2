@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using ViewModels.Count;
 using ViewModels.Danhsachlinhkien;
 using ViewModels.Dathang;
+using ViewModels.System.User;
 using WebApp.Services;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 namespace WebApp.Controllers
@@ -198,5 +199,24 @@ namespace WebApp.Controllers
             var result = await _dathangApiClient.Count(request);
             return result;
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Laylinhkien(int id,LaylinhkienRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false });
+            }
+            var result = await _danhsachlinhkienApiClient.Laylinhkien(id, request);
+            if (result.IsSuccessed)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false });
+            }
+        }
+
     }
 }
