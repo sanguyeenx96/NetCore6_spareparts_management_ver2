@@ -1,4 +1,9 @@
 ﻿@model IEnumerable<ViewModels.Danhsachlinhkien.DanhsachlinhkienVm>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+    var hoten = HttpContextAccessor.HttpContext.Session.GetString("Token");
+}
 
 <table id="tblSpareparts" class="table table-reponsive table-hover " style="text-align:center;vertical-align:middle">
     <thead style="font-size:small;">
@@ -9,12 +14,13 @@
             <th style="white-space: nowrap;">Mã jig</th>
             <th class="all" style="white-space: nowrap;">Tồn kho</th>
             <th class="all" style="white-space: nowrap;">Hình ảnh</th>
+            <th class="all" style="white-space: nowrap;"></th>
+
             <th class="none" style="white-space: nowrap;">Model</th>
             <th class="none" style="white-space: nowrap;">Maker</th>
             <th class="none" style="white-space: nowrap;">Đơn vị</th>
             <th class="none" style="white-space: nowrap;">Đơn giá</th>
             <th class="none" style="white-space: nowrap;">Ghi chú</th>
-            <th class="none" style="white-space: nowrap;"></th>
         </tr>
     </thead>
     <tbody>
@@ -85,6 +91,38 @@
                     }
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
+                    <div class="btn-group btn-block justify-content-center">
+                        <button class="btn btn-app  bg-secondary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-cog"></i> Chức năng
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item " href="#" style="white-space: nowrap">
+                                <i class="fas fa-camera"></i> Đổi hình ảnh
+                            </a>
+                            <a class="dropdown-item" href="#" style="white-space: nowrap">
+                                <i class="fa fa-edit"></i> Sửa thông tin
+                            </a>
+                            <a class="dropdown-item " href="#" style="white-space: nowrap">
+                                <i class="fas fa-trash"></i> Xoá linh kiện
+                            </a>
+                        </div>
+                        <a class="btn btn-app bg-warning btnYeuCauDatHang"
+                       data-id="@item.Id"
+                       data-tenlinhkien="@item.Tenlinhkien"
+                       data-malinhkien="@item.Malinhkien"
+                       data-tenjig="@item.Tenjig"
+                       data-majig="@item.Majig"
+                       data-model="@item.Model"
+                       data-tonkho="@item.Tonkho"
+                       data-ghichu="@item.Ghichu"
+                       data-hinhanh="@item.Image"
+                       data-hoten="@hoten"
+                       data-ycdh=@item.YCDH>
+                            <i class="fas fa-cart-plus"></i> Đặt hàng
+                        </a>
+                  </div>
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
                     @Html.DisplayFor(modelItem => item.Model)
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
@@ -113,7 +151,7 @@
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
                     @{
-                        if (item.Dongia!= null)
+                        if (item.Dongia != null)
                         {
                             @Html.DisplayFor(modelItem => item.Ghichu)
                         }
@@ -135,22 +173,7 @@
                         }
                     }
                 </td>
-                <td style="font-size:small; vertical-align:middle;text-align:center">
-                    <div class="btn-group btn-block ">
-                        <a class="btn btn-app bg-warning " style="white-space: nowrap">
-                            <i class="fas fa-cart-plus"></i> Đặt hàng
-                        </a>
-                        <a class="btn btn-app bg-secondary " style="white-space: nowrap">
-                            <i class="fas fa-camera"></i> Đổi hình ảnh
-                        </a>
-                        <a class="btn btn-app bg-secondary " style="white-space: nowrap">
-                            <i class="fa fa-edit"></i> Sửa thông tin
-                        </a>
-                        <a class="btn btn-app bg-secondary " style="white-space: nowrap">
-                            <i  class="fas fa-trash"></i> Xoá linh kiện
-                        </a>
-                    </div>
-                </td>
+
             </tr>
         }
     </tbody>
@@ -205,4 +228,5 @@
     });
 </script>
 
+<script src="~/scripts/danhsachlinhkien/yeucaudathang.js"></script>
 
