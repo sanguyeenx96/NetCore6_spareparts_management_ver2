@@ -2,14 +2,25 @@
 using ViewModels.Common;
 using ViewModels.Danhsachlinhkien;
 using ViewModels.Dathang;
+using ViewModels.Dathang.Request;
 
 namespace WebApp.Services
 {
-    public interface IDathangApiClient 
+    public interface IDathangApiClient
     {
         Task<ApiResult<List<DathangVm>>> GetAll(GetDathangRequest request);
+
         Task<int> Count(GetDathangRequest request);
-        Task<ApiResult<bool>> CreateYeuCauDatHang(int linhkienid,DathangCreateRequest request);
+
+        Task<ApiResult<bool>> CreateYeuCauDatHang(int linhkienid, DathangCreateRequest request);
+
+        Task<ApiResult<bool>> XacNhanDatHang(int id, DathangXacNhanDatHangRequest request);
+
+        Task<ApiResult<bool>> XacNhanHangVeDu(int id);
+
+        Task<ApiResult<bool>> XacNhanHangVeThieu(int id, XacNhanHangVeThieuRequest request);
+
+        Task<ApiResult<bool>> XacNhanHangVeDot2(int id);
 
     }
 }

@@ -7,6 +7,9 @@
 @{
     var trangthai = ViewBag.trangthai;
 }
+@section Script{
+  
+}
 <style>
     table.dataTable.dtr-inline.collapsed > tbody > tr > td.child, table.dataTable.dtr-inline.collapsed > tbody > tr > th.child, table.dataTable.dtr-inline.collapsed > tbody > tr > td.dataTables_empty {
         font-size: small;
@@ -22,6 +25,7 @@
         overflow-y: visible;
     }
 </style>
+
 
 <table id="table" class="table table-reponsive table-striped " style="text-align:center;vertical-align:middle" data-trangthai="@trangthai">
     <thead style="font-size:small;">
@@ -42,7 +46,7 @@
             <th class="none" style="white-space: nowrap;">Số lượng đặt hàng</th>
             <th class="none" style="white-space: nowrap;">Số lượng tồn kho khi đặt hàng</th>
             <th class="none" style="white-space: nowrap;">Người yêu cầu đặt hàng</th>
-            <th class="none" style="white-space: nowrap;">Ngày đặt hàng</th>
+            <th class="none" style="white-space: nowrap;">Ngày xác nhận đặt hàng</th>
             <th class="none" style="white-space: nowrap;">Ngày dự kiến hàng về</th>
             <th class="none" style="white-space: nowrap;">Ngày hàng về đợt 1</th>
             <th class="none" style="white-space: nowrap;">Số lượng hàng về đợt 1</th>
@@ -108,8 +112,8 @@
                        data-hoten="@hoten">
                             <i class="fas fa-check"></i> Xác nhận
                         </a>
-                        <a class="btn btn-app bg-secondary ">
-                            <i class="fas fa-trash"></i> Xoá
+                        <a class="btn btn-app bg-secondary">
+                            <i  class="fas fa-trash"></i> Xoá
                         </a>
                     </div>
                 </td>
@@ -301,94 +305,95 @@
     </tbody>
 </table>
 
-<script>
-    $(document).ready(function () {
-        //Get Trangthai of Page:
-        var trangthai = $("#table").data("trangthai");
-        // Define columnDefs conditionally based on trangthai
-        var columnDefs = [];
-        if (trangthai === "Yêu cầu đặt hàng") {
-            columnDefs = [
-                {
-                    "targets": [23, 22, 21, 20, 19, 18, 17, 16],  // Define the columns to be hidden (columns are 0-based)
-                    "visible": false,  // Initially, hide these columns
-                    "searchable": false  // Make them unsearchable
-                }
-            ];
-        }
-        if (trangthai === "Đang đặt hàng") {
-            columnDefs = [
-                {
-                    "targets": [23, 22, 21, 20, 19, 18],  // Define the columns to be hidden (columns are 0-based)
-                    "visible": false,  // Initially, hide these columns
-                    "searchable": false  // Make them unsearchable
-                }
-            ];
-        }
-        if (trangthai === "Hàng về thiếu") {
-            columnDefs = [
-                {
-                    "targets": [23, 22, 21],  // Define the columns to be hidden (columns are 0-based)
-                    "visible": false,  // Initially, hide these columns
-                    "searchable": false  // Make them unsearchable
-                }
-            ];
-        }
-        if (trangthai === "Hàng đã về") {
-            columnDefs = [
-                {
-                    "targets": [23],  // Define the columns to be hidden (columns are 0-based)
-                    "visible": false,  // Initially, hide these columns
-                    "searchable": false  // Make them unsearchable
-                }
-            ];
-        }
-        //Init datatable:
-        var table = $("#table").DataTable({
-            "paging": true,
-            "lengthChange": true,
-            "searching": true,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
-            "buttons": [
-                {
-                    extend: 'copy',
-                    text: '<i class="fas fa-copy"></i> Copy',
-                    className: 'btn-default'
-                },
-                {
-                    extend: 'excel',
-                    text: '<i class="fas fa-file-excel"></i> Xuất Excel',
-                    className: 'btn-default'
-                },
-                {
-                    extend: 'print',
-                    text: '<i class="fas fa-print"></i> In',
-                    className: 'btn-default'
-                }
-            ],
-            "columnDefs": columnDefs, // Apply the columnDefs
-            "drawCallback": function () {
-                $('#overlay1').hide();
-                $('#thebody1').show();
-            }
-        }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)')
-    });
-    $(".showImage").click(function (e) {
-        e.preventDefault(); // Prevent the default behavior of the click event
-        var imgSrc = $(this).attr("src");
-        var tenlinhkien = $(this).data("tenlinhkien");
-        Swal.fire({
-            imageUrl: imgSrc,
-            imageWidth: 400,
-            imageHeight: 400,
-            title: tenlinhkien,
-            showConfirmButton: false // Remove the "OK" button
-        });
-    });
 
- 
-</script>
-<script src="~/scripts/dathang/xacnhan.js"></script>
+    <script>
+        $(document).ready(function () {
+            //Get Trangthai of Page:
+            var trangthai = $("#table").data("trangthai");
+            // Define columnDefs conditionally based on trangthai
+            var columnDefs = [];
+            if (trangthai === "Yêu cầu đặt hàng") {
+                columnDefs = [
+                    {
+                        "targets": [23, 22, 21, 20, 19, 18, 17, 16],  // Define the columns to be hidden (columns are 0-based)
+                        "visible": false,  // Initially, hide these columns
+                        "searchable": false  // Make them unsearchable
+                    }
+                ];
+            }
+            if (trangthai === "Đang đặt hàng") {
+                columnDefs = [
+                    {
+                        "targets": [23, 22, 21, 20, 19, 18],  // Define the columns to be hidden (columns are 0-based)
+                        "visible": false,  // Initially, hide these columns
+                        "searchable": false  // Make them unsearchable
+                    }
+                ];
+            }
+            if (trangthai === "Hàng về thiếu") {
+                columnDefs = [
+                    {
+                        "targets": [23, 22, 21],  // Define the columns to be hidden (columns are 0-based)
+                        "visible": false,  // Initially, hide these columns
+                        "searchable": false  // Make them unsearchable
+                    }
+                ];
+            }
+            if (trangthai === "Hàng đã về") {
+                columnDefs = [
+                    {
+                        "targets": [23],  // Define the columns to be hidden (columns are 0-based)
+                        "visible": false,  // Initially, hide these columns
+                        "searchable": false  // Make them unsearchable
+                    }
+                ];
+            }
+            //Init datatable:
+            var table = $("#table").DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "buttons": [
+                    {
+                        extend: 'copy',
+                        text: '<i class="fas fa-copy"></i> Copy',
+                        className: 'btn-default'
+                    },
+                    {
+                        extend: 'excel',
+                        text: '<i class="fas fa-file-excel"></i> Xuất Excel',
+                        className: 'btn-default'
+                    },
+                    {
+                        extend: 'print',
+                        text: '<i class="fas fa-print"></i> In',
+                        className: 'btn-default'
+                    }
+                ],
+                "columnDefs": columnDefs, // Apply the columnDefs
+                "drawCallback": function () {
+                    $('#overlay1').hide();
+                    $('#thebody1').show();
+                }
+            }).buttons().container().appendTo('#table_wrapper .col-md-6:eq(0)')
+        });
+        $(".showImage").click(function (e) {
+            e.preventDefault(); // Prevent the default behavior of the click event
+            var imgSrc = $(this).attr("src");
+            var tenlinhkien = $(this).data("tenlinhkien");
+            Swal.fire({
+                imageUrl: imgSrc,
+                imageWidth: 400,
+                imageHeight: 400,
+                title: tenlinhkien,
+                showConfirmButton: false // Remove the "OK" button
+            });
+        });
+    </script>
+
+
+    <script src="~/scripts/dathang/xacnhan.js"></script>
