@@ -71,7 +71,7 @@ namespace WebApp.Controllers
             if (model == "All")
             {
                 model = null;
-            }          
+            }
             ViewBag.currentPage = "Quản lý linh kiện";
             var request = new GetDanhsachlinhkienRequest()
             {
@@ -118,18 +118,38 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Detail(int id)
         {
             var data = await _danhsachlinhkienApiClient.GetById(id);
-            return View(data.ResultObj);
+            var models = await _modelApiClient.GetAll();
+            ViewBag.models = models.Select(x => new SelectListItem()
+            {
+                Text = x.Tenmodel,
+                Value = x.Tenmodel,
+                Selected = !string.IsNullOrEmpty(data.ResultObj.Model) && data.ResultObj.Model.Equals(x.Tenmodel)
+            });
+            return PartialView("_UpdateTTLK", data.ResultObj);
+        }
+        [HttpGet]
+        public async Task<IActionResult> DetailImage(int id)
+        {
+            var data = await _danhsachlinhkienApiClient.GetById(id);
+            return PartialView("_UpdateImage", data.ResultObj);
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.currentPage = "Thêm linh kiện mới thủ công";
+            ViewBag.listmodel = await _modelApiClient.GetAll();
+            var models = await _modelApiClient.GetAll();
+            ViewBag.models = models.Select(x => new SelectListItem()
+            {
+                Text = x.Tenmodel,
+                Value = x.Tenmodel
+            });
             return View();
         }
 
         [HttpPost]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Create([FromForm] DanhsachlinhkienCreateRequest request)
+        public async Task<IActionResult> Create([FromBody] DanhsachlinhkienCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -168,7 +188,7 @@ namespace WebApp.Controllers
                 {
                     return Json(new { success = true, data = result.ResultObj });
                 }
-                return Json(new { success = false });
+                return Json(new { success = false, message = result.Message });
             }
         }
 
@@ -201,7 +221,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Laylinhkien(int id,LaylinhkienRequest request)
+        public async Task<IActionResult> Laylinhkien(int id, LaylinhkienRequest request)
         {
             if (!ModelState.IsValid)
             {
@@ -214,9 +234,74 @@ namespace WebApp.Controllers
             }
             else
             {
-                return Json(new { success = false });
+                return Json(new { success = false, message = result.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Update(DanhsachlinhkienUpdateRequest request)
+        {
+
+            //var request = new DanhsachlinhkienUpdateRequest()
+            //{
+            //    Dongia = model.Dongia,
+            //    Donvi = model.Donvi,
+            //    Ghichu = model.Ghichu,
+            //    Majig = model.Majig,
+            //    Maker = model.Maker,
+            //    Malinhkien = model.Malinhkien,
+            //    Model = model.Model,
+            //    Tenjig = model.Tenjig,
+            //    Tenlinhkien = model.Tenlinhkien,
+            //    Tonkho = model.Tonkho
+            //};
+            var result = await _danhsachlinhkienApiClient.Update(request);
+            if (result.IsSuccessed)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = result.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _danhsachlinhkienApiClient.Delete(id);
+            if (result.IsSuccessed)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = result.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateImage(int id, string image)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { success = false });
+            }
+            var request = new DanhsachlinhkienImageUpdateRequest()
+            {
+                Image = image
+            };
+            var result = await _danhsachlinhkienApiClient.UpdateImage(id,request);
+            if (result.IsSuccessed)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = result.Message });
+            }
+        }
+
 
     }
 }

@@ -14,7 +14,7 @@ namespace WebApp.Controllers
         {
             _userApiClient = userApiClient;
         }
-        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 5)
+        public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
             ViewBag.currentPage = "Quản lý tài khoản";
             var sessions = HttpContext.Session.GetString("Token");

@@ -245,11 +245,11 @@ namespace Application.Dathang
             }
         }
 
-        public async Task<ApiResult<bool>> XoaYeuCauDatHang(XoaYeuCauDatHangRequest request)
+        public async Task<ApiResult<bool>> XoaYeuCauDatHang(int id)
         {
             try
             {
-                var yeucaudathang = await _context.Dathangs.FindAsync(request.Id);
+                var yeucaudathang = await _context.Dathangs.FindAsync(id);
                 if (yeucaudathang == null) return new ApiErrorResult<bool>("Yêu cầu đặt hàng không tồn tại");
                 _context.Dathangs.Remove(yeucaudathang);
                 await _context.SaveChangesAsync();

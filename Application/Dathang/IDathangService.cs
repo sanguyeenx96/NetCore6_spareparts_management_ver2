@@ -19,5 +19,6 @@ namespace Application.Dathang
         Task<ApiResult<bool>> XacNhanHangVeDu(int id);
         Task<ApiResult<bool>> XacNhanHangVeThieu(int id, XacNhanHangVeThieuRequest request);
         Task<ApiResult<bool>> XacNhanHangVeDot2(int id);
-        Task<ApiResult<bool>> XoaYeuCauDatHang(XoaYeuCauDatHangRequest request);
+        Task<ApiResult<bool>> XoaYeuCauDatHang(int id);
     }
+}

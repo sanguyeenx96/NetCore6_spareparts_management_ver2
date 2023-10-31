@@ -119,5 +119,19 @@ namespace WebApp.Controllers
                 return Json(new { success = false, message = result.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _dathangApiClient.Delete(id);
+            if (result.IsSuccessed)
+            {
+                return Json(new { success = true });
+            }
+            else
+            {
+                return Json(new { success = false, message = result.Message });
+            }
+        }
     }
 }

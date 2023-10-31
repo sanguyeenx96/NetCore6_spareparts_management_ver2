@@ -5,95 +5,151 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
 
-<h4>DanhsachlinhkienCreateRequest</h4>
-<hr />
-<div class="row">
-    <div class="col-md-12">
-        <form asp-action="Create" enctype="multipart/form-data" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
+
+<div class="card card-info">
+        <div class="card-body">
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Model</label>
+                <div class="col-sm-10">
+                    <select class="form-control" style="text-align:center" name="Model" asp-items="@ViewBag.Models "></select>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Tenjig" class="control-label"></label>
-                <input asp-for="Tenjig" class="form-control" />
-                <span asp-validation-for="Tenjig" class="text-danger"></span>
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Tên Jig</label>
+                <div class="col-sm-10">
+                    <input name="Tenjig" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Majig" class="control-label"></label>
-                <input asp-for="Majig" class="form-control" />
-                <span asp-validation-for="Majig" class="text-danger"></span>
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Mã Jig</label>
+                <div class="col-sm-10">
+                    <input name="Majig" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Tenlinhkien" class="control-label"></label>
-                <input asp-for="Tenlinhkien" class="form-control" />
-                <span asp-validation-for="Tenlinhkien" class="text-danger"></span>
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Tên linh kiện</label>
+                <div class="col-sm-10">
+                    <input name="Tenlinhkien" class="form-control" required />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Malinhkien" class="control-label"></label>
-                <input asp-for="Malinhkien" class="form-control" />
-                <span asp-validation-for="Malinhkien" class="text-danger"></span>
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Mã linh kiện</label>
+                <div class="col-sm-10">
+                    <input name="Malinhkien" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Maker" class="control-label"></label>
-                <input asp-for="Maker" class="form-control" />
-                <span asp-validation-for="Maker" class="text-danger"></span>
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Maker</label>
+                <div class="col-sm-10">
+                    <input name="Maker" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Donvi" class="control-label"></label>
-                <input asp-for="Donvi" class="form-control" />
-                <span asp-validation-for="Donvi" class="text-danger"></span>
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Đơn vị</label>
+                <div class="col-sm-10">
+                    <input name="Donvi" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Dongia" class="control-label"></label>
-                <input asp-for="Dongia" class="form-control" />
-                <span asp-validation-for="Dongia" class="text-danger"></span>
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Đơn giá</label>
+                <div class="col-sm-10">
+                    <input name="Dongia" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Tonkho" class="control-label"></label>
-                <input asp-for="Tonkho" class="form-control" />
-                <span asp-validation-for="Tonkho" class="text-danger"></span>
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Tồn kho</label>
+                <div class="col-sm-10">
+                    <input name="Tonkho" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Ghichu" class="control-label"></label>
-                <div id="ckeditor" asp-for="Ghichu"></div>
-                <span asp-validation-for="Ghichu" class="text-danger"></span>
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Ghi chú</label>
+                <div class="col-sm-10">
+                    <input name="Ghichu" class="form-control" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Hinhanh" class="control-label"></label>
-                <input asp-for="Hinhanh" class="form-control" />
-                <span asp-validation-for="Hinhanh" class="text-danger"></span>
+            <div class="form-group row">
+                <label style="font-weight: 500;" class="col-sm-2 col-form-label">Chọn hình ảnh</label>
+                <div class="col-sm-10">
+                    <input id="imageFile" name="imageFile" type="file" accept="image/*" class=" imageFile btn  btn-default btn-block" />
+                </div>
             </div>
-           
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+            <img src="" id="preview" hidden>
+            <input id="image" type="text" name="Image" class="form-control" hidden />
+            <img style="width: 100%" src="" id="output">
+        </div>
+        <div class="card-footer">
+        <button id="btnXacNhanCreate" class="btn btn-success  float-right">
+                <i class="fa fa-check fa-fw"> </i> Xác nhận
+            </button>
+            <button class="btn btn-outline-danger ">
+                <i class="fa fa-times fa-fw"> </i> Huỷ bỏ
+            </button>
+        </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<script>
+    $(document).ready(function () {
+        $('#imageFile').change(function (evt) {
+            var files = evt.target.files;
+            var file = files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+                delay(2000).then(() => ResizeImage());
+            }
+        });
+    });
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="https://cdn.ckeditor.com/ckeditor5/40.0.0/classic/ckeditor.js"></script>
-
-    <script>
-        ClassicEditor
-            .create(document.querySelector('#ckeditor'), {
-                 toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
-            })
-            .then(editor => {
-                window.editor = editor;
-            })
-            .catch(err => {
-                console.error(err.stack);
-            });
-    </script>
-}
+    function ResizeImage() {
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            var filesToUploads = document.getElementById('imageFile').files;
+            var file = filesToUploads[0];
+            if (file) {
+                var reader = new FileReader();
+                // Set the image once loaded into file reader
+                reader.onload = function (e) {
+                    var img = document.createElement("img");
+                    img.src = e.target.result;
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    var MAX_WIDTH = 500;
+                    var MAX_HEIGHT = 500;
+                    var width = img.width;
+                    var height = img.height;
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+                    dataurl = canvas.toDataURL(file.type);
+                    document.getElementById('output').src = dataurl;
+                    console.log(dataurl);
+                    document.getElementById('image').value = dataurl;
+                }
+                reader.readAsDataURL(file);
+            }
+        } else {
+            alert('The File APIs are not fully supported in this browser.');
+        }
+    }
+</script>
+<script src="~/scripts/danhsachlinhkien/create.js"></script>

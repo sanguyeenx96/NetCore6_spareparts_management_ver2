@@ -61,6 +61,7 @@ namespace Application.Danhsachlinhkien
                     Dongia = request.Dongia,
                     Tonkho = request.Tonkho,
                     Ghichu = request.Ghichu,
+                    Image = request.Image
                 };
                 //if (request.Hinhanh != null)
                 //{
@@ -114,22 +115,22 @@ namespace Application.Danhsachlinhkien
                 .ToListAsync();
 
             var data = dataList.Select(x => new DanhsachlinhkienVm
-                {
-                    Id = x.Id,
-                    Model = x.Model,
-                    Tenjig = x.Tenjig,
-                    Majig = x.Majig,
-                    Tenlinhkien = x.Tenlinhkien,
-                    Malinhkien = x.Malinhkien,
-                    Maker = x.Maker,
-                    Donvi = x.Donvi,
-                    Dongia = x.Dongia,
-                    Tonkho = x.Tonkho,
-                    Ghichu = x.Ghichu,
-                    Image = x.Image,
-                    YCDH = _context.Dathangs
+            {
+                Id = x.Id,
+                Model = x.Model,
+                Tenjig = x.Tenjig,
+                Majig = x.Majig,
+                Tenlinhkien = x.Tenlinhkien,
+                Malinhkien = x.Malinhkien,
+                Maker = x.Maker,
+                Donvi = x.Donvi,
+                Dongia = x.Dongia,
+                Tonkho = x.Tonkho,
+                Ghichu = x.Ghichu,
+                Image = x.Image,
+                YCDH = _context.Dathangs
                 .Count(dh => (dh.Malinhkien == x.Malinhkien && dh.Trangthai == "Yêu cầu đặt hàng" && dh.Model == x.Model))
-                }).ToList();
+            }).ToList();
 
             //4. Select and projection
             var pagedResult = new PagedResult<DanhsachlinhkienVm>()
@@ -463,6 +464,74 @@ namespace Application.Danhsachlinhkien
             catch
             {
                 return new ApiErrorResult<bool>("Cập nhật không thành công");
+            }
+        }
+
+        public async Task<ApiResult<bool>> Update(DanhsachlinhkienUpdateRequest request)
+        {
+            var linhkien = await _context.Danhsachlinhkiens.FindAsync(request.Id);
+            if (linhkien == null)
+            {
+                return new ApiErrorResult<bool>("Linh kiện không tồn tại");
+            }
+            try
+            {
+                linhkien.Model = request.Model;
+                linhkien.Tenjig = request.Tenjig;
+                linhkien.Majig = request.Majig;
+                linhkien.Tenlinhkien = request.Tenlinhkien;
+                linhkien.Malinhkien = request.Malinhkien;
+                linhkien.Maker = request.Maker;
+                linhkien.Donvi = request.Donvi;
+                linhkien.Dongia = request.Dongia;
+                linhkien.Tonkho = request.Tonkho;
+                linhkien.Ghichu = request.Ghichu;
+                _context.Danhsachlinhkiens.Update(linhkien);
+                await _context.SaveChangesAsync();
+                return new ApiSuccessResult<bool>();
+            }
+            catch
+            {
+                return new ApiErrorResult<bool>("Cập nhật không thành công");
+            }
+        }
+
+        public async Task<ApiResult<bool>> Delete(int id)
+        {
+            var linhkien = await _context.Danhsachlinhkiens.FindAsync(id);
+            if (linhkien == null)
+            {
+                return new ApiErrorResult<bool>("Linh kiện không tồn tại");
+            }
+            try
+            {
+                _context.Danhsachlinhkiens.Remove(linhkien);
+                await _context.SaveChangesAsync();
+                return new ApiSuccessResult<bool>();
+            }
+            catch
+            {
+                return new ApiErrorResult<bool>("Xoá không thành công");
+            }
+        }
+
+        public async Task<ApiResult<bool>> UpdateImage(int id, DanhsachlinhkienImageUpdateRequest request)
+        {
+            var linhkien = await _context.Danhsachlinhkiens.FindAsync(id);
+            if (linhkien == null)
+            {
+                return new ApiErrorResult<bool>("Linh kiện không tồn tại");
+            }
+            try
+            {
+                linhkien.Image = request.Image;
+                _context.Danhsachlinhkiens.Update(linhkien);
+                await _context.SaveChangesAsync();
+                return new ApiSuccessResult<bool>();
+            }
+            catch
+            {
+                return new ApiErrorResult<bool>("Cập nhật hình ảnh không thành công");
             }
         }
     }

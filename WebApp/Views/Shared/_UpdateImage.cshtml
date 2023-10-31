@@ -1,0 +1,114 @@
+﻿@model ViewModels.Danhsachlinhkien.DanhsachlinhkienVm
+
+<div class="modal-header" style="text-align:center">
+    <h5 class="modal-title">
+        <i class="fa fa-edit fa-fw"> </i>
+        Cập nhật hình ảnh linh kiện
+    </h5>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="col-lg-12" id="myForm">
+        <div class="form-group row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label style="font-weight: 500;">Tên linh kiện</label>
+                    <input asp-for="Tenlinhkien" class="form-control" readonly />
+                    <span asp-validation-for="Tenlinhkien" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="form-group">
+                    <label style="font-weight: 500;">Mã linh kiện</label>
+                    <input asp-for="Malinhkien" class="form-control" readonly />
+                    <span asp-validation-for="Malinhkien" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="form-group">
+                    <label style="font-weight: 500;">Chọn hình ảnh</label>
+                    <input id="imageFile" name="imageFile" type="file" accept="image/*" class=" imageFile btn  btn-secondary btn-block" />
+                </div>
+            </div>
+            <img src="" id="preview" hidden>
+            <input id="image" type="text" name="Image" class="form-control" hidden />
+            <img style="width: 100%" src="" id="output">
+        </div>
+    </div>
+</div>
+<div class="modal-footer justify-content-between">
+    <button type="button" class="btn btn-outline-danger" data-dismiss="modal"><i class="fa fa-times fa-fw"></i> Huỷ bỏ</button>
+    <button id="btnXacNhanUpdateImage" type="button" class="btn btn-success" data-id="@Model.Id"><i class="fa fa-check fa-fw"> </i> Xác nhận</button>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#imageFile').change(function (evt) {
+            var files = evt.target.files;
+            var file = files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('preview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+                delay(2000).then(() => ResizeImage());
+            }
+        });
+    });
+    function delay(time) {
+        return new Promise(resolve => setTimeout(resolve, time));
+    }
+
+    function ResizeImage() {
+        if (window.File && window.FileReader && window.FileList && window.Blob) {
+            var filesToUploads = document.getElementById('imageFile').files;
+            var file = filesToUploads[0];
+            if (file) {
+                var reader = new FileReader();
+                // Set the image once loaded into file reader
+                reader.onload = function (e) {
+                    var img = document.createElement("img");
+                    img.src = e.target.result;
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+                    var MAX_WIDTH = 500;
+                    var MAX_HEIGHT = 500;
+                    var width = img.width;
+                    var height = img.height;
+                    if (width > height) {
+                        if (width > MAX_WIDTH) {
+                            height *= MAX_WIDTH / width;
+                            width = MAX_WIDTH;
+                        }
+                    } else {
+                        if (height > MAX_HEIGHT) {
+                            width *= MAX_HEIGHT / height;
+                            height = MAX_HEIGHT;
+                        }
+                    }
+                    canvas.width = width;
+                    canvas.height = height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+                    dataurl = canvas.toDataURL(file.type);
+                    document.getElementById('output').src = dataurl;
+                    console.log(dataurl);
+                    document.getElementById('image').value = dataurl;
+                }
+                reader.readAsDataURL(file);
+            }
+        } else {
+            alert('The File APIs are not fully supported in this browser.');
+        }
+    }
+</script>
+
+
+
+<script src="~/scripts/danhsachlinhkien/UpdateImage.js"></script>
+

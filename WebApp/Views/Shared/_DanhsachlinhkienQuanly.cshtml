@@ -96,13 +96,17 @@
                             <i class="fas fa-cog"></i> Chức năng
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item " href="#" style="white-space: nowrap">
+                            <a class="dropdown-item btnUpdateImage" href="#" style="white-space: nowrap"
+                           data-id="@item.Id">
                                 <i class="fas fa-camera"></i> Đổi hình ảnh
                             </a>
-                            <a class="dropdown-item" href="#" style="white-space: nowrap">
+                            <a class="dropdown-item btnUpdateTTLK" href="#" style="white-space: nowrap"
+                           data-id="@item.Id">
                                 <i class="fa fa-edit"></i> Sửa thông tin
                             </a>
-                            <a class="dropdown-item " href="#" style="white-space: nowrap">
+                            <a class="dropdown-item btnDeleteTTLK" href="#" style="white-space: nowrap"
+                           data-id="@item.Id"
+                           data-tenlinhkien="@item.Tenlinhkien">
                                 <i class="fas fa-trash"></i> Xoá linh kiện
                             </a>
                         </div>
@@ -120,7 +124,7 @@
                        data-ycdh=@item.YCDH>
                             <i class="fas fa-cart-plus"></i> Đặt hàng
                         </a>
-                  </div>
+                    </div>
                 </td>
                 <td style="font-size:small; vertical-align:middle;text-align:center">
                     @Html.DisplayFor(modelItem => item.Model)
@@ -226,7 +230,41 @@
             showConfirmButton: false // Remove the "OK" button
         });
     });
+    $(".dropdown-item.btnUpdateTTLK").on("click", function () {
+        var id = $(this).data("id");
+        $.ajax({
+            url: "/Danhsachlinhkien/Detail",
+            type: "GET",
+            data: {
+                id: id,
+            },
+            success: function (data) {
+                $("#modelInfo_Thongtinlinhkien").html(data);
+                $("#modalThongtinlinhkien").modal("show");
+            },
+        });
+    });
+    $(".dropdown-item.btnUpdateImage").on("click", function () {
+        var id = $(this).data("id");
+        $.ajax({
+            url: "/Danhsachlinhkien/DetailImage",
+            type: "GET",
+            data: {
+                id: id,
+            },
+            success: function (data) {
+                $("#modelInfo_UpdateImage").html(data);
+                $("#modalUpdateImage").modal("show");
+            },
+        });
+    });
 </script>
 
 <script src="~/scripts/danhsachlinhkien/yeucaudathang.js"></script>
+<script src="~/scripts/danhsachlinhkien/updatettlk.js"></script>
+<script src="~/scripts/danhsachlinhkien/delete.js"></script>
+
+
+
+
 

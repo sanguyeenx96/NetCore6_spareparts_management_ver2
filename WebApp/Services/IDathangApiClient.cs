@@ -22,5 +22,8 @@ namespace WebApp.Services
 
         Task<ApiResult<bool>> XacNhanHangVeDot2(int id);
 
+        Task<ApiResult<bool>> Delete(int id);
+
+
     }
 }

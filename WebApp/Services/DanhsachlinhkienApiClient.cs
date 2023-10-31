@@ -30,34 +30,65 @@ namespace WebApp.Services
             return count;
         }
 
+        //public async Task<ApiResult<bool>> Create(DanhsachlinhkienCreateRequest request)
+        //{
+        //    var client = _httpClientFactory.CreateClient();
+        //    client.BaseAddress = new Uri(_configuration["BaseAdress"]);
+
+        //    var requestContent = new MultipartFormDataContent();
+        //    if (request.Hinhanh != null)
+        //    {
+        //        byte[] data;
+        //        using (var br = new BinaryReader(request.Hinhanh.OpenReadStream()))
+        //        {
+        //            data = br.ReadBytes((int)request.Hinhanh.OpenReadStream().Length);
+        //        }
+        //        ByteArrayContent bytes = new ByteArrayContent(data);
+        //        requestContent.Add(bytes, "Hinhanh", request.Hinhanh.FileName);
+        //    }
+        //    requestContent.Add(new StringContent(request.Model.ToString()), "model");
+        //    requestContent.Add(new StringContent(request.Tenjig.ToString()), "tenjig");
+        //    requestContent.Add(new StringContent(request.Majig.ToString()), "majig");
+        //    requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Tenlinhkien) ? "" : request.Tenlinhkien.ToString()), "tenlinhkien");
+        //    requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Malinhkien) ? "" : request.Malinhkien.ToString()), "malinhkien");
+        //    requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Maker) ? "" : request.Maker.ToString()), "maker");
+        //    requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Donvi) ? "" : request.Donvi.ToString()), "donvi");
+        //    requestContent.Add(new StringContent(request.Dongia.ToString()), "dongia");
+        //    requestContent.Add(new StringContent(request.Tonkho.ToString()), "tonkho");
+        //    requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Ghichu) ? "" : request.Ghichu.ToString()), "ghichu");
+
+        //    var response = await client.PostAsync($"/api/danhsachlinhkien", requestContent);
+        //    var result = await response.Content.ReadAsStringAsync();
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+        //    }
+        //    return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        //}
+
         public async Task<ApiResult<bool>> Create(DanhsachlinhkienCreateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAdress"]);
 
-            var requestContent = new MultipartFormDataContent();
-            if (request.Hinhanh != null)
-            {
-                byte[] data;
-                using (var br = new BinaryReader(request.Hinhanh.OpenReadStream()))
-                {
-                    data = br.ReadBytes((int)request.Hinhanh.OpenReadStream().Length);
-                }
-                ByteArrayContent bytes = new ByteArrayContent(data);
-                requestContent.Add(bytes, "Hinhanh", request.Hinhanh.FileName);
-            }
-            requestContent.Add(new StringContent(request.Model.ToString()), "model");
-            requestContent.Add(new StringContent(request.Tenjig.ToString()), "tenjig");
-            requestContent.Add(new StringContent(request.Majig.ToString()), "majig");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Tenlinhkien) ? "" : request.Tenlinhkien.ToString()), "tenlinhkien");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Malinhkien) ? "" : request.Malinhkien.ToString()), "malinhkien");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Maker) ? "" : request.Maker.ToString()), "maker");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Donvi) ? "" : request.Donvi.ToString()), "donvi");
-            requestContent.Add(new StringContent(request.Dongia.ToString()), "dongia");
-            requestContent.Add(new StringContent(request.Tonkho.ToString()), "tonkho");
-            requestContent.Add(new StringContent(string.IsNullOrEmpty(request.Ghichu) ? "" : request.Ghichu.ToString()), "ghichu");
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync($"/api/danhsachlinhkien", requestContent);
+            var response = await client.PostAsync($"/danhsachlinhkien/", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
+        public async Task<ApiResult<bool>> Delete(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAdress"]);
+
+            var response = await client.DeleteAsync($"/api/danhsachlinhkien/{id}");
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
@@ -149,6 +180,40 @@ namespace WebApp.Services
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
             var response = await client.PutAsync($"/api/danhsachlinhkien/laylinhkien/{id}", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
+        public async Task<ApiResult<bool>> Update(DanhsachlinhkienUpdateRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAdress"]);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"/api/danhsachlinhkien/update/{request.Id}", httpContent);
+            var result = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+        }
+
+        public async Task<ApiResult<bool>> UpdateImage(int id, DanhsachlinhkienImageUpdateRequest request)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAdress"]);
+
+            var json = JsonConvert.SerializeObject(request);
+            var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var response = await client.PutAsync($"/api/danhsachlinhkien/image/{id}", httpContent);
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
