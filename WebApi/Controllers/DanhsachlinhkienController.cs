@@ -42,8 +42,7 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Create([FromForm] DanhsachlinhkienCreateRequest request)
+        public async Task<IActionResult> Create([FromBody] DanhsachlinhkienCreateRequest request)
         {
             var result = await _danhsachlinhkienService.Create(request);
             return Ok(result);
@@ -140,6 +139,25 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
+        [HttpPut("update/{id}")]
+        public async Task<IActionResult> Update([FromBody] DanhsachlinhkienUpdateRequest request)
+        {
+            var result = await _danhsachlinhkienService.Update(request);
+            return Ok(result);
+        }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _danhsachlinhkienService.Delete(id);
+            return Ok(result);
+        }
+
+        [HttpPut("image/{id}")]
+        public async Task<IActionResult> UpdateImage(int id, [FromBody] DanhsachlinhkienImageUpdateRequest request)
+        {
+            var result = await _danhsachlinhkienService.UpdateImage(id,request);
+            return Ok(result);
+        }
     }
 }

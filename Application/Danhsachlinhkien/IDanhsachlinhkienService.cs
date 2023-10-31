@@ -27,6 +27,12 @@ namespace Application.Danhsachlinhkien
 
         Task<ApiResult<bool>> LayLinhKien(int id, LaylinhkienRequest request);
 
+        Task<ApiResult<bool>> Update(DanhsachlinhkienUpdateRequest request);
+
+        Task<ApiResult<bool>> Delete(int id);
+
+        Task<ApiResult<bool>> UpdateImage(int id, DanhsachlinhkienImageUpdateRequest request);
+
 
     }
 }

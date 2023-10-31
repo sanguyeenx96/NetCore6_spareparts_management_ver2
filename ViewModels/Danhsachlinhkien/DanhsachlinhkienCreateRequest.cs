@@ -16,22 +16,22 @@ namespace ViewModels.Danhsachlinhkien
         public string Model { get; set; }
 
         [Display(Name = "Tên Jig")]
-        public string Tenjig { get; set; }
+        public string? Tenjig { get; set; }
 
         [Display(Name = "Mã Jig")]
-        public string Majig { get; set; }
+        public string? Majig { get; set; }
 
         [Display(Name = "Tên linh kiện")]
-        public string Tenlinhkien { get; set; }
+        public string? Tenlinhkien { get; set; }
 
         [Display(Name = "Mã linh kiện")]
-        public string Malinhkien { get; set; }
+        public string? Malinhkien { get; set; }
 
         [Display(Name = "Tên Maker")]
-        public string Maker { get; set; }
+        public string? Maker { get; set; }
 
         [Display(Name = "Đơn vị")]
-        public string Donvi { get; set; }
+        public string? Donvi { get; set; }
 
         [Display(Name = "Đơn giá")]
         public int? Dongia { get; set; }
@@ -42,7 +42,7 @@ namespace ViewModels.Danhsachlinhkien
         [Display(Name = "Ghi chú")]
         public string? Ghichu { get; set; }
 
-        public IFormFile? Hinhanh { get;set; }
+        public string? Image { get;set; }
 
     }
 }

@@ -65,8 +65,12 @@ namespace WebApi.Controllers
             return Ok(result);
         }
 
-        [HttpDelete]
-        public async Task
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var result = await _dathangService.XoaYeuCauDatHang(id);
+            return Ok(result);
+        }
 
     }
 }
