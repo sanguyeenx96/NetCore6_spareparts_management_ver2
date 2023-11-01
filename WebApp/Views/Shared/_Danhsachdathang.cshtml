@@ -347,7 +347,7 @@
         if (trangthai === "Hàng đã về") {
             columnDefs = [
                 {
-                    "targets": [23],  // Define the columns to be hidden (columns are 0-based)
+                    "targets": [23, 4],  // Define the columns to be hidden (columns are 0-based)
                     "visible": false,  // Initially, hide these columns
                     "searchable": false  // Make them unsearchable
                 }
@@ -359,6 +359,8 @@
             "lengthChange": true,
             "searching": true,
             "ordering": true,
+            "order": [[2, 'desc']], // Sort by the 3rd column in ascending order
+
             "info": true,
             "autoWidth": false,
             "responsive": true,

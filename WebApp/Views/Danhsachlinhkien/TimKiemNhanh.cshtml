@@ -19,14 +19,13 @@
     table.dataTable thead th {
         border-top: none;
     }
+
 </style>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Active"] = "pageTimkiemnhanh";
-
 }
-<div id="infoboxs"></div>
-
+<div id="infoboxs" style="margin-top: -25px;"></div>
 <div class="row">
     <div class="col-md-12">
         <form id="formSearch" asp-action="timkiemnhanh" method="get">
@@ -80,11 +79,11 @@
                                     @{
                                         if (!string.IsNullOrEmpty(item.Tenjig))
                                         {
-                                                        @Html.DisplayFor(modelItem => item.Tenjig)
+                                            @Html.DisplayFor(modelItem => item.Tenjig)
                                         }
                                         else
                                         {
-                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -92,11 +91,11 @@
                                     @{
                                         if (item.Tonkho > 0)
                                         {
-                                                        <span style="width: 30px;opacity:0.9" class="right badge badge-success">@item.Tonkho</span>
+                                            <span style="width: 30px;opacity:0.9" class="right badge badge-success">@item.Tonkho</span>
                                         }
                                         else
                                         {
-                                                        <span style="width: 30px;opacity:0.9" class="right badge badge-danger">@item.Tonkho</span>
+                                            <span style="width: 30px;opacity:0.9" class="right badge badge-danger">@item.Tonkho</span>
                                         }
                                     }
                                 </td>
@@ -104,11 +103,11 @@
                                     @{
                                         if (item.Image != null)
                                         {
-                                                        <img class="shadow showImage" style="width:100%;min-width:50px;min-height:75px;max-width:150px; max-height:200px;border-radius: 5px" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
+                                            <img class="shadow showImage" style="width:100%;min-width:50px;min-height:75px;max-width:150px; max-height:200px;border-radius: 5px" src="@item.Image" data-tenlinhkien="@item.Tenlinhkien">
                                         }
                                         else
                                         {
-                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -140,7 +139,8 @@
                                        data-hoten="@hoten"
                                        data-ycdh=@item.YCDH>
                                             <i class="fas fa-cart-plus"></i> Đặt hàng
-                                            @if(item.YCDH > 0){
+                                            @if (item.YCDH > 0)
+                                            {
                                                 <span class="badge badge-danger badge-pill" style="position: absolute; top: -10px; right: -10px;">@item.YCDH yêu cầu </span>
                                             }
                                         </a>
@@ -153,11 +153,11 @@
                                     @{
                                         if (!string.IsNullOrEmpty(item.Majig))
                                         {
-                                                        @Html.DisplayFor(modelItem => item.Majig)
+                                            @Html.DisplayFor(modelItem => item.Majig)
                                         }
                                         else
                                         {
-                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -165,11 +165,11 @@
                                     @{
                                         if (!string.IsNullOrEmpty(item.Maker))
                                         {
-                                                        @Html.DisplayFor(modelItem => item.Maker)
+                                            @Html.DisplayFor(modelItem => item.Maker)
                                         }
                                         else
                                         {
-                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -177,11 +177,11 @@
                                     @{
                                         if (!string.IsNullOrEmpty(item.Donvi))
                                         {
-                                                        @Html.DisplayFor(modelItem => item.Donvi)
+                                            @Html.DisplayFor(modelItem => item.Donvi)
                                         }
                                         else
                                         {
-                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -189,11 +189,11 @@
                                     @{
                                         if (item.Dongia != null)
                                         {
-                                                        @Html.DisplayFor(modelItem => item.Dongia)
+                                            @Html.DisplayFor(modelItem => item.Dongia)
                                         }
                                         else
                                         {
-                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -201,11 +201,11 @@
                                     @{
                                         if (!string.IsNullOrEmpty(item.Ghichu))
                                         {
-                                                        @Html.DisplayFor(modelItem => item.Ghichu)
+                                            @Html.DisplayFor(modelItem => item.Ghichu)
                                         }
                                         else
                                         {
-                                                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                                            <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
                                         }
                                     }
                                 </td>
@@ -235,7 +235,7 @@
             })
             $.get("/Danhsachlinhkien/GetCountsLinhkien", function (result) {
                 $("#infoboxs").html(result);
-            });           
+            });
         })
         $(".showImage").on("click", function (e) {
             var imgSrc = $(this).attr("src");

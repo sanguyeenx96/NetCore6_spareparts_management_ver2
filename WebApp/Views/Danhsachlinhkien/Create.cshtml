@@ -5,8 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
 <div class="card card-info">
         <div class="card-body">
             <div class="form-group row">
@@ -18,55 +16,55 @@
             <div class="form-group row">
                 <label style="font-weight: 500;" class="col-sm-2 col-form-label">Tên Jig</label>
                 <div class="col-sm-10">
-                    <input name="Tenjig" class="form-control" />
+                    <input id="Tenjig" class="form-control" />
                 </div>
             </div>
             <div class="form-group row">
                 <label style="font-weight: 500;" class="col-sm-2 col-form-label">Mã Jig</label>
                 <div class="col-sm-10">
-                    <input name="Majig" class="form-control" />
+                    <input id="Majig" class="form-control" />
                 </div>
             </div>
             <div class="form-group row">
                 <label style="font-weight: 500;" class="col-sm-2 col-form-label">Tên linh kiện</label>
                 <div class="col-sm-10">
-                    <input name="Tenlinhkien" class="form-control" required />
+                <input id="Tenlinhkien" class="form-control" required />
                 </div>
             </div>
             <div class="form-group row">
                 <label style="font-weight: 500;" class="col-sm-2 col-form-label">Mã linh kiện</label>
                 <div class="col-sm-10">
-                    <input name="Malinhkien" class="form-control" />
+                <input id="Malinhkien" class="form-control" />
                 </div>
             </div>
             <div class="form-group row">
                 <label style="font-weight: 500;" class="col-sm-2 col-form-label">Maker</label>
                 <div class="col-sm-10">
-                    <input name="Maker" class="form-control" />
+                <input id="Maker" class="form-control" />
                 </div>
             </div>
             <div class="form-group row">
                 <label style="font-weight: 500;" class="col-sm-2 col-form-label">Đơn vị</label>
                 <div class="col-sm-10">
-                    <input name="Donvi" class="form-control" />
+                <input id="Donvi" class="form-control" />
                 </div>
             </div>
             <div class="form-group row">
                 <label style="font-weight: 500;" class="col-sm-2 col-form-label">Đơn giá</label>
                 <div class="col-sm-10">
-                    <input name="Dongia" class="form-control" />
+                <input type="number" id="Dongia" class="form-control" />
                 </div>
             </div>
             <div class="form-group row">
                 <label style="font-weight: 500;" class="col-sm-2 col-form-label">Tồn kho</label>
                 <div class="col-sm-10">
-                    <input name="Tonkho" class="form-control" />
+                <input type="number" id="Tonkho" class="form-control" />
                 </div>
             </div>
             <div class="form-group row">
                 <label style="font-weight: 500;" class="col-sm-2 col-form-label">Ghi chú</label>
                 <div class="col-sm-10">
-                    <input name="Ghichu" class="form-control" />
+                <input id="Ghichu" class="form-control" />
                 </div>
             </div>
             <div class="form-group row">
@@ -80,10 +78,10 @@
             <img style="width: 100%" src="" id="output">
         </div>
         <div class="card-footer">
-        <button id="btnXacNhanCreate" class="btn btn-success  float-right">
+        <button id="btnXacNhanCreateLinhkien" class="btn btn-success  float-right">
                 <i class="fa fa-check fa-fw"> </i> Xác nhận
             </button>
-            <button class="btn btn-outline-danger ">
+        <button id="btnHuyboCreateLinhkien" class="btn btn-outline-danger ">
                 <i class="fa fa-times fa-fw"> </i> Huỷ bỏ
             </button>
         </div>
@@ -107,7 +105,6 @@
     function delay(time) {
         return new Promise(resolve => setTimeout(resolve, time));
     }
-
     function ResizeImage() {
         if (window.File && window.FileReader && window.FileList && window.Blob) {
             var filesToUploads = document.getElementById('imageFile').files;

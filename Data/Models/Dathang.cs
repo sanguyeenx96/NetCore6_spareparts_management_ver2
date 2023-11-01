@@ -5,6 +5,11 @@ namespace Data.Models
 {
     public partial class Dathang
     {
+        public Dathang()
+        {
+            Lichsuthaotacs = new HashSet<Lichsuthaotac>();
+        }
+
         public int Id { get; set; }
         public string? Ngayyeucau { get; set; }
         public string? Ngaydathang { get; set; }
@@ -29,5 +34,7 @@ namespace Data.Models
         public string? Model { get; set; }
         public int? Soluongvedot1 { get; set; }
         public int? Soluongvedot2 { get; set; }
+
+        public virtual ICollection<Lichsuthaotac> Lichsuthaotacs { get; set; }
     }
 }

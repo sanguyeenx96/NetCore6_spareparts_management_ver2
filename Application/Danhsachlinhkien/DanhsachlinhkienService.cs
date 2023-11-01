@@ -1,6 +1,5 @@
 ﻿using Application.Common;
 using Data.EF;
-using Data.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.SqlClient;
@@ -19,6 +18,7 @@ using Utilities.Constants;
 using Utilities.Exceptions;
 using ViewModels.Common;
 using ViewModels.Danhsachlinhkien;
+using ViewModels.Dathang;
 using ViewModels.Hinhanh;
 using ViewModels.System.User;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
@@ -473,9 +473,27 @@ namespace Application.Danhsachlinhkien
             if (linhkien == null)
             {
                 return new ApiErrorResult<bool>("Linh kiện không tồn tại");
-            }
+            }           
             try
             {
+                List<Data.Models.Dathang> danhsachdathang = await _context.Dathangs.Where(x => (x.Malinhkien == linhkien.Malinhkien && x.Tenlinhkien == linhkien.Tenlinhkien)).ToListAsync();
+                if (danhsachdathang != null)
+                {
+                    foreach (var item in danhsachdathang)
+                    {
+                        item.Model = request.Model;
+                        item.Tenjig = request.Tenjig;
+                        item.Majig = request.Majig;
+                        item.Tenlinhkien = request.Tenlinhkien;
+                        item.Malinhkien = request.Malinhkien;
+                        item.Maker = request.Maker;
+                        item.Donvi = request.Donvi;
+                        item.Dongia = request.Dongia;
+                        item.Ghichu = request.Ghichu;
+                        _context.Dathangs.Update(item);
+                        await _context.SaveChangesAsync();
+                    }
+                }
                 linhkien.Model = request.Model;
                 linhkien.Tenjig = request.Tenjig;
                 linhkien.Majig = request.Majig;

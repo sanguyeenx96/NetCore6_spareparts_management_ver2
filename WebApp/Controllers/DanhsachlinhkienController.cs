@@ -149,19 +149,21 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody] DanhsachlinhkienCreateRequest request)
+        public async Task<IActionResult> Create(DanhsachlinhkienCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
-                return View();
+                return Json(new { success = false, message = "Dữ liệu nhập vào không đúng" });
             }
             var result = await _danhsachlinhkienApiClient.Create(request);
             if (result.IsSuccessed)
             {
-                return RedirectToAction("index");
+                return Json(new { success = true });
             }
-            ModelState.AddModelError("", result.Message);
-            return View(request);
+            else
+            {
+                return Json(new { success = false, message = result.Message });
+            }           
         }
 
         [HttpGet]

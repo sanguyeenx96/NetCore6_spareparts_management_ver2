@@ -74,7 +74,7 @@ namespace WebApp.Services
             var json = JsonConvert.SerializeObject(request);
             var httpContent = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var response = await client.PostAsync($"/danhsachlinhkien/", httpContent);
+            var response = await client.PostAsync("/api/danhsachlinhkien/", httpContent);
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {

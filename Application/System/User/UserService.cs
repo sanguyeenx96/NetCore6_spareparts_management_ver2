@@ -34,7 +34,7 @@ namespace Application.System.User
             var result = await _context.TblAdmins.Where(x => (x.AdName == request.UserName && x.AdPass == request.Password)).FirstOrDefaultAsync();
             if (result == null)
             {
-                return new ApiErrorResult<UserVm>("Đăng nhập không đúng");
+                return new ApiErrorResult<UserVm>("Mật khẩu không đúng");
             }           
             var userLogin = new UserVm()
             {

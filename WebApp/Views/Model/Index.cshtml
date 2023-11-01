@@ -1,0 +1,62 @@
+﻿@model IEnumerable<ViewModels.Model.ModelVm>
+
+@{
+    ViewData["Active"] = "pageQuanlyModel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-default card-tabs">           
+            <div class="card-body">
+                <table id="table" class="table table-reponsive table-hover " style="text-align:center;vertical-align:middle">
+                    <thead style="font-size:small;">
+                        <tr>
+                            <th>
+                                Model
+                            </th>
+                            <th>
+                                Chức năng
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <td style="vertical-align:middle;text-align:center">
+                                    @Html.DisplayFor(modelItem => item.Tenmodel)
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-danger btnDeleteModel"
+                                        data-tenmodel="@item.Tenmodel"
+                                        data-id="@item.Id">
+                                        <i class="fa fa-trash fa-fw"></i>
+                                        Xoá Model</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>        
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#table").DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,          
+        })
+    });
+</script>
+
+<script src="~/scripts/model/DeleteModel.js"></script>
