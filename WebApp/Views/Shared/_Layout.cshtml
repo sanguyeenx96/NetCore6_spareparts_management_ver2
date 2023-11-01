@@ -18,6 +18,7 @@
     <script src="~/adminlte-master/plugins/jquery/jquery.min.js"></script>
     <script src="~/adminlte-master/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/adminlte-master/dist/js/adminlte.min.js"></script>
+
     <script src="~/lib/sweetalert2/sweetalert2.min.js"></script>
     <link href="~/lib/sweetalert2/sweetalert2.min.css" rel="stylesheet" />
     <link href="~/lib/animate.css/animate.min.css" rel="stylesheet" />
@@ -44,6 +45,7 @@
     <script src="~/lib/moment.js/moment.min.js"></script>
 
     <script src="~/scripts/currenttimeticks.js"></script>
+    <script src="~/scripts/model/addnewmodel.js"></script>
 </head>
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
     <div class="wrapper">
@@ -57,14 +59,14 @@
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item" style="margin-right: 10px;">
+                <li class="nav-item" style="margin-right: 5px;">
                     <form asp-controller="User" asp-action="Logout" method="post">
                         <button type="submit" class="btn btn-outline-danger btn-block" title="Đăng xuất tài khoản"><i class="fas fa-power-off fa-fw"> </i> Đăng xuất</button>
                     </form>
                 </li>
             </ul>
         </nav>
-        <aside class="main-sidebar sidebar-dark-lightblue elevation-1">
+        <aside class="main-sidebar sidebar-light-lightblue elevation-1">
             <a asp-controller="Danhsachlinhkien" asp-action="Timkiemnhanh" class="brand-link" style="text-align:center">
                 @*                <img src="~/iconuser.jpg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
                 *@                <span class="brand-text font-weight-light">SPAREPARTS </span>
@@ -113,7 +115,15 @@
                                     Quản lý linh kiện
                                 </p>
                             </a>
-                        </li>                        
+                        </li>     
+                        <li class="nav-item">
+                            <a id="pageQuanlyModel" asp-controller="Model" asp-action="Index" class="nav-link ">
+                                <i class="nav-icon fas fa-folder-open fa-fw"></i>
+                                <p>
+                                    Quản lý Model
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a id="pageTaikhoan" asp-controller="user" asp-action="Index" class="nav-link">
                                 <i class="fa fa-users nav-icon"></i>
@@ -123,6 +133,14 @@
                             </a>
                         </li>
                         <li class="nav-header">FUNCTION</li>
+                        <li class="nav-item">
+                            <a href="#" id="btnThemModelMoi" class="nav-link">
+                                <i class="nav-icon fas fa-plus-circle fa-fw"></i>
+                                <p>
+                                    Thêm Model mới
+                                </p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a id="pageThemlinhkien" asp-controller="Danhsachlinhkien" asp-action="Create" class="nav-link">
                                 <i class="nav-icon fas fa-plus-circle fa-fw"></i>
@@ -138,27 +156,7 @@
                                     Nhập linh kiện từ Excel
                                 </p>
                             </a>
-                        </li>
-                          
-
-                        
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-cog fa-fw"></i>
-                                <p>
-                                    Cài đặt
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a asp-controller="User" asp-action="Index" class="nav-link">
-                                        <i class="fa fa-users nav-icon"></i>
-                                        <p>Users List</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
+                        </li>                       
                     </ul>
                 </nav>
             </div>
@@ -197,12 +195,12 @@
             <strong>Canon Electronics VietNam</strong>
         </footer>
     </div>
+    
     @await RenderSectionAsync("Scripts", required: false)
     @if (ViewData["Active"] != null)
     {
         <script type="text/javascript">document.getElementById("@ViewData["Active"]").classList.add("active")</script>
     }
-
 </body>
 </html>
 

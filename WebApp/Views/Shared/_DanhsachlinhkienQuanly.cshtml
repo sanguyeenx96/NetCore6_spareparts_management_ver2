@@ -188,6 +188,7 @@
 <script>
     $(document).ready(function () {
         $("#tblSpareparts").DataTable({
+            "order": [[0, 'asc']], // Sort by the 3rd column in ascending order
             "paging": true,
             "lengthChange": true,
             "searching": true,

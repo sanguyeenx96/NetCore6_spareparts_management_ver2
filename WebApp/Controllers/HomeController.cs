@@ -8,7 +8,7 @@ using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace WebApp.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly IDanhsachlinhkienApiClient _danhsachlinhkienApiClient;
         private readonly IModelApiClient _modelApiClient;

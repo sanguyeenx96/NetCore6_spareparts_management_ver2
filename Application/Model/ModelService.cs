@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using ViewModels.Common;
 using ViewModels.Danhsachlinhkien;
 using ViewModels.Model;
+using ViewModels.Model.Request;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Application.Model
@@ -18,6 +19,48 @@ namespace Application.Model
         public ModelService(WebSparePartContext context)
         {
             _context = context;
+        }
+
+        public async Task<ApiResult<bool>> Create(ModelCreateRequest request)
+        {
+            var newmodel = await _context.Models.Where(x => x.Tenmodel.Contains(request.Tenmodel)).FirstOrDefaultAsync();
+            if (newmodel != null)
+            {   
+                return new ApiErrorResult<bool>("Đã tồn tại model này!");
+            }
+            try
+            {
+                newmodel = new Data.Models.Model()
+                {
+                    Tenmodel = request.Tenmodel.ToUpper(),
+                };
+                _context.Models.Add(newmodel);
+                await _context.SaveChangesAsync();
+                return new ApiSuccessResult<bool>();
+            }
+            catch
+            {
+                return new ApiErrorResult<bool>("Thêm mới không thành công");
+            }
+        }
+
+        public async Task<ApiResult<bool>> Delete(int id)
+        {
+            var model = await _context.Models.FindAsync(id);
+            if (model == null)
+            {
+                return new ApiErrorResult<bool>("Không tìm thấy model này!");
+            }
+            try
+            {                
+                _context.Models.Remove(model);
+                await _context.SaveChangesAsync();
+                return new ApiSuccessResult<bool>();
+            }
+            catch
+            {
+                return new ApiErrorResult<bool>("Xoá Model không thành công");
+            }
         }
 
         public async Task<List<ModelVm>> GetAll()

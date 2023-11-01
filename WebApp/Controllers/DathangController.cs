@@ -7,7 +7,7 @@ using WebApp.Services;
 
 namespace WebApp.Controllers
 {
-    public class DathangController : Controller
+    public class DathangController : BaseController
     {
         private readonly IDathangApiClient _dathangApiClient;
         private readonly IModelApiClient _modelApiClient;

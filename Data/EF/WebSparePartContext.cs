@@ -20,6 +20,7 @@ namespace Data.EF
         public virtual DbSet<Danhsachlinhkien> Danhsachlinhkiens { get; set; } = null!;
         public virtual DbSet<Dathang> Dathangs { get; set; } = null!;
         public virtual DbSet<LichsuLaylinhkien> LichsuLaylinhkiens { get; set; } = null!;
+        public virtual DbSet<Lichsuthaotac> Lichsuthaotacs { get; set; } = null!;
         public virtual DbSet<Model> Models { get; set; } = null!;
         public virtual DbSet<TblAdmin> TblAdmins { get; set; } = null!;
 
@@ -167,6 +168,41 @@ namespace Data.EF
                 entity.Property(e => e.Tenjig).HasColumnName("tenjig");
 
                 entity.Property(e => e.Tenlinhkien).HasColumnName("tenlinhkien");
+            });
+
+            modelBuilder.Entity<Lichsuthaotac>(entity =>
+            {
+                entity.ToTable("lichsuthaotac");
+
+                entity.Property(e => e.Id).HasColumnName("id");
+
+                entity.Property(e => e.Dathangid).HasColumnName("dathangid");
+
+                entity.Property(e => e.Linhkienid).HasColumnName("linhkienid");
+
+                entity.Property(e => e.Loaithaotac)
+                    .HasMaxLength(50)
+                    .HasColumnName("loaithaotac");
+
+                entity.Property(e => e.Nguoi)
+                    .HasMaxLength(100)
+                    .HasColumnName("nguoi");
+
+                entity.Property(e => e.Noidungthaotac).HasColumnName("noidungthaotac");
+
+                entity.Property(e => e.Thoigian)
+                    .HasColumnType("datetime")
+                    .HasColumnName("thoigian");
+
+                entity.HasOne(d => d.Dathang)
+                    .WithMany(p => p.Lichsuthaotacs)
+                    .HasForeignKey(d => d.Dathangid)
+                    .HasConstraintName("FK_lichsuthaotac_dathang");
+
+                entity.HasOne(d => d.Linhkien)
+                    .WithMany(p => p.Lichsuthaotacs)
+                    .HasForeignKey(d => d.Linhkienid)
+                    .HasConstraintName("FK_lichsuthaotac_danhsachlinhkien");
             });
 
             modelBuilder.Entity<Model>(entity =>

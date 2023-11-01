@@ -1,4 +1,4 @@
-﻿function updateCurrentTime() {
+function updateCurrentTime() {
     var currentTimeElement = document.getElementById("currentTime");
     if (currentTimeElement) {
         var currentDate = new Date();
@@ -9,9 +9,10 @@
         var minute = currentDate.getMinutes();
         var second = currentDate.getSeconds();
 
-        var formattedDate = `${hour}:${minute}:${second} Thứ ${currentDate.getDay()}, ${day} tháng ${month}, ${year}`;
+        var formattedDate = `${hour}:${minute}:${second} Thứ ${
+            currentDate.getDay() + 1
+        }, ${day} tháng ${month}, ${year}`;
         currentTimeElement.textContent = formattedDate;
-
     }
 }
 // Cập nhật thời gian mỗi giây

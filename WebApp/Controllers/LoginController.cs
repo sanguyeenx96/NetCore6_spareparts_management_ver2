@@ -19,24 +19,26 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(LoginRequest request)
+        public async Task<IActionResult> Authen(LoginRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
             var result = await _userApiClient.Authenticate(request);
-            if(result.ResultObj == null)
+            if (result.IsSuccessed)
             {
-                ModelState.AddModelError("", result.Message);
-                return View(); 
+                if (result.ResultObj == null)
+                {
+                    return Json(new { success = false, message = result.Message });
+                }
+                else
+                {
+                    TempData["result"] = "success";
+                    HttpContext.Session.SetString("Token", result.ResultObj.Hoten);
+                    return Json(new { success = true });
+                }
             }
-
-            HttpContext.Session.SetString("Token", result.ResultObj.Hoten);
-
-            TempData["result"] = "success";
-            return RedirectToAction("Timkiemnhanh","Danhsachlinhkien");
+            else
+            {
+                return Json(new { success = false, message = result.Message });
+            }                     
         }
-
     }
 }
