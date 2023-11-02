@@ -1,6 +1,7 @@
 $(".dropdown-item.btnDeleteTTLK").on("click", function () {
     var id = $(this).data("id");
     var tenlinhkien = $(this).data("tenlinhkien");
+    var model = $(this).data("model");
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -13,7 +14,7 @@ $(".dropdown-item.btnDeleteTTLK").on("click", function () {
     swalWithBootstrapButtons
         .fire({
             title: "Xoá dữ liệu linh liện?",
-            text: tenlinhkien,
+            text: "Dữ liệu và lịch sử liên quan tới " + tenlinhkien + " sẽ bị xoá",
             icon: "warning",
             showCancelButton: true,
             confirmButtonText: "Xác nhận xoá!",
@@ -27,6 +28,8 @@ $(".dropdown-item.btnDeleteTTLK").on("click", function () {
                     type: "POST",
                     data: {
                         id: id,
+                        tenlinhkien: tenlinhkien,
+                        model:model
                     },
                     success: function (data) {
                         if (data.success) {

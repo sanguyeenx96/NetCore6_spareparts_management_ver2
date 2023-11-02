@@ -12,7 +12,7 @@ namespace WebApp.Services
 
         Task<int> Count(GetDathangRequest request);
 
-        Task<ApiResult<bool>> CreateYeuCauDatHang(int linhkienid, DathangCreateRequest request);
+        Task<ApiResult<int>> CreateYeuCauDatHang(int linhkienid, DathangCreateRequest request);
 
         Task<ApiResult<bool>> XacNhanDatHang(int id, DathangXacNhanDatHangRequest request);
 
@@ -24,6 +24,7 @@ namespace WebApp.Services
 
         Task<ApiResult<bool>> Delete(int id);
 
+        Task<ApiResult<DathangVm>> GetById(int id);
 
     }
 }

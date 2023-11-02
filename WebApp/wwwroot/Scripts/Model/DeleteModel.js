@@ -23,6 +23,7 @@ $(document).ready(function () {
                 type: "POST",
                 data: {
                     id: id,
+                    tenmodel:tenmodel
                 },
                 success: function (data) {
                     if (data.success) {

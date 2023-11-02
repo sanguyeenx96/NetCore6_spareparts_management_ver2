@@ -12,6 +12,7 @@ builder.Services.AddTransient<IDanhsachlinhkienApiClient, DanhsachlinhkienApiCli
 builder.Services.AddTransient<IUserApiClient, UserApiClient>();
 builder.Services.AddTransient<IModelApiClient, ModelApiClient>();
 builder.Services.AddTransient<IDathangApiClient, DathangApiClient>();
+builder.Services.AddTransient<ILichsuthaotacApiClient, LichsuthaotacApiClient>();
 
 
 var app = builder.Build();

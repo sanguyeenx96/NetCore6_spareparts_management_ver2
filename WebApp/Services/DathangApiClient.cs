@@ -30,7 +30,7 @@ namespace WebApp.Services
             return count;
         }
 
-        public async Task<ApiResult<bool>> CreateYeuCauDatHang(int linhkienid, DathangCreateRequest request)
+        public async Task<ApiResult<int>> CreateYeuCauDatHang(int linhkienid, DathangCreateRequest request)
         {
             var client = _httpClientFactory.CreateClient();
             client.BaseAddress = new Uri(_configuration["BaseAdress"]);
@@ -42,9 +42,9 @@ namespace WebApp.Services
             var result = await response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
-                return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(result);
+                return JsonConvert.DeserializeObject<ApiSuccessResult<int>>(result);
             }
-            return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(result);
+            return JsonConvert.DeserializeObject<ApiErrorResult<int>>(result);
         }
 
         public async Task<ApiResult<List<DathangVm>>> GetAll(GetDathangRequest request)
@@ -141,6 +141,19 @@ namespace WebApp.Services
                 return JsonConvert.DeserializeObject<ApiSuccessResult<bool>>(body);
             }
             return JsonConvert.DeserializeObject<ApiErrorResult<bool>>(body);
+        }
+
+        public async Task<ApiResult<DathangVm>> GetById(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            client.BaseAddress = new Uri(_configuration["BaseAdress"]);
+            var response = await client.GetAsync($"/api/dathang/{id}");
+            var body = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonConvert.DeserializeObject<ApiSuccessResult<DathangVm>>(body);
+            }
+            return JsonConvert.DeserializeObject<ApiErrorResult<DathangVm>>(body);
         }
     }
 }

@@ -21,7 +21,6 @@ builder.Services.AddTransient<IModelService, ModelService>();
 builder.Services.AddTransient<IDathangService, DathangService>();
 builder.Services.AddTransient<ILichsuthaotacService, LichsuthaotacService>();
 
-
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -35,6 +34,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Swagger eShopSolution V1");
+});
 
 app.UseHttpsRedirection();
 

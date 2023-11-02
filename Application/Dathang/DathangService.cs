@@ -36,18 +36,18 @@ namespace Application.Dathang
             return totalRows;
         }
 
-        public async Task<ApiResult<bool>> CreateYeuCauDatHang(int linhkienid, DathangCreateRequest request)
+        public async Task<ApiResult<int>> CreateYeuCauDatHang(int linhkienid, DathangCreateRequest request)
         {
             if (request.Soluong < 1)
             {
-                return new ApiErrorResult<bool>("Số lượng không phù hợp");
+                return new ApiErrorResult<int>("Số lượng không phù hợp");
             }
             try
             {
                 var thongtinlinhkien = await _context.Danhsachlinhkiens.Where(x => x.Id == linhkienid).FirstOrDefaultAsync();
                 if (thongtinlinhkien == null)
                 {
-                    return new ApiErrorResult<bool>("Không tìm thấy thông tin linh kiện");
+                    return new ApiErrorResult<int>("Không tìm thấy thông tin linh kiện");
                 }
                 var yeucaudathang = new Data.Models.Dathang()
                 {
@@ -79,11 +79,11 @@ namespace Application.Dathang
                 };
                 await _context.Dathangs.AddAsync(yeucaudathang);
                 await _context.SaveChangesAsync();
-                return new ApiSuccessResult<bool>();
+                return new ApiSuccessResult<int>(yeucaudathang.Id);
             }
             catch
             {
-                return new ApiErrorResult<bool>("Yêu cầu đặt hàng không thành công");
+                return new ApiErrorResult<int>("Yêu cầu đặt hàng không thành công");
             }
         }
 
@@ -259,6 +259,44 @@ namespace Application.Dathang
             {
                 return new ApiErrorResult<bool>("Xoá không thành công");
             }
+        }
+
+        public async Task<ApiResult<DathangVm>> GetById(int id)
+        {
+            var donhang = await _context.Dathangs.FindAsync(id);
+            if (donhang == null)
+            {
+                return new ApiErrorResult<DathangVm>("Đơn hàng không tồn tại");
+            }
+
+            var result = new DathangVm()
+            {
+                Id = donhang.Id,
+                Ngayyeucau = donhang.Ngayyeucau,
+                Ngaydathang = donhang.Ngaydathang,
+                Ngaydukienhangve = donhang.Ngaydukienhangve,
+                Ngayhangve = donhang.Ngayhangve,
+                Ngaydukienhangvedot2 = donhang.Ngaydukienhangvedot2,
+                Ngayhangvedot2 = donhang.Ngayhangvedot2,
+                Tenjig = donhang.Tenjig,
+                Majig = donhang.Majig,
+                Tenlinhkien = donhang.Tenlinhkien,
+                Malinhkien = donhang.Malinhkien,
+                Maker = donhang.Maker,
+                Soluongtonkho = donhang.Soluongtonkho,
+                Soluong = donhang.Soluong,
+                Donvi = donhang.Donvi,
+                Dongia = donhang.Dongia,
+                Thanhtien = donhang.Thanhtien,
+                Ghichu = donhang.Ghichu,
+                Trangthai = donhang.Trangthai,
+                Nguoidathang = donhang.Nguoidathang,
+                Image = donhang.Image,
+                Model = donhang.Model,
+                Soluongvedot1 = donhang.Soluongvedot1,
+                Soluongvedot2 = donhang.Soluongvedot2,
+            };
+            return new ApiSuccessResult<DathangVm>(result);
         }
     }
 }
