@@ -13,6 +13,8 @@ namespace Application.Lichsuthaotac
     {
         Task<ApiResult<bool>> Create(LichsuthaotacCreateRequest request);
         Task<ApiResult<List<LichsuthaotacVm>>> GetAll();
+        Task<ApiResult<List<LichsuthaotacVm>>> GetLichsu(GetLichsuthaotacRequest request);
+
 
     }
 }

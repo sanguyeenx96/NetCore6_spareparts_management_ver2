@@ -31,7 +31,7 @@ $("#btnXacNhanCreateLinhkien").click(function () {
             if (data.success) {
                 Swal.fire(
                     "Thành công!",
-                    "Bạn vừa sửa thông tin linh kiện thành công",
+                    "Bạn vừa thêm linh kiện mới thành công",
                     "success"
                 ).then(function () {
                     window.location.reload();

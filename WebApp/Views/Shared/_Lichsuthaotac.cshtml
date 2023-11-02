@@ -1,0 +1,164 @@
+﻿@model IEnumerable<ViewModels.Lichsuthaotac.Response.LichsuthaotacVm>
+
+<table id="tbllichsu" class="table table-reponsive table-hover " style="text-align:center;vertical-align:middle">
+    <thead style="font-size:small;">
+        <tr>
+            <th class="all" style="white-space: nowrap;">Người thao tác</th>
+            <th class="all" style="white-space: nowrap;">Loại</th>
+
+            <th class="all" style="white-space: nowrap;">Nội dung</th>
+
+            <th class="all" style="white-space: nowrap;">Thời gian</th>
+            <th class="all" style="white-space: nowrap;">Chức năng</th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td style="white-space: nowrap;font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Nguoi)
+                </td>
+                <td style="white-space: nowrap;font-size:small; vertical-align:middle;text-align:center">
+                    @{
+                        if (item.Loaithaotac == "DELETE")
+                        {
+                            <span style="width:70px" class="badge badge-danger float-right">Xoá</span>
+                        }
+                        if (item.Loaithaotac == "CREATE")
+                        {
+                            <span style="width:70px" class="badge badge-success float-right">Tạo mới</span>
+                        }
+                        if (item.Loaithaotac == "UPDATE")
+                        {
+                            <span style="width:70px" class="badge badge-warning float-right">Sửa đổi</span>
+                        }
+                        if (item.Loaithaotac == "TAKE")
+                        {
+                            <span style="width:70px" class="badge badge-primary float-right">Lấy sử dụng</span>
+                        }
+
+                        if (item.Loaithaotac == "YCDH")
+                        {
+                            <span style="width:70px" class="badge badge-warning float-right">Yêu cầu</span>
+                        }
+                        if (item.Loaithaotac == "XNDH")
+                        {
+                            <span style="width:70px" class="badge badge-success float-right">Xác nhận</span>
+                        }
+                        if (item.Loaithaotac == "XNHVD")
+                        {
+                            <span style="width:70px" class="badge badge-success float-right">Về đủ</span>
+                        }
+                        if (item.Loaithaotac == "XNHVT")
+                        {
+                            <span style="width:70px" class="badge badge-info float-right">Về thiếu</span>
+                        }
+                        if (item.Loaithaotac == "XNHVD2")
+                        {
+                            <span style="width:70px" class="badge bg-purple float-right">Về đợt 2</span>
+                        }
+                        if (item.Loaithaotac == "XOADH")
+                        {
+                            <span style="width:70px" class="badge badge-danger float-right">Xoá đặt hàng</span>
+                        }
+                    }
+                </td>
+                <td style="font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Noidungthaotac)
+                </td>
+                <td style="white-space: nowrap;font-size:small; vertical-align:middle;text-align:center">
+                    @Html.DisplayFor(modelItem => item.Thoigian)
+                </td>
+                <td style="white-space: nowrap;font-size:small; vertical-align:middle;text-align:center">
+                    @{
+                        if(item.Linhkienid != null )
+                        {
+                            <btn class="btn btn-outline-success btn-sm btn-block btnXemchitietlinhkien" data-id="@item.Linhkienid">
+                                <i class="fa fa-eye"></i>
+                                Chi tiết linh kiện
+                            </btn>
+                        }
+                        if (item.Dathangid != null)
+                        {
+                            <btn class="btn btn-outline-primary btn-sm btn-block btnXemchitietdonhang" data-id="@item.Dathangid">
+                                <i class="fa fa-eye"></i>
+                                Chi tiết đơn hàng
+                            </btn>
+                        }
+                    }
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    $(document).ready(function () {
+        $("#tbllichsu").DataTable({
+            "order": [[0, 'asc']], // Sort by the 3rd column in ascending order
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            "buttons": [
+                {
+                    extend: 'copy',
+                    text: '<i class="fas fa-copy"></i> Copy',
+                    className: 'btn-default'
+                },
+                {
+                    extend: 'excel',
+                    text: '<i class="fas fa-file-excel"></i> Xuất Excel',
+                    className: 'btn-default'
+                },
+                {
+                    extend: 'print',
+                    text: '<i class="fas fa-print"></i> In',
+                    className: 'btn-default'
+                }
+            ],
+            "drawCallback": function () {
+                $('#overlay').hide();
+                $('#thebody').show();
+            }
+        }).buttons().container().appendTo('#tbllichsu_wrapper  .col-md-6:eq(0)');
+    });
+    $(".btnXemchitietlinhkien").click(function (e) {
+        e.preventDefault();
+        var id = $(this).data("id");
+        $.ajax({
+            url: "/Danhsachlinhkien/DetailChitietlinhkien",
+            type: "GET",
+            data: {
+                id: id,
+            },
+            success: function (data) {
+                $("#modelInfo_Xemchitietlichsu").html(data);
+                $("#modalXemchitietlichsu").modal("show");
+            },
+        });
+    });
+    $(".btnXemchitietdonhang").click(function (e) {
+        e.preventDefault();
+        var id = $(this).data("id");
+        $.ajax({
+            url: "/Dathang/GetById",
+            type: "GET",
+            data: {
+                id: id,
+            },
+            success: function (data) {
+                $("#modelInfo_Xemchitietlichsu").html(data);
+                $("#modalXemchitietlichsu").modal("show");
+            },
+        });
+    });
+</script>

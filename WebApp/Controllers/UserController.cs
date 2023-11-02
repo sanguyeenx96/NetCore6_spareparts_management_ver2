@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using ViewModels.Danhsachlinhkien;
+using ViewModels.Lichsuthaotac.Request;
 using ViewModels.System.User;
 using WebApp.Services;
 
@@ -9,10 +10,12 @@ namespace WebApp.Controllers
 {
     public class UserController : BaseController
     {
+        private readonly ILichsuthaotacApiClient _lichsuthaotacApiClient;
         private readonly IUserApiClient _userApiClient;
-        public UserController(IUserApiClient userApiClient)
+        public UserController(IUserApiClient userApiClient, ILichsuthaotacApiClient lichsuthaotacApiClient)
         {
             _userApiClient = userApiClient;
+            _lichsuthaotacApiClient = lichsuthaotacApiClient;
         }
         public async Task<IActionResult> Index(string keyword, int pageIndex = 1, int pageSize = 10)
         {
@@ -42,6 +45,16 @@ namespace WebApp.Controllers
             var result = await _userApiClient.RegisterUser(request);
             if (result.IsSuccessed)
             {
+                string hoten = HttpContext.Session.GetString("Token");
+                var lichsuthaotac = new LichsuthaotacCreateRequest()
+                {
+                    Nguoi = hoten,
+                    Loaithaotac = "CREATE",
+                    Noidungthaotac = "Tạo tài khoản mới: " + request.UserName + " - " + request.Name,
+                    Linhkienid = null,
+                    Dathangid = null
+                };
+                await _lichsuthaotacApiClient.Create(lichsuthaotac);
                 return Json(new { success = true });
             }
             else
@@ -63,6 +76,16 @@ namespace WebApp.Controllers
             var result = await _userApiClient.UpdateUser(id, request);
             if (result.IsSuccessed)
             {
+                string hoten = HttpContext.Session.GetString("Token");
+                var lichsuthaotac = new LichsuthaotacCreateRequest()
+                {
+                    Nguoi = hoten,
+                    Loaithaotac = "UPDATE",
+                    Noidungthaotac = "Cập nhật thông tin tài khoản: " + request.UserName + " - " + request.Name,
+                    Linhkienid = null,
+                    Dathangid = null
+                };
+                await _lichsuthaotacApiClient.Create(lichsuthaotac);
                 return Json(new { success = true });
             }
             else
@@ -75,17 +98,17 @@ namespace WebApp.Controllers
         public async Task<IActionResult> EditRole(int id, UserEditRoleRequest request)
         {
             if (!ModelState.IsValid)
-            {             
-                return Json(new { success = false});
+            {
+                return Json(new { success = false });
             }
             var result = await _userApiClient.EditRoleUser(id, request);
             if (result.IsSuccessed)
-            {
+            {               
                 return Json(new { success = true });
             }
             else
             {
-                return Json(new { success = false});
+                return Json(new { success = false });
             }
         }
 
@@ -97,15 +120,25 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(UserDeleteRequest request)
+        public async Task<IActionResult> Delete(int id, string usn, string hoten)
         {
             if (!ModelState.IsValid)
             {
                 return Json(new { success = false });
             }
-            var result = await _userApiClient.Delete(request.Id);
+            var result = await _userApiClient.Delete(id);
             if (result.IsSuccessed)
             {
+                string tennguoithaotac = HttpContext.Session.GetString("Token");
+                var lichsuthaotac = new LichsuthaotacCreateRequest()
+                {
+                    Nguoi = tennguoithaotac,
+                    Loaithaotac = "DELETE",
+                    Noidungthaotac = "Xoá tài khoản: " + usn + " - " + hoten,
+                    Linhkienid = null,
+                    Dathangid = null
+                };
+                await _lichsuthaotacApiClient.Create(lichsuthaotac);
                 return Json(new { success = true });
             }
             else

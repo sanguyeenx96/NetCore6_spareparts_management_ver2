@@ -2,6 +2,7 @@
 using Data.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -61,6 +62,27 @@ namespace Application.Lichsuthaotac
             }).ToListAsync();
             return new ApiSuccessResult<List<LichsuthaotacVm>>(data);
 
+        }
+
+        public async Task<ApiResult<List<LichsuthaotacVm>>> GetLichsu(GetLichsuthaotacRequest request)
+        {
+            var query = _context.Lichsuthaotacs.AsQueryable();
+
+            if(!request.Loaithaotacs.Any(item => item == "ALL"))
+            {
+                query = query.Where(x => request.Loaithaotacs.Contains(x.Loaithaotac));
+            }
+            var data = await query.Select(x => new LichsuthaotacVm()
+            {
+                Id = x.Id,
+                Nguoi = x.Nguoi,
+                Loaithaotac = x.Loaithaotac,
+                Noidungthaotac = x.Noidungthaotac,
+                Thoigian = x.Thoigian,
+                Linhkienid = x.Linhkienid,
+                Dathangid = x.Dathangid
+            }).ToListAsync();
+            return new ApiSuccessResult<List<LichsuthaotacVm>>(data);
         }
     }
 }

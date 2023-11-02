@@ -1,5 +1,8 @@
 $(".btnDeleteUser").click(function () {
     var idStr = $(this).data("id");
+    var usn = $(this).data("usn");
+    var hoten = $(this).data("hoten");
+
     var id = parseInt(idStr);
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -23,7 +26,11 @@ $(".btnDeleteUser").click(function () {
                 $.ajax({
                     url: "/User/Delete",
                     type: "POST",
-                    data: { id: id },
+                    data: {
+                        id: id,
+                        usn: usn,
+                        hoten:hoten
+                    },
                     success: function (data) {
                         if (!data.success) {
                             Swal.fire("Thất bại!", "Lỗi kết nối", "error");

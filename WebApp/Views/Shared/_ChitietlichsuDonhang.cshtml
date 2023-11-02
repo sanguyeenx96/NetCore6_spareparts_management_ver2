@@ -1,0 +1,262 @@
+﻿@model ViewModels.Dathang.DathangVm
+
+
+<table id="table" class="table table-reponsive table-striped " style="text-align:center;vertical-align:middle" >
+    <thead style="font-size:small;">
+        <tr>
+            <th class="all" style="white-space: nowrap;">Tên linh kiện</th>
+            <th class="all" style="white-space: nowrap;">Mã linh kiện</th>
+            <th class="all" style="white-space: nowrap;">Ngày yêu cầu</th>
+            <th class="all" style="white-space: nowrap;">Hình ảnh</th>
+
+            <th class="none" style="white-space: nowrap;">Tên Jig</th>
+            <th class="none" style="white-space: nowrap;">Mã Jig</th>
+            <th class="none" style="white-space: nowrap;">Model</th>
+            <th class="none" style="white-space: nowrap;">Maker</th>
+            <th class="none" style="white-space: nowrap;">Đơn vị</th>
+            <th class="none" style="white-space: nowrap;">Ghi chú</th>
+            <th class="none" style="white-space: nowrap;">Đơn giá</th>
+            <th class="none" style="white-space: nowrap;">Thành tiền</th>
+            <th class="none" style="white-space: nowrap;">Số lượng đặt hàng</th>
+            <th class="none" style="white-space: nowrap;">Số lượng tồn kho khi đặt hàng</th>
+            <th class="none" style="white-space: nowrap;">Người yêu cầu đặt hàng</th>
+            <th class="none" style="white-space: nowrap;">Ngày xác nhận đặt hàng</th>
+            <th class="none" style="white-space: nowrap;">Ngày dự kiến hàng về</th>
+            <th class="none" style="white-space: nowrap;">Ngày hàng về đợt 1</th>
+            <th class="none" style="white-space: nowrap;">Số lượng hàng về đợt 1</th>
+            <th class="none" style="white-space: nowrap;">Ngày dự kiến hàng về đợt 2</th>
+            <th class="none" style="white-space: nowrap;">Ngày hàng về đợt 2</th>
+            <th class="none" style="white-space: nowrap;">Số lượng hàng về đợt 2</th>
+            <th class="none" style="white-space: nowrap;">Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td class="col-md-4" style="font-size:small; vertical-align:middle;text-align:center">
+                @Model.Tenlinhkien
+            </td>
+            <td class="col-md-2" style="font-size:small; vertical-align:middle;text-align:center">
+                @Model.Malinhkien
+            </td>
+            <td class="col-md-2" style="font-size:small; vertical-align:middle;text-align:center">
+                <span class="badge badge-dark">                @Model.Ngayyeucau
+</span>
+            </td>
+            <td class="col-md-2" style="font-size:small;vertical-align:middle;text-align:center">
+                @{
+                    if (Model.Image
+                    != null)
+                    {
+                        <img class="shadow showImage" style="width:100%;min-width:50px;min-height:75px;max-width:600px; max-height:400px;border-radius: 5px" src="@Model.Image">
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">None</span>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (!string.IsNullOrEmpty(Model.Tenjig))
+                    {
+                        @Model.Tenjig
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (!string.IsNullOrEmpty(Model.Majig))
+                    {
+                @Model.Majig
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @Model.Model
+            </td>
+            <td>
+                @{
+                    if (!string.IsNullOrEmpty(Model.Maker))
+                    {
+                @Model.Maker
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (!string.IsNullOrEmpty(Model.Donvi))
+                    {
+                        @Model.Donvi
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (!string.IsNullOrEmpty(Model.Ghichu))
+                    {
+                        @Model.Ghichu
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (Model.Dongia != null)
+                    {
+                        @Model.Dongia
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (Model.Thanhtien != null)
+                    {
+                        @Model.Thanhtien
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @Model.Soluong
+            </td>
+            <td>
+                @{
+                    if (Model.Soluongtonkho != null)
+                    {
+                        @Model.Soluongtonkho
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @Model.Nguoidathang
+            </td>
+            <td style="vertical-align:middle;text-align:center">
+                <span class="badge badge-info">
+                    @Model.Ngaydathang
+                </span>
+            </td>
+            <td style="vertical-align:middle;text-align:center">
+                @{
+                    if (Model.Ngaydukienhangve != null)
+                    {
+                        <span class="badge badge-warning">@Model.Ngaydukienhangve</span>
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td style="vertical-align:middle;text-align:center">
+                @{
+                    if (Model.Ngayhangve != null)
+                    {
+                        <span class="badge badge-primary">@Model.Ngayhangve</span>
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (Model.Soluongvedot1 != null)
+                    {
+                        @Model.Soluongvedot1
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td style="vertical-align:middle;text-align:center">
+                @{
+                    if (Model.Ngaydukienhangvedot2 != null)
+                    {
+                        <span class="badge badge-warning">@Model.Ngaydukienhangvedot2</span>
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td style="vertical-align:middle;text-align:center">
+                @{
+                    if (Model.Ngayhangvedot2 != null)
+                    {
+                        <span class="badge badge-primary">@Model.Ngayhangvedot2</span>
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @{
+                    if (Model.Soluongvedot2 != null)
+                    {
+                        @Model.Soluongvedot2
+                    }
+                    else
+                    {
+                        <span style="opacity:0.9" class="badge badge-secondary">Chưa có dữ liệu</span>
+                    }
+                }
+            </td>
+            <td>
+                @Model.Trangthai
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
+
+
+<script>
+    $(document).ready(function () {
+        $("#table").DataTable({
+            "paging": false,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": false,
+            "info": false,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>

@@ -1,6 +1,8 @@
 $(".btnXoaDon").click(function () {
     var id = $(this).data("id");
     var tenlinhkien = $(this).data("tenlinhkien");
+    var tenmodel = $(this).data("model");
+
 
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
@@ -27,6 +29,8 @@ $(".btnXoaDon").click(function () {
                     type: "POST",
                     data: {
                         id: id,
+                        tenlinhkien: tenlinhkien,
+                        tenmodel:tenmodel
                     },
                     success: function (data) {
                         if (data.success) {

@@ -7,17 +7,17 @@
 }
 
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-4">
         <button id="btnCreateUser" class="btn btn-lg bg-lightblue btn-block">
             <i class="fa fa-user-plus fa-fw"></i>
             Thêm tài khoản
         </button>
     </div>
-    <div class="col-md-9">
+    <div class="col-md-8">
         <form asp-action="index" method="get">
             <div class="input-group">
                 @{
-                    string kw = !string.IsNullOrEmpty(ViewBag.Keyword) ? ViewBag.Keyword : "Nhập tên người dùng, tên tài khoản để tìm kiếm nhanh...";
+                    string kw = !string.IsNullOrEmpty(ViewBag.Keyword) ? ViewBag.Keyword : "Nhập tên người dùng, tên tài khoản để tìm kiếm...";
                 }
                 <input name="keyword" type="text" class="form-control form-control-lg" placeholder="@kw">
                 <div class="input-group-append">
@@ -86,7 +86,10 @@
                                             <i class="fa fa-edit fa-fw"></i> Sửa
                                         </btn>
                                         <btn class="btn btn-danger btn-sm btnDeleteUser"
-                                         data-id="@item.Id">
+                                         data-id="@item.Id"
+                                         data-hoten="@item.Hoten"
+                                         data-pwd="@item.Password"
+                                         data-usn="@item.Username">
                                             <i class="fa fa-trash fa-fw"></i> Xoá
                                         </btn>
                                     </div>

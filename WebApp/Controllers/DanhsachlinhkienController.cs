@@ -5,22 +5,29 @@ using System.Collections.Generic;
 using ViewModels.Count;
 using ViewModels.Danhsachlinhkien;
 using ViewModels.Dathang;
+using ViewModels.Lichsuthaotac.Request;
 using ViewModels.System.User;
 using WebApp.Services;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+
 namespace WebApp.Controllers
 {
     public class DanhsachlinhkienController : BaseController
     {
+
+        private readonly ILichsuthaotacApiClient _lichsuthaotacApiClient;
         private readonly IDanhsachlinhkienApiClient _danhsachlinhkienApiClient;
         private readonly IModelApiClient _modelApiClient;
         private readonly IDathangApiClient _dathangApiClient;
 
-        public DanhsachlinhkienController(IDanhsachlinhkienApiClient danhsachlinhkienApiClient, IModelApiClient modelApiClient, IDathangApiClient dathangApiClient)
+        public DanhsachlinhkienController(IDanhsachlinhkienApiClient danhsachlinhkienApiClient
+            , IModelApiClient modelApiClient, IDathangApiClient dathangApiClient
+            , ILichsuthaotacApiClient lichsuthaotacApiClient)
         {
             _danhsachlinhkienApiClient = danhsachlinhkienApiClient;
             _modelApiClient = modelApiClient;
             _dathangApiClient = dathangApiClient;
+            _lichsuthaotacApiClient = lichsuthaotacApiClient;
         }
 
         [HttpGet]
@@ -128,6 +135,12 @@ namespace WebApp.Controllers
             return PartialView("_UpdateTTLK", data.ResultObj);
         }
         [HttpGet]
+        public async Task<IActionResult> DetailChitietlinhkien(int id)
+        {
+            var data = await _danhsachlinhkienApiClient.GetById(id);
+            return PartialView("_ChitietlichsuLinhkien", data.ResultObj);
+        }
+        [HttpGet]
         public async Task<IActionResult> DetailImage(int id)
         {
             var data = await _danhsachlinhkienApiClient.GetById(id);
@@ -158,12 +171,22 @@ namespace WebApp.Controllers
             var result = await _danhsachlinhkienApiClient.Create(request);
             if (result.IsSuccessed)
             {
+                string hoten = HttpContext.Session.GetString("Token");
+                var lichsuthaotac = new LichsuthaotacCreateRequest()
+                {
+                    Nguoi = hoten,
+                    Loaithaotac = "CREATE",
+                    Noidungthaotac = "Thêm linh kiện mới",
+                    Linhkienid = result.ResultObj,
+                    Dathangid = null
+                };
+                await _lichsuthaotacApiClient.Create(lichsuthaotac);
                 return Json(new { success = true });
             }
             else
             {
                 return Json(new { success = false, message = result.Message });
-            }           
+            }
         }
 
         [HttpGet]
@@ -188,6 +211,16 @@ namespace WebApp.Controllers
                 var result = await _danhsachlinhkienApiClient.ImportExcel(fileStream, model);
                 if (result.IsSuccessed)
                 {
+                    string hoten = HttpContext.Session.GetString("Token");
+                    var lichsuthaotac = new LichsuthaotacCreateRequest()
+                    {
+                        Nguoi = hoten,
+                        Loaithaotac = "CREATE",
+                        Noidungthaotac = "Nhập linh kiện từ Excel",
+                        Linhkienid = null,
+                        Dathangid = null
+                    };
+                    await _lichsuthaotacApiClient.Create(lichsuthaotac);
                     return Json(new { success = true, data = result.ResultObj });
                 }
                 return Json(new { success = false, message = result.Message });
@@ -232,6 +265,16 @@ namespace WebApp.Controllers
             var result = await _danhsachlinhkienApiClient.Laylinhkien(id, request);
             if (result.IsSuccessed)
             {
+                string hoten = HttpContext.Session.GetString("Token");
+                var lichsuthaotac = new LichsuthaotacCreateRequest()
+                {
+                    Nguoi = hoten,
+                    Loaithaotac = "TAKE",
+                    Noidungthaotac = request.soluong.ToString(),
+                    Linhkienid = id,
+                    Dathangid = null
+                };
+                await _lichsuthaotacApiClient.Create(lichsuthaotac);
                 return Json(new { success = true });
             }
             else
@@ -243,23 +286,19 @@ namespace WebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> Update(DanhsachlinhkienUpdateRequest request)
         {
-
-            //var request = new DanhsachlinhkienUpdateRequest()
-            //{
-            //    Dongia = model.Dongia,
-            //    Donvi = model.Donvi,
-            //    Ghichu = model.Ghichu,
-            //    Majig = model.Majig,
-            //    Maker = model.Maker,
-            //    Malinhkien = model.Malinhkien,
-            //    Model = model.Model,
-            //    Tenjig = model.Tenjig,
-            //    Tenlinhkien = model.Tenlinhkien,
-            //    Tonkho = model.Tonkho
-            //};
             var result = await _danhsachlinhkienApiClient.Update(request);
             if (result.IsSuccessed)
             {
+                string hoten = HttpContext.Session.GetString("Token");
+                var lichsuthaotac = new LichsuthaotacCreateRequest()
+                {
+                    Nguoi = hoten,
+                    Loaithaotac = "UPDATE",
+                    Noidungthaotac = "Đổi thông tin linh kiện",
+                    Linhkienid = request.Id,
+                    Dathangid = null
+                };
+                await _lichsuthaotacApiClient.Create(lichsuthaotac);
                 return Json(new { success = true });
             }
             else
@@ -269,11 +308,21 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id, string tenlinhkien, string model)
         {
             var result = await _danhsachlinhkienApiClient.Delete(id);
             if (result.IsSuccessed)
             {
+                string hoten = HttpContext.Session.GetString("Token");
+                var lichsuthaotac = new LichsuthaotacCreateRequest()
+                {
+                    Nguoi = hoten,
+                    Loaithaotac = "DELETE",
+                    Noidungthaotac = "Xoá linh kiện và dữ liệu liên quan: " + tenlinhkien + " - Model: " + model,
+                    Linhkienid = null,
+                    Dathangid = null
+                };
+                await _lichsuthaotacApiClient.Create(lichsuthaotac);
                 return Json(new { success = true });
             }
             else
@@ -293,9 +342,19 @@ namespace WebApp.Controllers
             {
                 Image = image
             };
-            var result = await _danhsachlinhkienApiClient.UpdateImage(id,request);
+            var result = await _danhsachlinhkienApiClient.UpdateImage(id, request);
             if (result.IsSuccessed)
             {
+                string hoten = HttpContext.Session.GetString("Token");
+                var lichsuthaotac = new LichsuthaotacCreateRequest()
+                {
+                    Nguoi = hoten,
+                    Loaithaotac = "UPDATE",
+                    Noidungthaotac = "Đổi hình ảnh linh kiện",
+                    Linhkienid = id,
+                    Dathangid = null
+                };
+                await _lichsuthaotacApiClient.Create(lichsuthaotac);
                 return Json(new { success = true });
             }
             else

@@ -40,14 +40,14 @@ namespace Application.Danhsachlinhkien
             _configuration = configuration;
         }
 
-        public async Task<ApiResult<bool>> Create(DanhsachlinhkienCreateRequest request)
+        public async Task<ApiResult<int>> Create(DanhsachlinhkienCreateRequest request)
         {
             try
             {
                 var check = await _context.Danhsachlinhkiens.Where(x => x.Malinhkien == request.Malinhkien).FirstOrDefaultAsync();
                 if (check != null)
                 {
-                    return new ApiErrorResult<bool>("Mã linh kiện đã tồn tại");
+                    return new ApiErrorResult<int>("Mã linh kiện đã tồn tại");
                 }
                 var linhkienmoi = new Data.Models.Danhsachlinhkien()
                 {
@@ -77,11 +77,11 @@ namespace Application.Danhsachlinhkien
                 //}
                 await _context.Danhsachlinhkiens.AddAsync(linhkienmoi);
                 await _context.SaveChangesAsync();
-                return new ApiSuccessResult<bool>();
+                return new ApiSuccessResult<int>(linhkienmoi.Id);
             }
             catch
             {
-                return new ApiErrorResult<bool>("Thêm linh kiện mới không thành công");
+                return new ApiErrorResult<int>("Thêm linh kiện mới không thành công"); // Return -1 as an error code
             }
         }
 
@@ -523,6 +523,16 @@ namespace Application.Danhsachlinhkien
             }
             try
             {
+                List<Data.Models.Lichsuthaotac> lichsuthaotac = _context.Lichsuthaotacs.Where(x => x.Linhkienid == id).ToList();
+                if(lichsuthaotac != null)
+                {
+                    foreach(var item in lichsuthaotac)
+                    {
+                        _context.Lichsuthaotacs.Remove(item);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
                 _context.Danhsachlinhkiens.Remove(linhkien);
                 await _context.SaveChangesAsync();
                 return new ApiSuccessResult<bool>();

@@ -15,7 +15,7 @@ namespace Application.Danhsachlinhkien
         Task<ApiResult<List<DanhsachlinhkienVm>>> GetAll(GetDanhsachlinhkienRequest request);
         Task<ApiResult<PagedResult<DanhsachlinhkienVm>>> GetAllPaging(GetDanhsachlinhkienPagingRequest request);
         Task<ApiResult<DanhsachlinhkienVm>> GetById(int id);
-        Task<ApiResult<bool>> Create(DanhsachlinhkienCreateRequest request);
+        Task<ApiResult<int>> Create(DanhsachlinhkienCreateRequest request);
         //Task<int> AddImage(int LinhkienId, HinhanhCreateRequest request);
         //Task<int> RemoveImage(int imageId);
         //Task<int> UpdateImage(int imageId, HinhanhUpdateRequest request);

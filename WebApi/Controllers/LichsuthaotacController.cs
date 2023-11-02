@@ -28,5 +28,11 @@ namespace WebApi.Controllers
             var result = await _lichsuthaotacService.GetAll();
             return Ok(result);
         }
+        [HttpPost("data")]
+        public async Task<IActionResult> GetLichSu([FromBody] GetLichsuthaotacRequest request)
+        {
+            var result = await _lichsuthaotacService.GetLichsu(request);
+            return Ok(result);
+        }
     }
 }

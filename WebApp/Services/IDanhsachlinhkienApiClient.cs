@@ -15,7 +15,7 @@ namespace WebApp.Services
 
         Task<ApiResult<DanhsachlinhkienVm>> GetById(int id);
 
-        Task<ApiResult<bool>> Create(DanhsachlinhkienCreateRequest request);
+        Task<ApiResult<int>> Create(DanhsachlinhkienCreateRequest request);
 
         Task<ApiResult<ImportExcelResult>> ImportExcel(Stream file, string model);
 
